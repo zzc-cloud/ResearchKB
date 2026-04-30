@@ -1,0 +1,7 @@
+## 引用关系列表
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]：方法借鉴，作为 retrieval-augmented 路径推理代表工作。
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]：方法借鉴，作为 grounded reasoning path 代表工作。
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]：方法借鉴，作为 evidence path 增强代表工作。
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]：对比实验，作为 GNN 检索增强代表工作。
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]：方法对比，作为 synergy-augmented 代表工作。
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]：方法对比，作为 LLM 生成推理路径方向的近期工作。
