@@ -346,228 +346,61 @@ tags: [金融, 风控, 知识图谱]
 
 ## 关联关系文件规范
 
-### wiki/relations/citation_graph.md
-记录所有已知的论文引用关系，格式：
-```markdown
-## 引用关系列表
-- [[论文A]] → [[论文B]]：A引用B，原因：[方法借鉴/对比实验/理论基础]
-```
+`wiki/relations/` 下的正式关系索引文件以 `wiki/ontology/graph-standard.md` 为唯一权威来源；本节仅保留总览，避免与详细规范重复维护。当前正式关系文件包括：
+- `citation_graph.md`
+- `method_evolution.md`
+- `concept_links.md`
+- `task_method_map.md`
+- `evidence_index.md`
 
-### wiki/relations/method_evolution.md
-记录方法演化树，格式：
-```markdown
-## 方法演化树
-- [[基础方法A]]
-  - └─ [[衍生方法B]]（改进点：xxx，来自论文[[论文X]]）
-      - └─ [[衍生方法C]]（改进点：xxx）
-- [[基础方法D]]
-  - └─ [[衍生方法E]]
-```
-
-### wiki/relations/concept_links.md
-记录概念之间的关系网络。
+涉及关系维护、知识落库、图谱更新时，应将上述文件视为同一组正式关系入口，并按 `graph-standard.md` 的定义判断是否需要更新。
 
 ---
 
 ## 核心工作流程
 
-### 📥 工作流 A：摄入单篇论文
+### 📥 处理单篇论文
 
-当我说 **"处理论文：[文件路径或论文标题]"** 时，执行：
+当我说 **"处理论文：[文件路径或论文标题]"** 时：
+- 默认使用 `paper-ingest` skill 执行完整摄入。
+- 具体执行步骤以 skill 为准；本文件只规定项目约束、产物边界与图谱义务。
+- 如流程描述与 `wiki/ontology/graph-standard.md` 冲突，以后者为准。
 
-**Step 1 — 阅读与讨论**
-- 阅读论文全文
-- 向我汇报：核心问题、主要方法、关键结论（3-5条）
-- 询问我：是否有特别关注的方向？
-
-**Step 1.5 — 生成论文中间缓存**
-- 从 `raw/` 中的 PDF 提取结构化文本
-- 存入 `intermediate/papers/`
-- 文件命名优先使用论文短名或稳定方法名，避免过长文件名；推荐：`PathMind.sections.md`
-- 默认至少生成：
-  - `[论文短名].sections.md`：按章节组织的结构化文本缓存
-  - `[论文短名].refs.md`：参考文献与关键基线缓存
-- 第三个缓存按论文类型分流：
-  - 方法 / 应用 / empirical 论文：`[论文短名].experiments.md`
-  - survey / framework / benchmark / taxonomy / dataset 论文：`[论文短名].analysis.md`
-- 按需生成：
-  - `[论文短名].full.md`：高保真工作底稿，用于跨章节深挖
-- 后续二次分析优先读取中间缓存，仅在需要版面、图表、公式排版或解析校验时回看 PDF
-
-**中间缓存模板规范**
-
-1. **`[论文短名].sections.md`**（默认必建）
-   - 用途：作为后续分析的默认入口
-   - 必含内容：
-     - frontmatter：`title` / `short_name` / `source_pdf` / `cache_type` / `status` / `venue` / `year`
-     - 论文元数据
-     - 章节结构
-     - Abstract / Introduction / Related Work / Methodology / Experiments / Conclusion 的结构化摘要
-     - “适合后续复用的重点”小节
-
-2. **`[论文短名].refs.md`**（默认必建）
-   - 用途：服务 citation graph、方法演化和基线梳理
-   - 必含内容：
-     - 论文自身元数据
-     - 关键基线方法列表
-     - 与知识库最相关的上游工作定位
-     - 可直接复用到 `citation_graph.md` 的引用条目
-     - 后续待补节点清单
-
-3. **`[论文短名].experiments.md`**（方法 / 应用 / empirical 论文推荐）
-   - 用途：面向实验比较场景，减少读取全文缓存的需要
-   - 适用场景：要写实验综述、比指标、看消融、看效率、看泛化
-   - 建议内容：
-     - 数据集与指标
-     - 实现设置
-     - 总体结果表
-     - 强基线对比
-     - 消融实验
-     - 路径策略比较
-     - 效率结果
-     - 可直接复用的结论
-
-4. **`[论文短名].analysis.md`**（survey / framework / benchmark / taxonomy / dataset 论文推荐）
-   - 用途：作为非 empirical 论文的第三类证据缓存，承载统计、landscape、阶段分析、software-gap 分析、framework 支撑证据
-   - 适用场景：要写综述、做路线归纳、抽 framework / taxonomy、分析 research gaps、总结 benchmark 设计
-   - 建议内容：
-     - 文献筛选与统计结论
-     - 研究路线 / 角色划分
-     - 分阶段或分层结构分析
-     - software-gap / capability-gap 分析
-     - 优势、局限与未来方向
-     - 可直接复用的综述结论
-
-5. **`[论文短名].full.md`**（推荐高复用论文建）
-   - 用途：作为高保真工作底稿，保留跨章节叙事脉络
-   - 说明：不是逐字 OCR 转录，而是面向后续分析复用的高保真重写版
-   - 适用场景：要做深度综述、长篇比较、跨章节追踪论证逻辑
-
-**本体化图谱缓存要求**
-- 每个 `intermediate/papers/[论文短名].*.md` 页面都必须在顶部包含“对应正式知识节点”区块，至少回链：论文页、核心方法、核心概念、任务节点、benchmark 节点。
-- 缓存正文中凡是高频出现且已存在正式节点或占位节点的对象，应优先写成 `[[wikilink]]`。
-- 关键章节应通过一句“本节支撑 ...”明确说明该缓存片段支撑哪个正式知识结论。
-
-**缓存使用优先级**
-- 默认先读：`sections.md`
-- 只看引用/基线：`refs.md`
-- 方法 / 应用 / empirical 论文优先看：`experiments.md`
-- survey / framework / benchmark / taxonomy / dataset 论文优先看：`analysis.md`
-- 需要跨章节深挖：`full.md`
-- 仍有歧义时：回看原始 PDF
-
-
-**Step 2 — 创建论文摘要页**
-- 按模板创建 `wiki/papers/[论文名].md`
-- 识别所有涉及的方法、概念、场景
-- 同步识别研究任务节点（如 `kgqa`、`multi-hop-qa`）与 benchmark 节点（如 `WebQSP`、`CWQ`）
-
-**Step 3 — 更新/创建方法页**
-- 对论文中每个核心方法：
-  - 如果方法页不存在 → 创建新页
-  - 如果方法页已存在 → 更新，添加这篇论文的贡献
-  - 判断该方法是基础方法还是衍生方法，更新演化关系
-
-**Step 4 — 更新/创建概念页**
-- 对论文中的核心概念做同样处理
-
-**Step 5 — 更新/创建任务 / 场景 / 基准页**
-- 对论文涉及的研究任务节点、应用场景节点、benchmark 节点做同样处理
-
-**Step 6 — 更新关联关系文件**
-- 更新 `citation_graph.md`（添加引用关系）
-- 更新 `method_evolution.md`（如有新的演化关系）
-- 更新 `task_method_map.md`（登记任务到方法或高频上游工作的关系）
-- 更新 `evidence_index.md`（登记正式知识页与 `intermediate/` 证据层的对应关系）
-
-**Step 7 — 运行 graph lint 并更新导航**
-- 运行 `python3 scripts/lint_graph.py` 检查图谱最低约束
-- index.md 添加所有新建/更新的页面
-- log.md 追加：`## [日期] ingest | 论文标题`
-
-**Step 8 — 语义审查（新增）**
-- 在 `python3 scripts/lint_graph.py` 通过后，调用 `ontology-semantic-review` skill。
-- 它负责审查本次 ingest 的实体分类、关系放置与全局本体位置是否合理。
-- 若审查结论为 `revise-then-accept` 或 `reject`，先修正再提交 git。
-
----
-
-### 📥 工作流 B：批量摄入论文
+### 📚 批量处理论文
 
 当我说 **"批量处理 raw/ 目录下的所有论文"** 时：
-- 先列出所有论文，按主题/年份分组，给我看
-- 询问处理顺序（建议：先处理基础/经典论文，再处理衍生论文）
-- 逐篇处理，每处理完一篇汇报进度
-- 每篇论文在落库前都先生成对应的 `intermediate/papers/` 缓存
-- 完成后生成批量摄入报告
+- 仍以 `paper-ingest` skill 作为单篇摄入执行器。
+- 在正式处理前，先列出候选论文并按主题 / 年份分组，与我确认处理顺序。
+- 处理过程应逐篇汇报进度，避免无确认地一次性大规模落库。
 
----
+### 🔍 查询与分析
 
-### 🔍 工作流 C：查询与分析
+当我提问知识库内容时：
+- 先读取 `wiki/index.md` 定位相关页面。
+- 优先读取 `wiki/` 下正式知识页；需要论文细节时，优先读取 `intermediate/papers/` 缓存，而不是直接回看 PDF。
+- 回答时应标注依据来源；如适合沉淀，可询问是否写入 `synthesis/qa_archive.md`。
 
-当我提问时：
-1. 读取 `index.md` 定位相关页面
-2. 优先读取相关 `wiki/` 页面；如果问题需要回到论文细节，则优先读取 `intermediate/papers/` 缓存，而不是直接读取 PDF
-3. 标注引用来源
-4. 询问是否存入 `synthesis/qa_archive.md`
-
-**特殊查询指令：**
-- `"画出方法演化树"` → 读取 method_evolution.md，用 Markdown 树形图输出
-- `"分析[场景]的研究现状"` → 综合 scenarios/ 和相关 papers/ 输出分析报告
-- `"[方法A] vs [方法B]"` → 对比两个方法页，生成对比表格
-- `"研究空白在哪里"` → 综合 synthesis/research_gaps.md 输出
-
----
-
-### 🔧 工作流 D：健康检查（Lint）
+### 🔧 检查知识库
 
 当我说 **"检查知识库"** 时：
-1. 运行 `python3 scripts/lint_graph.py`
-2. 扫描所有页面，检查：
-   - 孤立页面（无入链）
-   - 方法页缺少演化关系标注
-   - 论文页缺少引用关系
-   - 论文页是否缺少 Method / Concept / Task / Evidence 最小链接义务
-   - 重要概念被多次提及但无独立页面
-   - 场景页缺少对应方法链接
-   - 高价值悬空节点是否需要升级为占位页或正式页
-3. 输出检查报告，按优先级排列问题
-4. 逐项询问是否修复
+- 运行 `python3 scripts/lint_graph.py`。
+- 结合 `wiki/ontology/graph-standard.md` 检查链接义务、关系完整性、孤立节点与高价值悬空节点。
+- 先输出按优先级排序的问题清单，再逐项询问是否修复。
 
----
-
-### 📊 工作流 E：生成综合分析
+### 📊 生成研究综述
 
 当我说 **"生成研究综述"** 时：
-- 综合所有 papers/、methods/、scenarios/
-- 输出结构化综述，包含：
-  - 研究演化时间线
-  - 核心方法体系
-  - 主要应用场景矩阵
-  - 研究趋势与空白
-- 存入 `synthesis/` 目录
+- 汇总 `wiki/papers/`、`wiki/methods/`、`wiki/scenarios/` 与 `wiki/synthesis/` 中已有内容。
+- 输出应聚焦研究演化、方法体系、场景矩阵、趋势与空白。
+- 综述类产物默认写入 `wiki/synthesis/`。
 
 ---
 
-## 重要原则
+## 执行原则
 
-1. **关联优先**：每次处理论文，必须主动寻找与已有内容的关联，不孤立处理
-2. **演化意识**：时刻判断方法是基础还是衍生，维护好演化树
-3. **引用追踪**：论文引用的重要工作，即使尚未处理，也要在 citation_graph.md 中预登记
-4. **场景落地**：每个方法都要追问"在什么场景下用？效果如何？"
-5. **增量更新**：新论文的知识要整合进已有页面，不是孤立新建
-
----
-
-## 初始化指令
-
-**现在请执行以下操作：**
-
-1. 在 `/Users/yyzz/Desktop/MyClaudeCode/ResearchKB/` 下创建完整目录结构
-2. 创建初始 `CLAUDE.md`（本文件）
-3. 创建空的 `wiki/index.md`（含分类框架）
-4. 创建空的 `wiki/log.md`（记录初始化条目）
-5. 创建空的 `wiki/overview.md`（含领域描述占位符）
-6. 创建空的各关联关系文件
-7. 扫描 `raw/` 目录，列出所有论文，按主题分组展示给我
-8. 询问我：优先处理哪些论文？有无特别关注的研究问题？
+1. **skill 负责流程，CLAUDE.md 负责约束**：凡已有合适 skill，优先调用 skill；本文件不重复维护逐步执行细节。
+2. **规范优先**：涉及本体节点、关系类型、最小链接义务、证据绑定时，以 `wiki/ontology/graph-standard.md` 为唯一权威来源。
+3. **raw/ 只读**：原始论文只作为来源，不在 `raw/` 下写入、改名或整理派生产物。
+4. **增量更新优先**：新知识优先并入已有节点与关系网络，而不是孤立新建页面。
+5. **关联优先**：每次摄入或更新，都要主动维护方法演化、引用关系、任务 / 场景映射与证据索引。
+6. **证据优先于印象**：涉及论文细节、实验结果、引用关系时，优先依据 `intermediate/papers/` 缓存，而不是凭摘要式记忆回答。
