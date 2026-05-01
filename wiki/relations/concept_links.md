@@ -1,12 +1,30 @@
-## 概念关系网络
-- [[路径优先化]] → [[重要推理路径]]：路径优先化机制的直接目标是识别并筛选重要推理路径。
-- [[重要推理路径]] → [[知识图谱推理问答]]：重要推理路径为复杂多跳知识图谱问答提供关键证据链。
-- [[路径优先化]] → [[knowledge-graph-reasoning]]：用于压缩候选路径搜索空间并提升推理忠实性。
-- [[重要推理路径]] → [[kgqa]]：作为多跳问答中的高价值证据链单元。
-- [[LLM增强知识图谱]] → [[复杂产品设计中的LLM-KG协同框架]]：系统级协同概念在复杂产品设计中的框架化表达。
-- [[复杂产品设计中的LLM-KG协同框架]] → [[复杂产品设计]]：该框架面向复杂产品设计场景落地。
-- [[LLM增强知识图谱]] → [[A survey of large language model-augmented knowledge graphs for advanced complex product design]]：该概念在 survey 论文中被系统梳理与分类。
+## `uses_concept` 与概念网络实例边
+- `[[PathMind]] --uses_concept--> [[路径优先化]]`
+  - reason: PathMind 的核心机制之一是路径优先化。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[PathMind]] --uses_concept--> [[重要推理路径]]`
+  - reason: PathMind 以识别和筛选重要推理路径为核心目标。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[路径优先化]] --supports--> [[重要推理路径]]`
+  - reason: 路径优先化机制直接服务于重要推理路径的识别与筛选。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[重要推理路径]] --supports--> [[knowledge-graph-reasoning]]`
+  - reason: 重要推理路径为知识图谱推理提供关键证据链。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[重要推理路径]] --supports--> [[kgqa]]`
+  - reason: 重要推理路径是复杂问答中的高价值证据链单元。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --uses_concept--> [[LLM增强知识图谱]]`
+  - reason: 该 survey 系统梳理 LLM 增强知识图谱路线。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]] §3–5
+- `[[复杂产品设计中的LLM-KG协同框架]] --uses_concept--> [[LLM增强知识图谱]]`
+  - reason: 该框架以 LLM 增强知识图谱作为系统级协同基础。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]] §6–10
+- `[[复杂产品设计中的LLM-KG协同框架]] --applies_to--> [[复杂产品设计]]`
+  - reason: 该框架面向复杂产品设计场景落地。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]] §6–10
 
 ## 说明
-- 本页维护概念之间以及概念到任务/场景之间的显式语义关系。
-- 相关方法演化见 [[method_evolution]]，实验与章节证据见 [[evidence_index]]。
+- 本页是概念网络与 `uses_concept` 实例边的正式账本。
+- 由于 framework 统一按 concept 处理，本页维护 concept-to-concept、concept-to-scenario，以及 paper / method 到 concept 或 scenario 的补充语义边。
+- `supports` / `depends_on` / `applies_to` 仅按 `graph-standard.md` 中登记的允许标签使用。

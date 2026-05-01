@@ -202,6 +202,8 @@ CLAUDE_NEEDLES = [
     'task_method_map.md',
     'evidence_index.md',
     'python3 scripts/lint_graph.py',
+]
+GRAPH_STANDARD_NEEDLES = [
     'analysis.md',
     'experiments.md',
 ]
@@ -276,6 +278,11 @@ claude_text = read_text('CLAUDE.md')
 for needle in CLAUDE_NEEDLES:
     if needle not in claude_text:
         errors.append(f'missing {needle} in CLAUDE.md')
+
+graph_standard_text = read_text('wiki/ontology/graph-standard.md')
+for needle in GRAPH_STANDARD_NEEDLES:
+    if needle not in graph_standard_text:
+        errors.append(f'missing {needle} in wiki/ontology/graph-standard.md')
 
 for rel in PLACEHOLDER_PAPERS:
     path = ROOT / rel

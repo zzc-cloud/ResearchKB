@@ -1,15 +1,15 @@
-## Diff review playbook
-1. Read the current git diff or changed file list.
-2. Read `wiki/ontology/graph-standard.md` and the relation hub files.
-3. Classify every changed node touched by the diff.
-4. For every changed relation, ask:
-   - Is this relation real?
-   - Is it in the correct relation file?
-   - Is it local evidence support rather than ontology-level structure?
-5. Produce the standard review report.
+# 基于 diff 的语义审查步骤
+1. 阅读当前 git diff 或本次修改文件列表。
+2. 阅读 `wiki/ontology/graph-standard.md` 以及各关系账本文件。
+3. 为本次改动涉及的每个节点做分类判断。
+4. 对每一条变更关系，依次判断：
+   - 这条关系本身是否成立？
+   - 它是否放在了正确的关系文件里？
+   - 它表达的是局部证据支撑，还是本体层正式关系？
+5. 最后按统一模板输出语义审查报告。
 
-## Special checks
-- If a survey is represented as a task, flag it.
-- If a framework is represented as a method, flag it.
-- If concept_links contains concept→paper support edges, flag and suggest moving to concept page or evidence index.
-- If method_evolution contains literature support rather than actual lineage, flag it.
+## 特别检查项
+- 如果 survey 被表示成 task，必须指出。
+- 如果 framework 被表示成 method，必须指出。
+- 如果 `concept_links.md` 中出现“概念 → 论文支撑”关系，必须指出，并建议迁移到概念页证据区或 `evidence_index.md`。
+- 如果 `method_evolution.md` 中出现文献支撑关系而不是实际技术谱系，必须指出。

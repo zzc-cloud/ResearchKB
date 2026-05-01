@@ -1,17 +1,41 @@
-## 引用关系列表
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]：方法借鉴，作为 retrieval-augmented 路径推理代表工作。
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]：方法借鉴，作为 grounded reasoning path 代表工作。
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]：方法借鉴，作为 evidence path 增强代表工作。
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]：对比实验，作为 GNN 检索增强代表工作。
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]：方法对比，作为 synergy-augmented 代表工作。
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] → [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]：方法对比，作为 LLM 生成推理路径方向的近期工作。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]：作为 LLM + KG 推理路线代表工作被 survey 纳入。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]：作为 graph-constrained reasoning 代表工作被纳入。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]：作为 evidence path 路线代表工作被纳入。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]：作为图检索增强路线代表工作被纳入。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]：作为协同增强路线代表工作被纳入。
-- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] → [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]：作为生成推理路径路线代表工作被纳入。
+## `cites` 实例边
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]`
+  - reason: 方法借鉴，作为 retrieval-augmented 路径推理代表工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]`
+  - reason: 方法借鉴，作为 grounded reasoning path 代表工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]`
+  - reason: 方法借鉴，作为 evidence path 增强代表工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]`
+  - reason: 对比实验，作为 GNN 检索增强代表工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]`
+  - reason: 方法对比，作为 synergy-augmented 代表工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]`
+  - reason: 方法对比，作为 LLM 生成推理路径方向的近期工作。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]`
+  - reason: 作为 LLM + KG 推理路线代表工作被 survey 纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]`
+  - reason: 作为 graph-constrained reasoning 代表工作被纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]`
+  - reason: 作为 evidence path 路线代表工作被纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]`
+  - reason: 作为图检索增强路线代表工作被纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]`
+  - reason: 作为协同增强路线代表工作被纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]`
+  - reason: 作为生成推理路径路线代表工作被纳入。
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]] §5
 
 ## 说明
-- 本页维护论文之间的显式 `cites` 关系，服务 [[PathMind]] 主线与 survey / framework 主线的上游工作定位。
-- 详细证据见 [[evidence_index]] 与 `intermediate/papers/*.refs.md`。
+- 本页是 `cites` 实例边的正式账本。
+- 引用关系的正文说明可以出现在论文页或 `refs.md` 缓存中，但正式实例边以本页为准。

@@ -1,6 +1,0 @@
-{
-  "eval_id": 1,
-  "eval_name": "pathmind-standard-ingest",
-  "prompt": "处理论文：raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf，重点看方法演化与实验对比，并直接完整落库。",
-  "assertions": []
-}
