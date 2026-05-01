@@ -1,0 +1,55 @@
+[
+  {
+    "name": "PathMind",
+    "paper_type_expected": "method",
+    "source_pdf": "raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf",
+    "third_cache_expected": "experiments.md",
+    "must_create": [
+      "intermediate/papers/PathMind.sections.md",
+      "intermediate/papers/PathMind.refs.md",
+      "intermediate/papers/PathMind.experiments.md",
+      "intermediate/papers/PathMind.full.md",
+      "wiki/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md",
+      "wiki/methods/PathMind.md",
+      "wiki/concepts/路径优先化.md",
+      "wiki/concepts/重要推理路径.md",
+      "wiki/scenarios/知识图谱推理问答.md",
+      "wiki/relations/citation_graph.md",
+      "wiki/relations/method_evolution.md",
+      "wiki/relations/evidence_index.md"
+    ],
+    "quality_checks": [
+      "必须识别为方法论文而不是 survey/framework",
+      "必须保留 experiments.md 作为第三类缓存",
+      "必须更新方法、概念、场景与关系页",
+      "必须能通过 graph lint"
+    ]
+  },
+  {
+    "name": "LLM-KG-CPD-Survey",
+    "paper_type_expected": "survey",
+    "source_pdf": "raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf",
+    "third_cache_expected": "analysis.md",
+    "must_create": [
+      "intermediate/papers/LLM-KG-CPD-Survey.sections.md",
+      "intermediate/papers/LLM-KG-CPD-Survey.refs.md",
+      "intermediate/papers/LLM-KG-CPD-Survey.analysis.md",
+      "intermediate/papers/LLM-KG-CPD-Survey.full.md",
+      "wiki/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md",
+      "wiki/concepts/LLM增强知识图谱.md",
+      "wiki/concepts/复杂产品设计中的LLM-KG协同框架.md",
+      "wiki/scenarios/复杂产品设计.md",
+      "wiki/tasks/engineering-design-knowledge-management.md",
+      "wiki/relations/citation_graph.md",
+      "wiki/relations/concept_links.md",
+      "wiki/relations/evidence_index.md"
+    ],
+    "quality_checks": [
+      "必须识别为 survey/framework 论文而不是单方法论文",
+      "必须使用 analysis.md 而不是 experiments.md",
+      "不应强造单一方法页",
+      "应优先落 paper + concept/framework + scenario + relations",
+      "必须能通过 graph lint"
+    ]
+  }
+]

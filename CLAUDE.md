@@ -22,12 +22,16 @@ owner: yyzz
 
 ## 知识库目录结构
 
+以 `wiki/ontology/graph-standard.md` 作为本体化图谱规范的唯一权威来源；本文件负责流程入口、模板入口与执行约束，若两处存在细节差异，以 `graph-standard.md` 为准。
+
 ```
 ResearchKB/
 ├── CLAUDE.md                    # 本文件
 ├── raw/                         # 原始论文（只读）
 ├── intermediate/
 │   └── papers/                  # 论文中间缓存（结构化解析结果，供后续复用）
+├── scripts/
+│   └── lint_graph.py            # 图谱规则校验脚本
 └── wiki/
     ├── index.md                 # 总目录（按类别列出所有页面）
     ├── log.md                   # 操作日志（只追加）
@@ -35,8 +39,16 @@ ResearchKB/
     ├── papers/                  # 论文结构化摘要
     ├── methods/                 # 方法页 + 方法全景图
     ├── concepts/                # 核心概念页
+    ├── tasks/                   # 研究任务页
+    ├── benchmarks/              # 数据集 / 基准页
     ├── scenarios/               # 应用场景页
+    ├── ontology/                # 本体与图谱规范页
     ├── relations/               # 关联关系专项
+    │   ├── citation_graph.md    # 论文引用关系
+    │   ├── method_evolution.md  # 方法演化树
+    │   ├── concept_links.md     # 概念关系网络
+    │   ├── task_method_map.md   # 任务到方法映射
+    │   └── evidence_index.md    # 正式知识页到证据缓存映射
     └── synthesis/               # 综合分析与洞察
 ```
 
@@ -154,11 +166,20 @@ status: processed
 ## 核心方法
 > 用什么方法解决问题？（简洁描述）
 - 方法名称：[[方法页链接]]
+- 相关概念：[[概念A]]、[[概念B]]
 - 技术路线：...
+
+## 相关任务
+- [[knowledge-graph-reasoning]]
+- [[kgqa]]
 
 ## 应用场景
 - 场景：[[场景页链接]]
 - 数据集/实验环境：...
+
+## 相关基准
+- [[WebQSP]]
+- [[CWQ]]
 
 ## 关键结论
 - 结论1
@@ -174,6 +195,12 @@ status: processed
 ## 与知识库其他内容的关联
 - 与 [[方法X]] 的关系：改进/对比/应用
 - 与 [[概念Y]] 的关系：提出/扩展/验证
+- 与 [[任务Z]] 的关系：主要面向 / 在该任务上验证
+
+## 实验证据
+- [[intermediate/papers/论文短名.sections|论文短名.sections]]
+- [[intermediate/papers/论文短名.experiments|论文短名.experiments]]
+- [[intermediate/papers/论文短名.refs|论文短名.refs]]
 
 ## 我的批注
 > （留给你自己补充观点）
@@ -360,8 +387,10 @@ tags: [金融, 风控, 知识图谱]
 - 默认至少生成：
   - `[论文短名].sections.md`：按章节组织的结构化文本缓存
   - `[论文短名].refs.md`：参考文献与关键基线缓存
+- 第三个缓存按论文类型分流：
+  - 方法 / 应用 / empirical 论文：`[论文短名].experiments.md`
+  - survey / framework / benchmark / taxonomy / dataset 论文：`[论文短名].analysis.md`
 - 按需生成：
-  - `[论文短名].experiments.md`：仅保留实验、消融、效率与泛化信息
   - `[论文短名].full.md`：高保真工作底稿，用于跨章节深挖
 - 后续二次分析优先读取中间缓存，仅在需要版面、图表、公式排版或解析校验时回看 PDF
 
@@ -385,8 +414,8 @@ tags: [金融, 风控, 知识图谱]
      - 可直接复用到 `citation_graph.md` 的引用条目
      - 后续待补节点清单
 
-3. **`[论文短名].experiments.md`**（推荐按需建）
-   - 用途：仅面向实验比较场景，减少读取全文缓存的需要
+3. **`[论文短名].experiments.md`**（方法 / 应用 / empirical 论文推荐）
+   - 用途：面向实验比较场景，减少读取全文缓存的需要
    - 适用场景：要写实验综述、比指标、看消融、看效率、看泛化
    - 建议内容：
      - 数据集与指标
@@ -398,15 +427,32 @@ tags: [金融, 风控, 知识图谱]
      - 效率结果
      - 可直接复用的结论
 
-4. **`[论文短名].full.md`**（推荐高复用论文建）
+4. **`[论文短名].analysis.md`**（survey / framework / benchmark / taxonomy / dataset 论文推荐）
+   - 用途：作为非 empirical 论文的第三类证据缓存，承载统计、landscape、阶段分析、software-gap 分析、framework 支撑证据
+   - 适用场景：要写综述、做路线归纳、抽 framework / taxonomy、分析 research gaps、总结 benchmark 设计
+   - 建议内容：
+     - 文献筛选与统计结论
+     - 研究路线 / 角色划分
+     - 分阶段或分层结构分析
+     - software-gap / capability-gap 分析
+     - 优势、局限与未来方向
+     - 可直接复用的综述结论
+
+5. **`[论文短名].full.md`**（推荐高复用论文建）
    - 用途：作为高保真工作底稿，保留跨章节叙事脉络
    - 说明：不是逐字 OCR 转录，而是面向后续分析复用的高保真重写版
    - 适用场景：要做深度综述、长篇比较、跨章节追踪论证逻辑
 
+**本体化图谱缓存要求**
+- 每个 `intermediate/papers/[论文短名].*.md` 页面都必须在顶部包含“对应正式知识节点”区块，至少回链：论文页、核心方法、核心概念、任务节点、benchmark 节点。
+- 缓存正文中凡是高频出现且已存在正式节点或占位节点的对象，应优先写成 `[[wikilink]]`。
+- 关键章节应通过一句“本节支撑 ...”明确说明该缓存片段支撑哪个正式知识结论。
+
 **缓存使用优先级**
 - 默认先读：`sections.md`
 - 只看引用/基线：`refs.md`
-- 只看实验：`experiments.md`
+- 方法 / 应用 / empirical 论文优先看：`experiments.md`
+- survey / framework / benchmark / taxonomy / dataset 论文优先看：`analysis.md`
 - 需要跨章节深挖：`full.md`
 - 仍有歧义时：回看原始 PDF
 
@@ -414,6 +460,7 @@ tags: [金融, 风控, 知识图谱]
 **Step 2 — 创建论文摘要页**
 - 按模板创建 `wiki/papers/[论文名].md`
 - 识别所有涉及的方法、概念、场景
+- 同步识别研究任务节点（如 `kgqa`、`multi-hop-qa`）与 benchmark 节点（如 `WebQSP`、`CWQ`）
 
 **Step 3 — 更新/创建方法页**
 - 对论文中每个核心方法：
@@ -424,14 +471,17 @@ tags: [金融, 风控, 知识图谱]
 **Step 4 — 更新/创建概念页**
 - 对论文中的核心概念做同样处理
 
-**Step 5 — 更新/创建场景页**
-- 对论文涉及的应用场景做同样处理
+**Step 5 — 更新/创建任务 / 场景 / 基准页**
+- 对论文涉及的研究任务节点、应用场景节点、benchmark 节点做同样处理
 
 **Step 6 — 更新关联关系文件**
 - 更新 `citation_graph.md`（添加引用关系）
 - 更新 `method_evolution.md`（如有新的演化关系）
+- 更新 `task_method_map.md`（登记任务到方法或高频上游工作的关系）
+- 更新 `evidence_index.md`（登记正式知识页与 `intermediate/` 证据层的对应关系）
 
-**Step 7 — 更新 index.md 和 log.md**
+**Step 7 — 运行 graph lint 并更新导航**
+- 运行 `python3 scripts/lint_graph.py` 检查图谱最低约束
 - index.md 添加所有新建/更新的页面
 - log.md 追加：`## [日期] ingest | 论文标题`
 
@@ -467,14 +517,17 @@ tags: [金融, 风控, 知识图谱]
 ### 🔧 工作流 D：健康检查（Lint）
 
 当我说 **"检查知识库"** 时：
-1. 扫描所有页面，检查：
+1. 运行 `python3 scripts/lint_graph.py`
+2. 扫描所有页面，检查：
    - 孤立页面（无入链）
    - 方法页缺少演化关系标注
    - 论文页缺少引用关系
+   - 论文页是否缺少 Method / Concept / Task / Evidence 最小链接义务
    - 重要概念被多次提及但无独立页面
    - 场景页缺少对应方法链接
-2. 输出检查报告，按优先级排列问题
-3. 逐项询问是否修复
+   - 高价值悬空节点是否需要升级为占位页或正式页
+3. 输出检查报告，按优先级排列问题
+4. 逐项询问是否修复
 
 ---
 

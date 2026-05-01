@@ -52,6 +52,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - 方法论文
    - 应用论文
    - survey / benchmark / dataset / taxonomy 论文
+   - framework / mixed 论文
 3. 判断结构是否标准：
    - 是否存在可映射的 abstract/introduction/method/experiments/conclusion
    - 是否存在明显附录依赖、图表依赖、章节标题异常、关键信息缺失
@@ -59,15 +60,20 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 ### Step 3: 生成全部 intermediate 缓存
 在 `intermediate/papers/` 下默认生成以下 4 个文件：
 
+所有论文都生成：
 1. `[short_name].sections.md`
 2. `[short_name].refs.md`
-3. `[short_name].experiments.md`
-4. `[short_name].full.md`
+3. `[short_name].full.md`
+
+第 4 个缓存按论文类型分流：
+- 方法 / 应用 / empirical 论文：`[short_name].experiments.md`
+- survey / framework / benchmark / taxonomy / dataset 论文：`[short_name].analysis.md`
 
 生成要求：
 - `sections.md` 是默认分析入口
 - `refs.md` 服务引用关系与方法演化
-- `experiments.md` 只保留实验、消融、效率、泛化信息
+- `experiments.md` 仅用于实验、消融、效率、泛化信息
+- `analysis.md` 用于综述统计、landscape、阶段分析、software-gap 分析、framework 支撑证据或 benchmark 设计分析
 - `full.md` 是高保真工作底稿，不是逐字 OCR 转录，而是面向后续分析复用的高保真重写版
 
 写缓存时优先遵循 `CLAUDE.md` 中的缓存模板规范。
@@ -85,10 +91,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 按 `CLAUDE.md` 的模板和 frontmatter 规范进行落库：
 
 1. 论文页：`wiki/papers/[论文名].md`
-2. 方法页：为核心方法创建或更新 `wiki/methods/`
+2. 方法页：若是方法论文，为核心方法创建或更新 `wiki/methods/`
 3. 概念页：为核心概念创建或更新 `wiki/concepts/`
 4. 场景页：为核心场景创建或更新 `wiki/scenarios/`
-5. 关联关系：
+5. 对于 survey / framework / taxonomy 论文：优先把核心知识落到 concept / framework / scenario / synthesis，而不是强行抽取单一方法页
+6. 关联关系：
    - `wiki/relations/citation_graph.md`
    - `wiki/relations/method_evolution.md`
    - 必要时 `wiki/relations/concept_links.md`
@@ -124,10 +131,10 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 ## 异常结构检测
 以下情况说明当前论文可能不适合直接套用标准模板：
 
-1. 缺少清晰的方法章节，主要贡献是 survey / benchmark / dataset / taxonomy
-2. 实验关键信息大量放在 appendix，中正文无法支撑 `experiments.md`
+1. 缺少清晰的方法章节，主要贡献是 survey / benchmark / dataset / taxonomy / framework
+2. 实验关键信息大量放在 appendix，中正文无法稳定支撑 empirical `experiments.md`
 3. 章节标题高度非标准，难以映射到常规模板
-4. 论文没有单一核心方法，更多是评测框架或数据集贡献
+4. 论文没有单一核心方法，更多是评测框架、数据集贡献、角色划分或分层 framework
 5. taxonomy 无法稳定归类到现有 `problem / method_family / research_task` 体系
 6. 图表、表格或版式对理解贡献过大，文本解析后信息明显残缺
 
@@ -144,11 +151,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 ```yaml
 status: success | partial | needs-skill-update
-paper_type_guess: method | application | survey | benchmark | dataset | taxonomy | mixed
+paper_type_guess: method | application | survey | benchmark | dataset | taxonomy | framework | mixed
 generated_caches:
   - intermediate/papers/<short_name>.sections.md
   - intermediate/papers/<short_name>.refs.md
-  - intermediate/papers/<short_name>.experiments.md
+  - intermediate/papers/<short_name>.experiments.md | intermediate/papers/<short_name>.analysis.md
   - intermediate/papers/<short_name>.full.md
 updated_pages:
   - wiki/papers/...
@@ -168,10 +175,11 @@ skill_update_signals:
 - `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围
 
 ## 触发 `needs-skill-update` 的典型例子
-- “这是一篇 benchmark/survey 论文，当前方法页模板不是最佳落点。”
+- “这是一篇 benchmark/survey/framework 论文，当前方法页模板不是最佳落点。”
 - “方法章节缺失，无法稳定抽取单一核心方法。”
 - “实验细节主要在 appendix，当前 `experiments.md` 只能部分生成。”
 - “taxonomy 难以稳定归类，建议为此类论文扩展 frontmatter 或页面模板。”
+- “该论文更适合生成 `analysis.md` 而不是 `experiments.md`，当前 skill 若仍硬套实验缓存说明分流规则不足。”
 
 ## 质量要求
 - 优先保证知识提炼可复用，而不是追求一次性写得很长。

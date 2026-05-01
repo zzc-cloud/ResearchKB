@@ -26,16 +26,29 @@ PathMind 包含三部分：
 
 ## 方法演化位置
 - 基于：[[路径导向知识图谱推理]]，并综合借鉴 [[RoG]]、[[GCR]]、[[EPERM]] 等路径导向方法，以及 GNN 子图表征与 LLM 对齐训练思路。
-- 改进点：相比直接检索路径或通过多轮交互搜索路径，PathMind 显式学习“重要路径”优先级，减少噪声并降低调用成本。
+- 改进点：相比直接检索路径或通过多轮交互搜索路径，[[PathMind]] 显式学习“重要路径”优先级，减少噪声并降低调用成本。
+- 相关任务：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
+- 相关基准：[[WebQSP]]、[[CWQ]]
 - 衍生出：待补充
 
 ## 应用场景
 - [[知识图谱推理问答]]
+- 任务节点：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
+- 评测基准：[[WebQSP]]、[[CWQ]]
 
 ## 代表论文
 - [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]（提出此方法）
 - [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]（路径推理基线）
 - [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]（证据路径增强基线）
+
+## 相关概念
+- [[路径优先化]]
+- [[重要推理路径]]
+
+## 证据来源
+- 结构化章节缓存：[[intermediate/papers/PathMind.sections|PathMind.sections]]
+- 实验缓存：[[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- 引用与基线缓存：[[intermediate/papers/PathMind.refs|PathMind.refs]]
 
 ## 优势与局限
 | 优势 | 局限 |

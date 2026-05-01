@@ -1,0 +1,50 @@
+[
+  {
+    "query": "处理论文：raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf，重点看方法演化与实验对比，并直接完整落库。",
+    "should_trigger": true
+  },
+  {
+    "query": "把这篇 survey 论文落库，并生成 intermediate 缓存、概念页、场景页和关系更新。PDF 在 raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf。",
+    "should_trigger": true
+  },
+  {
+    "query": "解析这篇 benchmark 论文，重点看评测设计和 taxonomy，要求写入知识库；如果结构不适配要明确说明。",
+    "should_trigger": true
+  },
+  {
+    "query": "给这篇 paper 建缓存、摘要页、方法页/概念页/关系页，路径我已经放在 raw 目录里了。",
+    "should_trigger": true
+  },
+  {
+    "query": "处理论文：raw/某篇framework论文.pdf，重点看分层框架和研究空白，尽量完整落库。",
+    "should_trigger": true
+  },
+  {
+    "query": "我刚放了一篇 dataset 论文到 raw，帮我完整摄入，如果不能按标准方法论文落库要降级并告诉我原因。",
+    "should_trigger": true
+  },
+  {
+    "query": "总结一下 PathMind 这篇论文的 abstract。",
+    "should_trigger": false
+  },
+  {
+    "query": "PathMind 和 RoG 的区别是什么？给我一个对比表。",
+    "should_trigger": false
+  },
+  {
+    "query": "这篇 survey 的主要观点是什么，不用落库。",
+    "should_trigger": false
+  },
+  {
+    "query": "画出方法演化树。",
+    "should_trigger": false
+  },
+  {
+    "query": "分析复杂产品设计这个场景的研究现状。",
+    "should_trigger": false
+  },
+  {
+    "query": "我想知道 WebQSP 和 CWQ 分别是什么 benchmark，简单解释一下。",
+    "should_trigger": false
+  }
+]
