@@ -21,10 +21,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 ## 核心原则
 1. 把 `CLAUDE.md` 视为最高约束，尤其是 taxonomy、缓存模板、目录结构和工作流要求。
-2. 默认执行完整摄入流程：PDF 解析 → 全部缓存 → wiki 多对象落库 → 关系更新 → index/log 更新。
-3. 每次都要主动寻找与现有知识库的关联，不孤立处理论文。
-4. 优先生成可复用缓存，避免后续重复从 PDF 直接解析。
-5. 如果论文结构不适配当前模板，不要硬套；要显式降级并发出 skill 需要升级的信号。
+2. 默认生成 3 份基础缓存：
+   - `[short_name].sections.md`
+   - `[short_name].refs.md`
+   - 第三缓存按论文类型分流（`experiments.md` 或 `analysis.md`）
+3. `full.md` 属于高复用工作底稿，按需生成；若论文需要跨章节深挖、长篇比较、框架抽象或高保真叙事保留时，默认建议生成
 
 ## 输入约定
 从用户提示中提取以下信息：
@@ -57,17 +58,17 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - 是否存在可映射的 abstract/introduction/method/experiments/conclusion
    - 是否存在明显附录依赖、图表依赖、章节标题异常、关键信息缺失
 
-### Step 3: 生成全部 intermediate 缓存
-在 `intermediate/papers/` 下默认生成以下 4 个文件：
+### Step 3: 生成 intermediate 缓存
+在 `intermediate/papers/` 下默认生成以下 3 份基础缓存：
 
-所有论文都生成：
 1. `[short_name].sections.md`
 2. `[short_name].refs.md`
-3. `[short_name].full.md`
+3. 第三缓存按论文类型分流：
+   - 方法 / 应用 / empirical 论文：`[short_name].experiments.md`
+   - survey / framework / benchmark / taxonomy / dataset 论文：`[short_name].analysis.md`
 
-第 4 个缓存按论文类型分流：
-- 方法 / 应用 / empirical 论文：`[short_name].experiments.md`
-- survey / framework / benchmark / taxonomy / dataset 论文：`[short_name].analysis.md`
+按需生成：
+4. `[short_name].full.md`
 
 生成要求：
 - `sections.md` 是默认分析入口
@@ -156,7 +157,7 @@ generated_caches:
   - intermediate/papers/<short_name>.sections.md
   - intermediate/papers/<short_name>.refs.md
   - intermediate/papers/<short_name>.experiments.md | intermediate/papers/<short_name>.analysis.md
-  - intermediate/papers/<short_name>.full.md
+  - intermediate/papers/<short_name>.full.md (optional, generated when deep cross-section tracing is needed)
 updated_pages:
   - wiki/papers/...
   - wiki/methods/...
@@ -170,7 +171,7 @@ skill_update_signals:
 ```
 
 解释：
-- `success`：完整缓存与落库都已完成，且结构适配良好
+- `success`：基础缓存与落库都已完成，且结构适配良好；如生成了 `full.md`，它作为高复用增强缓存计入 `generated_caches`。
 - `partial`：完成了大部分工作，但某些页面或字段仍需人工补充
 - `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围
 
@@ -213,3 +214,9 @@ skill_update_signals:
 - 哪些内容已经完成
 - 哪些内容仍不稳定
 - 当前 skill 该如何升级，才能更好适配这类论文
+
+## Ingest 完成后的治理要求
+当本次摄入已经完成缓存、wiki 页面与关系更新后：
+1. 必须先运行 `python3 scripts/lint_graph.py`
+2. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
+3. 只有结构与语义都合理时，才建议接受本次变更并进入 git 提交

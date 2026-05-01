@@ -485,6 +485,11 @@ tags: [金融, 风控, 知识图谱]
 - index.md 添加所有新建/更新的页面
 - log.md 追加：`## [日期] ingest | 论文标题`
 
+**Step 8 — 语义审查（新增）**
+- 在 `python3 scripts/lint_graph.py` 通过后，调用 `ontology-semantic-review` skill。
+- 它负责审查本次 ingest 的实体分类、关系放置与全局本体位置是否合理。
+- 若审查结论为 `revise-then-accept` 或 `reject`，先修正再提交 git。
+
 ---
 
 ### 📥 工作流 B：批量摄入论文
