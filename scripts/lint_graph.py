@@ -217,10 +217,12 @@ GRAPH_STANDARD_NEEDLES = [
     '`wiki/relations/provenance_links.md`：维护 `sourced_from`',
 ]
 INDEX_NEEDLES = [
+    '[[graph-standard]]',
     '[[paper_method_links]]',
     '[[benchmark_links]]',
     '[[provenance_links]]',
 ]
+NAVIGATION_ENTRY_PATH = 'wiki/ontology/index.md'
 RELATION_LEDGER_NEEDLES = {
     'wiki/relations/paper_method_links.md': [
         '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --proposes--> [[PathMind]]',
@@ -314,10 +316,10 @@ for needle in GRAPH_STANDARD_NEEDLES:
     if needle not in graph_standard_text:
         errors.append(f'missing {needle} in wiki/ontology/graph-standard.md')
 
-index_text = read_text('wiki/index.md')
+navigation_text = read_text(NAVIGATION_ENTRY_PATH)
 for needle in INDEX_NEEDLES:
-    if needle not in index_text:
-        errors.append(f'missing {needle} in wiki/index.md')
+    if needle not in navigation_text:
+        errors.append(f'missing {needle} in {NAVIGATION_ENTRY_PATH}')
 
 for rel, needles in RELATION_LEDGER_NEEDLES.items():
     text = read_text(rel)
