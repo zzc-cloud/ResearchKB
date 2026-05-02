@@ -96,11 +96,16 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 3. 概念页：为核心概念创建或更新 `wiki/concepts/`
 4. 场景页：为核心场景创建或更新 `wiki/scenarios/`
 5. 对于 survey / framework / taxonomy 论文：优先把核心知识落到 concept / framework / scenario / synthesis，而不是强行抽取单一方法页
-6. 关联关系：
+6. 关联关系：在落库完成前，逐类判断是否存在应正式落账的关系；只要存在就写入对应账本，而不是留在正文 prose 中。
    - `wiki/relations/citation_graph.md`
    - `wiki/relations/method_evolution.md`
-   - 必要时 `wiki/relations/concept_links.md`
-6. 更新：
+   - `wiki/relations/concept_links.md`
+   - `wiki/relations/task_method_map.md`
+   - `wiki/relations/evidence_index.md`
+   - `wiki/relations/paper_method_links.md`
+   - `wiki/relations/benchmark_links.md`
+   - `wiki/relations/provenance_links.md`
+7. 更新：
    - `wiki/index.md`
    - `wiki/log.md`
 
@@ -128,6 +133,16 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 ### 关系文件
 - 对重要上游论文，即使知识库中尚未有完整页，也可先在 citation graph 中预登记。
 - 对高频上游方法，优先建立最小 stub 页，而不是只留下空链接。
+- `proposes`：
+  - 方法论文若提出核心方法，必须登记 `[[Paper]] --proposes--> [[Method]]`
+  - 若论文核心贡献是 framework / taxonomy 型概念，必须登记 `[[Paper]] --proposes--> [[Concept]]`
+  - framework / taxonomy 型核心知识产物仍按当前本体优先落为 Concept，不改写为 Method
+- `evaluated_on`：
+  - empirical / method / application 论文只要存在明确 benchmark，必须登记 `[[Paper]] --evaluated_on--> [[Benchmark]]`
+  - 若该 benchmark 同时明确服务某个核心 Method 的正式评测，也应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`
+  - survey / framework / taxonomy / dataset / benchmark 类型论文若无统一 benchmark，不生成 `evaluated_on`，并在最终输出中显式写明“按规范豁免”
+- `sourced_from`：
+  - 只要本次生成了 `sections.md`、`refs.md`、`experiments.md`、`analysis.md`、`full.md` 任一 Evidence 缓存，就必须同步登记 `[[Evidence]] --sourced_from--> [[RawSource]]`
 
 ## 异常结构检测
 以下情况说明当前论文可能不适合直接套用标准模板：
@@ -171,9 +186,10 @@ skill_update_signals:
 ```
 
 解释：
-- `success`：基础缓存与落库都已完成，且结构适配良好；如生成了 `full.md`，它作为高复用增强缓存计入 `generated_caches`。
-- `partial`：完成了大部分工作，但某些页面或字段仍需人工补充
-- `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围
+- `success`：基础缓存、正式页面与应有关系账本更新都已完成，且结构适配良好；如生成了 `full.md`，它作为高复用增强缓存计入 `generated_caches`。
+- `partial`：完成了大部分工作，但某些页面、字段或正式关系账本仍需人工补充。
+- `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围。
+- 若某类关系按规范豁免（例如 survey / framework 论文无统一 benchmark，因此不生成 `evaluated_on`），必须在 `warnings` 中显式说明豁免原因；不要把正常豁免写成“待补充”。
 
 ## 触发 `needs-skill-update` 的典型例子
 - “这是一篇 benchmark/survey/framework 论文，当前方法页模板不是最佳落点。”
@@ -214,6 +230,7 @@ skill_update_signals:
 - 哪些内容已经完成
 - 哪些内容仍不稳定
 - 当前 skill 该如何升级，才能更好适配这类论文
+- 若某类关系因规范豁免未生成，应明确区分“正常豁免”与“skill 漏写”，避免把豁免项误报为待补。
 
 ## Ingest 完成后的治理要求
 当本次摄入已经完成缓存、wiki 页面与关系更新后：

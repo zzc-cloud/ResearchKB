@@ -238,7 +238,7 @@ tags: [金融, 风控, 知识图谱]
 - 每个 Evidence 页面都必须显式回链正式论文页，并链接关键方法、概念、任务与基准或其豁免说明
 
 ## 关系类型
-- `proposes`：`[[Paper]] --proposes--> [[Method]]`；表示论文首次提出或正式定义某方法。
+- `proposes`：`[[Paper]] --proposes--> [[Method|Concept]]`；表示论文首次提出或正式定义某方法，或提出 framework / taxonomy 型核心概念。
 - `uses_concept`：`[[Paper|Method]] --uses_concept--> [[Concept]]`；表示论文或方法在定义、建模、机制设计或实现上依赖某概念。方法与概念之间的正式关系默认优先使用该边，而不是 `based_on`。
 - `targets_task`：`[[Paper|Method]] --targets_task--> [[Task]]`；表示论文或方法主要面向的研究任务。
 - `applies_to`：`[[Method|Concept]] --applies_to--> [[Scenario]]`；表示方法或框架型概念面向的应用场景。
@@ -286,8 +286,10 @@ tags: [金融, 风控, 知识图谱]
   - `wiki/relations/method_evolution.md`：维护 `based_on`、`improves_on`
   - `wiki/relations/task_method_map.md`：维护 `targets_task`
   - `wiki/relations/concept_links.md`：维护 `uses_concept`、`supports`、`depends_on`，以及 concept / paper / method 到 concept 或 scenario 的补充语义边
-  - `wiki/relations/evidence_index.md`：维护 `supported_by`、`sourced_from`
-- `proposes`、`evaluated_on` 当前属于已声明但未归属到实例边账本文件的关系类型。
+  - `wiki/relations/paper_method_links.md`：维护 `proposes`
+  - `wiki/relations/benchmark_links.md`：维护 `evaluated_on`
+  - `wiki/relations/evidence_index.md`：维护 `supported_by`
+  - `wiki/relations/provenance_links.md`：维护 `sourced_from`
 - `sourced_from` 默认记录 Evidence 到 RawSource 的 provenance 边；若出现正式知识页到 RawSource 的临时占位关系，需显式标注 `status: placeholder` 并尽快补齐对应 Evidence 缓存。
 - 新增关系类型或未归属关系类型，必须先在本节明确“归属文件 + 维护范围”，再进入正式实例边维护。
 
@@ -339,6 +341,9 @@ tags: [金融, 风控, 知识图谱]
 ## 关系索引
 - [[task_method_map]]
 - [[evidence_index]]
+- [[provenance_links]]
 - [[citation_graph]]
 - [[method_evolution]]
 - [[concept_links]]
+- [[paper_method_links]]
+- [[benchmark_links]]

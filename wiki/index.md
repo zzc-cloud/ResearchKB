@@ -10,6 +10,9 @@
 - [[concept_links]]
 - [[task_method_map]]
 - [[evidence_index]]
+- [[provenance_links]]
+- [[paper_method_links]]
+- [[benchmark_links]]
 - [[graph-standard|ontology]]
 - [[graph-standard]]
 
@@ -139,6 +142,9 @@
 - [[concept_links]]
 - [[task_method_map]]
 - [[evidence_index]]
+- [[provenance_links]]
+- [[paper_method_links]]
+- [[benchmark_links]]
 
 ### 综合分析
 - 目录：`wiki/synthesis/`

@@ -21,6 +21,9 @@ REQUIRED_FILES = [
     'wiki/relations/concept_links.md',
     'wiki/relations/task_method_map.md',
     'wiki/relations/evidence_index.md',
+    'wiki/relations/paper_method_links.md',
+    'wiki/relations/benchmark_links.md',
+    'wiki/relations/provenance_links.md',
     'scripts/lint_graph.py',
 ]
 
@@ -199,14 +202,41 @@ CLAUDE_NEEDLES = [
     'tasks/',
     'benchmarks/',
     'wiki/ontology/',
-    'task_method_map.md',
-    'evidence_index.md',
+    'wiki/relations/',
     'python3 scripts/lint_graph.py',
 ]
 GRAPH_STANDARD_NEEDLES = [
     'analysis.md',
     'experiments.md',
+    'paper_method_links.md',
+    'benchmark_links.md',
+    'provenance_links.md',
+    '`wiki/relations/paper_method_links.md`：维护 `proposes`',
+    '`wiki/relations/benchmark_links.md`：维护 `evaluated_on`',
+    '`wiki/relations/evidence_index.md`：维护 `supported_by`',
+    '`wiki/relations/provenance_links.md`：维护 `sourced_from`',
 ]
+INDEX_NEEDLES = [
+    '[[paper_method_links]]',
+    '[[benchmark_links]]',
+    '[[provenance_links]]',
+]
+RELATION_LEDGER_NEEDLES = {
+    'wiki/relations/paper_method_links.md': [
+        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --proposes--> [[PathMind]]',
+        '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --proposes--> [[复杂产品设计中的LLM-KG协同框架]]',
+    ],
+    'wiki/relations/benchmark_links.md': [
+        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]',
+        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[CWQ]]',
+        '[[PathMind]] --evaluated_on--> [[WebQSP]]',
+        '[[PathMind]] --evaluated_on--> [[CWQ]]',
+    ],
+    'wiki/relations/provenance_links.md': [
+        '[[intermediate/papers/PathMind.sections|PathMind.sections]] --sourced_from--> [[raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]',
+        '[[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]] --sourced_from--> [[raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf]]',
+    ],
+}
 
 PLACEHOLDER_PAPERS = {
     'wiki/papers/Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning.md',
@@ -283,6 +313,20 @@ graph_standard_text = read_text('wiki/ontology/graph-standard.md')
 for needle in GRAPH_STANDARD_NEEDLES:
     if needle not in graph_standard_text:
         errors.append(f'missing {needle} in wiki/ontology/graph-standard.md')
+
+index_text = read_text('wiki/index.md')
+for needle in INDEX_NEEDLES:
+    if needle not in index_text:
+        errors.append(f'missing {needle} in wiki/index.md')
+
+for rel, needles in RELATION_LEDGER_NEEDLES.items():
+    text = read_text(rel)
+    for needle in needles:
+        if needle not in text:
+            errors.append(f'missing relation edge {needle} in {rel}')
+
+if '## `sourced_from` 实例边' in read_text('wiki/relations/evidence_index.md'):
+    errors.append('sourced_from must live in wiki/relations/provenance_links.md, not wiki/relations/evidence_index.md')
 
 for rel in PLACEHOLDER_PAPERS:
     path = ROOT / rel

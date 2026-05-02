@@ -28,7 +28,9 @@
 - Method evolution is required for method papers; concept links and evidence index are especially important for survey/framework papers.
 - Task/task-map updates must not misclassify survey as a technical task.
 
-## Final status layer
-- `success` only when the structure fits and the main assets are complete.
-- `partial` when most assets are built but some mapping remains uncertain.
-- `needs-skill-update` when the paper type or structure exceeds stable support.
+## Relation autowrite checks
+- [ ] 如果论文提出核心方法，输出与落库结果必须包含 `proposes` 正式关系，而不是只在正文里写“提出了某方法”。
+- [ ] 如果论文核心贡献是 framework / taxonomy 型概念，输出与落库结果必须包含 `Paper -> Concept` 的 `proposes` 关系。
+- [ ] 如果 empirical / method / application 论文存在明确 benchmark，输出与落库结果必须包含 `evaluated_on` 正式关系。
+- [ ] 如果 survey / framework / taxonomy 论文没有统一 benchmark，不能伪造 `evaluated_on`；必须在输出中明确说明“按规范豁免”。
+- [ ] 只要生成了任一 Evidence 缓存，就必须同步登记 `sourced_from` provenance 关系。
