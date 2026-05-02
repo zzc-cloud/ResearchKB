@@ -27,6 +27,15 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - 第三缓存按论文类型分流（`experiments.md` 或 `analysis.md`）
 3. `full.md` 属于高复用工作底稿，按需生成；若论文需要跨章节深挖、长篇比较、框架抽象或高保真叙事保留时，默认建议生成
 
+## 架构定位
+本 skill 属于 ResearchKB 的**本体实例编译层**。
+它的职责是把原始论文编译成候选知识变更，包括：
+- `intermediate/papers/` 证据缓存
+- `wiki/` 正式节点页变更
+- `wiki/relations/` 正式关系账本变更
+
+它不直接裁决语义合法性；生成结果后必须交给本体治理层继续审查。
+
 ## 输入约定
 从用户提示中提取以下信息：
 - 论文路径或论文标题（必须）
@@ -106,7 +115,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - `wiki/relations/benchmark_links.md`
    - `wiki/relations/provenance_links.md`
 7. 更新：
-   - `wiki/index.md`
+   - `wiki/ontology/index.md`
    - `wiki/log.md`
 
 ## 分类与抽取规则
