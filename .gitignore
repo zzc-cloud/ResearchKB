@@ -1,0 +1,5 @@
+# Local runtime artifacts
+.claude/worktrees/
+.smart-env/multi/
+.obsidian/workspace.json
+.smart-env/event_logs/event_logs.ajson
