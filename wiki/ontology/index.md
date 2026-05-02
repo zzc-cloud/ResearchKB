@@ -23,14 +23,13 @@
 - Tasks：`wiki/tasks/`
 - Scenarios：`wiki/scenarios/`
 - Benchmarks：`wiki/benchmarks/`
-- Synthesis：`wiki/synthesis/`
 
 ## 4. 按任务进入
 - 想判断节点或关系是否合法 → [[graph-standard]]
 - 想看正式知识结论 → 对应 `wiki/` 对象页
 - 想看正式关系账本 → `wiki/relations/`
 - 想核验证据 → `intermediate/papers/`
-- 想生成综述或趋势分析 → `wiki/synthesis/`
+- 想生成综述或趋势分析 → `docs/`
 
 ## 5. 推荐阅读路径
 ### 初次进入系统
