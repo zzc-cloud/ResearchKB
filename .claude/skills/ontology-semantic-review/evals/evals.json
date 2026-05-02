@@ -14,9 +14,9 @@
       "files": []
     },
     {
-      "id": 3,
-      "prompt": "请根据当前 git diff 检查新增的概念关系是否有概念→论文这类不该放进 concept_links 的关系，并指出最小修正方案。",
-      "expected_output": "输出结构化语义审查报告，明确指出 concept_links 中不合理的概念→论文关系并建议迁移位置。",
+      "id": 4,
+      "prompt": "请审查这次改动是否把探索发现层的候选知识误写进了正式图谱，并判断这些变更是否应该退回到治理闭环。",
+      "expected_output": "输出结构化语义审查报告，识别候选知识与正式图谱边界混淆，并给出 accept / revise-then-accept / reject。",
       "files": []
     }
   ]

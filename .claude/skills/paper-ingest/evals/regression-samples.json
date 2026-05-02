@@ -28,7 +28,8 @@
       "必须生成 PathMind 论文到 PathMind 方法的 proposes 关系",
       "必须生成 WebQSP 与 CWQ 的 evaluated_on 关系",
       "必须为生成的 Evidence 缓存登记 sourced_from provenance 关系",
-      "必须能通过 graph lint"
+      "必须能通过 graph lint",
+      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱"
     ]
   },
   {
@@ -60,7 +61,8 @@
       "必须生成 survey 论文到框架型 Concept 的 proposes 关系",
       "必须为生成的 Evidence 缓存登记 sourced_from provenance 关系",
       "若无统一 benchmark，必须显式说明 evaluated_on 按规范豁免，而不是写成待补充",
-      "必须能通过 graph lint"
+      "必须能通过 graph lint",
+      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱"
     ]
   }
 ]

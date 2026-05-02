@@ -8,6 +8,10 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 ## 目的
 在 `paper-ingest` 完成并且 `python3 scripts/lint_graph.py` 通过后，审查本次改动的语义正确性，而不是结构存在性。
 
+## 架构定位
+本 skill 属于 ResearchKB 的**本体治理层**。
+它不负责抽取论文内容，也不负责基础结构 lint；它负责在 `paper-ingest` 与 `python3 scripts/lint_graph.py` 之后，对候选知识变更做语义审查，判断这些变更是否可以进入正式图谱。
+
 ## 先阅读
 - `wiki/ontology/graph-standard.md`
 - `wiki/relations/citation_graph.md`

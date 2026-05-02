@@ -46,5 +46,9 @@
   {
     "query": "我想知道 WebQSP 和 CWQ 分别是什么 benchmark，简单解释一下。",
     "should_trigger": false
+  },
+  {
+    "query": "把 raw 目录里的这篇论文按本体实例编译层流程完整摄入，生成证据缓存、正式节点页和关系账本变更，再交给治理层审查。",
+    "should_trigger": true
   }
 ]
