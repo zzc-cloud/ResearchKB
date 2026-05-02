@@ -1,5 +1,12 @@
 # Graph Standard
 
+## 相关关系账本
+- [[task_method_map]]
+- [[evidence_index]]
+- [[citation_graph]]
+- [[method_evolution]]
+- [[concept_links]]
+
 ## 节点类型
 - Paper：论文实例节点
 - Method：方法节点
@@ -8,6 +15,7 @@
 - Scenario：应用场景节点
 - Benchmark：数据集或评测基准节点
 - Evidence：`intermediate/` 下的结构化证据缓存
+- RawSource：`raw/` 下的原始来源文件节点；主要用于 provenance 追踪，不承担主图谱组织职责
 
 ## Frontmatter 受控字段
 
@@ -230,18 +238,18 @@ tags: [金融, 风控, 知识图谱]
 - 每个 Evidence 页面都必须显式回链正式论文页，并链接关键方法、概念、任务与基准或其豁免说明
 
 ## 关系类型
-- `proposes`：论文提出方法
-- `uses_concept`：论文或方法依赖概念
-- `targets_task`：论文或方法面向任务
-- `applies_to`：方法应用于场景
-- `evaluated_on`：论文或方法在基准上评测
-- `improves_on`：方法改进已有方法
-- `based_on`：方法基于上游范式或方法
-- `cites`：论文引用论文
-- `supported_by`：正式知识页由证据缓存支撑
-- `sourced_from`：知识页或缓存来源于原始 PDF
-- `supports`：概念网络中的补充语义边，表示某概念/框架对另一概念、任务或场景形成支撑
-- `depends_on`：概念网络中的补充语义边，表示某概念依赖另一概念才能成立或被解释
+- `proposes`：`[[Paper]] --proposes--> [[Method]]`；表示论文首次提出或正式定义某方法。
+- `uses_concept`：`[[Paper|Method]] --uses_concept--> [[Concept]]`；表示论文或方法在定义、建模、机制设计或实现上依赖某概念。方法与概念之间的正式关系默认优先使用该边，而不是 `based_on`。
+- `targets_task`：`[[Paper|Method]] --targets_task--> [[Task]]`；表示论文或方法主要面向的研究任务。
+- `applies_to`：`[[Method|Concept]] --applies_to--> [[Scenario]]`；表示方法或框架型概念面向的应用场景。
+- `evaluated_on`：`[[Paper|Method]] --evaluated_on--> [[Benchmark]]`；表示论文或方法在某基准上进行评测。
+- `improves_on`：`[[Method]] --improves_on--> [[Method]]`；表示方法对既有方法形成明确改进。
+- `based_on`：`[[Method]] --based_on--> [[Method]]`；表示方法建立在某个上游方法之上，只用于方法演化谱系，不指向概念、框架或场景。
+- `cites`：`[[Paper]] --cites--> [[Paper]]`；表示论文对论文的显式引用。
+- `supported_by`：`[[Paper|Method|Concept|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识页由证据缓存支撑。
+- `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示证据缓存来源于 `raw/` 下的原始文件。RawSource 节点默认使用 `[[raw/文件名.pdf]]` 形式命名，以保持与 `source_pdf` 路径和 provenance 账本一致。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若缓存尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。
+- `supports`：`[[Concept]] --supports--> [[Concept|Task|Scenario]]`；表示某概念或框架对另一概念、任务或场景形成支撑语义。
+- `depends_on`：`[[Concept]] --depends_on--> [[Concept]]`；表示某概念依赖另一概念才能成立或被解释。
 
 ## 实例边层
 - 实例边（instance edge）是两个具体知识节点之间的显式关系记录，不等同于关系类型定义本身。
@@ -278,8 +286,9 @@ tags: [金融, 风控, 知识图谱]
   - `wiki/relations/method_evolution.md`：维护 `based_on`、`improves_on`
   - `wiki/relations/task_method_map.md`：维护 `targets_task`
   - `wiki/relations/concept_links.md`：维护 `uses_concept`、`supports`、`depends_on`，以及 concept / paper / method 到 concept 或 scenario 的补充语义边
-  - `wiki/relations/evidence_index.md`：维护 `supported_by`
-- `proposes`、`evaluated_on`、`sourced_from` 当前属于已声明但未归属到实例边账本文件的关系类型。
+  - `wiki/relations/evidence_index.md`：维护 `supported_by`、`sourced_from`
+- `proposes`、`evaluated_on` 当前属于已声明但未归属到实例边账本文件的关系类型。
+- `sourced_from` 默认记录 Evidence 到 RawSource 的 provenance 边；若出现正式知识页到 RawSource 的临时占位关系，需显式标注 `status: placeholder` 并尽快补齐对应 Evidence 缓存。
 - 新增关系类型或未归属关系类型，必须先在本节明确“归属文件 + 维护范围”，再进入正式实例边维护。
 
 ## 概念网络补充边标签
@@ -309,7 +318,7 @@ tags: [金融, 风控, 知识图谱]
 
 ## 最小链接义务
 - 论文页通常至少链接：1 个方法、1 个概念、1 个任务或场景、2 个相关论文或方法、1 个证据缓存；若知识库仍处于早期阶段，可先满足核心一跳关系并在后续 ingest 中补齐。
-- 方法页通常至少链接：1 篇代表论文、1 个父方法或上游范式、1 个子方法或对比方法、1 个概念、1 个任务或场景；若上下游节点尚未正式落库，可先保留明确占位说明。
+- 方法页通常至少链接：1 篇代表论文、1 个父方法或上游方法、1 个子方法或对比方法、1 个概念、1 个任务或场景；若上下游节点尚未正式落库，可先保留明确占位说明。
 - 概念页至少链接：1 篇论文、1 个相关任务或场景、1 个关系页或证据页；若承担框架型主落点，可不强制绑定单一方法页。
 - 场景页至少链接：1 个任务、2 个方法或概念节点、1 篇论文。
 - Task / Benchmark 页至少链接：2 个论文或方法 / 概念节点、1 个场景或概念；若当前只有单条主线，可先围绕主线节点建立最小可视网络。

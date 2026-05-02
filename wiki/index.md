@@ -10,7 +10,7 @@
 - [[concept_links]]
 - [[task_method_map]]
 - [[evidence_index]]
-- [[ontology/index|ontology]]
+- [[graph-standard|ontology]]
 - [[graph-standard]]
 
 ## 1. 按研究问题
@@ -20,7 +20,7 @@
 - [[engineering-design-knowledge-management]]
 
 ### 本体 / 模式建模
-- [[ontology/index|ontology]]
+- [[graph-standard|ontology]]
 - [[graph-standard]]
 - [[复杂产品设计中的LLM-KG协同框架]]
 
@@ -130,7 +130,7 @@
 - [[CWQ]]
 
 ### 本体
-- [[ontology/index|ontology]]
+- [[graph-standard|ontology]]
 - [[graph-standard]]
 
 ### 关联关系
