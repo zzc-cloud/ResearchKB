@@ -24,6 +24,7 @@ tags: [多跳问答, 研究任务]
 - [[RoG]]
 - [[ToG]]
 - [[GCR]]
+- [[EPERM]]
 
 ## 相关概念
 - [[路径优先化]]
@@ -32,9 +33,37 @@ tags: [多跳问答, 研究任务]
 ## 相关场景
 - [[知识图谱推理问答]]
 
+## 相关 benchmark
+- [[WebQSP]]
+- [[CWQ]]
+
 ## 相关论文
 - [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
+- [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]
+
+## 证据来源 / 关系索引
+- 方法映射：[[task_method_map]]
+- 证据索引：[[evidence_index]]
+- 结构化证据：[[intermediate/papers/PathMind.sections|PathMind.sections]]
 
 ## 关系索引
 - 方法映射：[[task_method_map]]
 - 证据索引：[[evidence_index]]
+
+## Formal relations
+### Outgoing
+- 无
+
+### Incoming
+- `[[PathMind]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[RoG]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[ToG]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[GCR]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[EPERM]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[重要推理路径]] --supports--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]

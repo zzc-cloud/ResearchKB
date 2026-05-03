@@ -5,6 +5,18 @@
 - `[[PathMind]] --uses_concept--> [[重要推理路径]]`
   - reason: PathMind 以识别和筛选重要推理路径为核心目标。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[PathMind]] --applies_to--> [[知识图谱推理问答]]`
+  - reason: PathMind 方法面向知识图谱推理问答场景落地。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[RoG]] --applies_to--> [[知识图谱推理问答]]`
+  - reason: RoG 作为显式路径推理方法，用于知识图谱推理问答场景中的忠实推理。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[GCR]] --applies_to--> [[知识图谱推理问答]]`
+  - reason: GCR 作为 grounded reasoning path 方法，面向知识图谱推理问答场景落地。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[路径优先化]] --supports--> [[知识图谱推理问答]]`
+  - reason: 路径优先化通过突出高价值证据路径支撑知识图谱推理问答场景中的答案推断。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[路径优先化]] --supports--> [[重要推理路径]]`
   - reason: 路径优先化机制直接服务于重要推理路径的识别与筛选。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
@@ -13,6 +25,12 @@
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[重要推理路径]] --supports--> [[kgqa]]`
   - reason: 重要推理路径是复杂问答中的高价值证据链单元。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[重要推理路径]] --supports--> [[multi-hop-qa]]`
+  - reason: 重要推理路径是多跳问答中的高价值证据链单元。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[重要推理路径]] --supports--> [[知识图谱推理问答]]`
+  - reason: 重要推理路径为知识图谱推理问答场景提供关键证据链。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --uses_concept--> [[LLM增强知识图谱]]`
   - reason: 该 survey 系统梳理 LLM 增强知识图谱路线。

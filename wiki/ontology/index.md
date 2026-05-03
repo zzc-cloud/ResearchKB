@@ -25,22 +25,22 @@
 - Benchmarks：`wiki/benchmarks/`
 
 ## 4. 按任务进入
-- 想做受约束知识问答 → 先定位对应 `wiki/papers/` 或 `wiki/methods/` 对象页，再按页面中的 Formal relations 区块扩展；需要证据时下钻 `intermediate/papers/`
+- 想做受约束知识问答 → 先定位 serving-ready 对象页（`wiki/papers/`、`wiki/methods/`、`wiki/concepts/`、`wiki/tasks/`、`wiki/scenarios/`、`wiki/benchmarks/`、`intermediate/papers/`），再按页面中的 Formal relations 区块扩展；需要证据细节时优先下钻对应 Evidence 页
 - 想判断节点或关系是否合法 → [[graph-standard]]
-- 想看正式对象知识 → 对应 `wiki/` 对象页
+- 想看正式对象知识 → 对应 `wiki/` 对象页或 Evidence 页
 - 想看治理用正式关系账本 → `wiki/relations/`
 - 想核验证据 → `intermediate/papers/`
 - 想生成综述或趋势分析 → `docs/`
 
 ## 5. 推荐阅读路径
 ### 初次进入系统
-[[graph-standard]] → `wiki/relations/` → 具体对象页 → `intermediate/papers/`
+[[graph-standard]] → `wiki/relations/` → 代表对象页 → `intermediate/papers/`
 
 ### 回答知识问题
-`wiki/` 对象页（优先 `wiki/methods/` / `wiki/papers/`）→ Formal relations 区块 → `intermediate/papers/` → 必要时治理账本
+serving-ready 对象页 → Formal relations 区块 → 邻接对象页 / Evidence 页 → 必要时治理账本
 
 ### 治理知识变更
-[[graph-standard]] → `wiki/relations/` → 变更对象页 → `intermediate/papers/`
+[[graph-standard]] → `wiki/relations/` → 变更对象页 / Evidence 页 → `intermediate/papers/`
 
 ## 6. 说明
 - 本页负责导航，不负责规范定义。

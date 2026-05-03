@@ -29,7 +29,10 @@
       "必须生成 WebQSP 与 CWQ 的 evaluated_on 关系",
       "必须为生成的 Evidence 缓存登记 sourced_from provenance 关系",
       "必须能通过 graph lint",
-      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱"
+      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱",
+      "必须在最终输出中显式列出 relation_candidates",
+      "relation_candidates 必须至少覆盖 proposes、targets_task、evaluated_on、uses_concept、supported_by、cites、sourced_from",
+      "若无关系豁免，则 relation_exemptions 应为空数组而不是缺失"
     ]
   },
   {
@@ -62,7 +65,10 @@
       "必须为生成的 Evidence 缓存登记 sourced_from provenance 关系",
       "若无统一 benchmark，必须显式说明 evaluated_on 按规范豁免，而不是写成待补充",
       "必须能通过 graph lint",
-      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱"
+      "必须产出可交由本体治理层审查的候选知识变更，而不是跳过治理直接视为正式图谱",
+      "最终输出必须显式包含 relation_candidates",
+      "最终输出必须显式包含 relation_exemptions",
+      "evaluated_on 的豁免必须在 relation_exemptions 中说明，而不是仅写在 warnings 里"
     ]
   }
 ]

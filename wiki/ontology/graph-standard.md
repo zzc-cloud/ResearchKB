@@ -204,6 +204,67 @@ tags: [核心概念]
 - 与其他概念的关系
 - 相关方法
 - 相关论文
+- 相关任务 / 场景
+- 证据来源
+- Formal relations
+
+### Task
+必填字段：`title`、`problem`、`industry`、`research_role`
+
+推荐字段：`method_family`、`scenario`、`research_task`、`tags`
+
+参考骨架：
+```yaml
+---
+title: 任务名称
+problem: [reasoning]
+method_family: [hybrid]
+scenario: []
+research_task: [knowledge-graph-reasoning]
+industry: [general]
+research_role: [foundational]
+tags: [研究任务]
+---
+```
+
+正文标准结构：
+- 任务定义
+- 核心挑战
+- 相关方法
+- 相关概念
+- 相关场景
+- 相关 benchmark
+- 相关论文
+- 证据来源 / 关系索引
+- Formal relations
+
+### Benchmark
+必填字段：`title`、`problem`、`industry`、`research_role`
+
+推荐字段：`method_family`、`scenario`、`research_task`、`tags`
+
+参考骨架：
+```yaml
+---
+title: 基准名称
+problem: [query-answering]
+method_family: [hybrid]
+scenario: []
+research_task: [kgqa]
+industry: [general]
+research_role: [benchmark]
+tags: [benchmark]
+---
+```
+
+正文标准结构：
+- benchmark 定义
+- 评测目标
+- 相关任务
+- 被哪些方法 / 论文使用
+- 相关场景
+- 证据来源
+- Formal relations
 
 ### Scenario
 必填字段：`title`、`problem`、`scenario`、`industry`、`research_role`
@@ -227,9 +288,12 @@ tags: [金融, 风控, 知识图谱]
 正文标准结构：
 - 场景描述
 - 核心挑战
-- 使用的主要方法
+- 使用的主要方法 / 概念
+- 相关任务
 - 相关论文
-- 典型系统 / 产品案例
+- 相关 benchmark
+- 证据来源
+- Formal relations
 - 开放问题
 
 ### Evidence
@@ -240,6 +304,13 @@ tags: [金融, 风控, 知识图谱]
 约束：
 - `cache_type` 使用 `sections` / `refs` / `experiments` / `analysis` / `full`
 - 每个 Evidence 页面都必须显式回链正式论文页，并链接关键方法、概念、任务与基准或其豁免说明
+
+正文标准结构：
+- 对应正式知识节点
+- 本节支撑什么
+- 关键摘录 / 关键实验 / 关键引用 / 关键分析
+- 来源说明
+- Formal relations
 
 ## 关系类型
 - `proposes`：`[[Paper]] --proposes--> [[Method|Concept]]`；表示论文首次提出或正式定义某方法，或提出 framework / taxonomy 型核心概念。
@@ -312,35 +383,49 @@ tags: [金融, 风控, 知识图谱]
 
 ## 治理真源层与服务层
 - `wiki/relations/` 继续作为正式实例边的治理真源，用于 authoring、lint、语义审查、补边与修复。
-- `wiki/methods/` 与 `wiki/papers/` 在治理通过后，作为受约束知识问答的默认服务层。
+- `wiki/papers/`、`wiki/methods/`、`wiki/concepts/`、`wiki/tasks/`、`wiki/scenarios/`、`wiki/benchmarks/` 与 `intermediate/papers/` 中的 Evidence 页，在治理通过后，作为受约束知识问答的默认服务层。
 - `intermediate/papers/` 继续作为证据层，用于机制、实验、引用、基线与 provenance 核验。
 - 问答运行时默认先读治理后的对象页，不再把 `wiki/relations/` 作为默认读取层；但治理与修复仍以 `wiki/relations/` 为准。
 
-## Method / Paper 服务层投影规则
-- Method / Paper 页必须同时包含：frontmatter、面向人类的关系区块、`## Formal relations` 规范化关系区块。
+## 全类型服务层投影规则
+- Paper、Method、Concept、Task、Scenario、Benchmark、Evidence 页必须同时包含：frontmatter、面向人类的关系区块、`## Formal relations` 规范化关系区块。
 - frontmatter 只承载紧凑结构化摘要，不承担手写关系真源职责；其派生字段必须来自正式关系账本。
-- `parent_methods` / `child_methods` 继续作为首批强一致派生字段，必须与 `wiki/relations/method_evolution.md` 保持一致。
-- 面向人类的关系区块可按对象视角摘要组织，但不得与正式关系账本冲突。
+- Method 的 `parent_methods` / `child_methods` 继续作为首批强一致派生字段，必须与 `wiki/relations/method_evolution.md` 保持一致。
+- 其他类型前期默认不强制扩张大量派生字段，优先把正式关系投影收敛到 `## Formal relations`。
+- 面向人类的关系区块按节点类型差异化组织，但不得与正式关系账本冲突。
 - `## Formal relations` 必须覆盖该实体的一跳正式关系投影，作为问答时的正式关系读取面。
 
 ## Formal relations 区块规范
 - 区块标题固定为 `## Formal relations`。
-- 必须包含 `### Outgoing` 与 `### Incoming` 两个子区块；无内容时也应显式写 `- 无`。
+- 所有 serving-ready 节点类型都必须包含 `### Outgoing` 与 `### Incoming` 两个子区块；无内容时显式写 `- 无`。
 - 每条关系使用 canonical 三元组格式：`- `[[Source Node]] --relation_type--> [[Target Node]]``。
 - 每条关系至少附带一个 `- evidence: [[证据页]]` 行；必要时可补 `- note:`，但应避免 prose 污染区块。
 - 该区块供问答时的受约束拓扑探索直接消费，不以综述性表达代替。
 
+## Serving 迁移状态
+- serving-ready：页面已通过结构治理、本体语义治理与 serving 治理，可作为默认问答入口。
+- partial：页面已开始迁移，但 `Formal relations` 或人类区块尚未达到默认 serving 质量线。
+- legacy：页面仍处于旧格式，仅可作为过渡期参考页。
+- 迁移状态可放在 frontmatter 或外部治理清单中，但必须能被治理流程识别。
+
 ## 问答消费规则
-- 受约束知识问答默认先定位关键实体，再读取治理后的 Method / Paper 页。
+- 受约束知识问答默认先定位关键实体，再读取治理后的对象页。
 - 问答默认基于对象页 frontmatter 与 `## Formal relations` 做一跳扩展，而不是先扫描 `wiki/relations/`。
-- 若需核验机制、实验、引用、基线或 provenance，再下钻 `intermediate/papers/`。
+- 若需核验机制、实验、引用、基线或 provenance，再下钻对应 Evidence 页与 `intermediate/papers/`。
 - `wiki/relations/` 默认留在治理、修复、审计链路中，不作为问答默认读取层。
 
 ## 服务层治理校验要求
-- 除结构合法性外，还必须校验 Method / Paper 页的投影一致性、投影完备性与问答可消费性。
+- 除结构合法性外，还必须校验七类节点页的投影一致性、投影完备性与问答可消费性。
 - 投影一致性：frontmatter 派生字段、`## Formal relations` 与正式关系账本一致；人类关系区块不得冲突。
 - 投影完备性：属于该实体的一跳正式关系，必须按规则投影到 `## Formal relations`；指定派生字段必须回填到 frontmatter。
 - 问答可消费性：页面必须存在稳定的 `## Formal relations`、`### Outgoing`、`### Incoming` 结构，以及可回溯 evidence 入口。
+
+## 三层治理出口
+- 结构治理：`python3 scripts/lint_graph.py`
+- 本体语义治理：`ontology-semantic-review`
+- serving 治理：`serving-governance-review`
+
+其中 serving 治理是独立发布门槛，不等同于结构 lint，也不等同于本体语义审查。
 
 ## 节点判定规则
 - 核心方法：在论文贡献、方法或实验章节中被独立描述，并直接支撑主要结论的方法。

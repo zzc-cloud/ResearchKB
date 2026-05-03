@@ -17,17 +17,29 @@
 - `[[PathMind]] --targets_task--> [[kgqa]]`
   - reason: PathMind 在知识图谱问答场景中验证方法有效性。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[kgqa]]`
+  - reason: 论文以 KGQA 作为核心问题设定与验证任务之一。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[RoG]] --targets_task--> [[kgqa]]`
   - reason: RoG 是 KGQA 路线中的显式路径推理代表方法。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
 - `[[GCR]] --targets_task--> [[kgqa]]`
   - reason: GCR 面向 KGQA 场景。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]] --targets_task--> [[kgqa]]`
+  - reason: 该论文将 graph-constrained reasoning 用于 KGQA 场景。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
 - `[[EPERM]] --targets_task--> [[kgqa]]`
   - reason: EPERM 面向 KGQA 场景。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]] --targets_task--> [[kgqa]]`
+  - reason: 该论文以 KGQA 为核心任务场景。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
 - `[[PathMind]] --targets_task--> [[multi-hop-qa]]`
   - reason: PathMind 重点处理复杂多跳问答中的高价值路径选择。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[multi-hop-qa]]`
+  - reason: 论文将复杂多跳问答作为核心验证任务之一。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[RoG]] --targets_task--> [[multi-hop-qa]]`
   - reason: RoG 面向多跳问答中的关系路径推理。
@@ -35,8 +47,20 @@
 - `[[ToG]] --targets_task--> [[multi-hop-qa]]`
   - reason: ToG 通过迭代搜索支持复杂多跳问答。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §4
+- `[[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]] --targets_task--> [[multi-hop-qa]]`
+  - reason: 该论文以复杂多跳问答作为核心验证任务之一。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §4
 - `[[GCR]] --targets_task--> [[multi-hop-qa]]`
   - reason: GCR 面向 grounded 的多跳推理问答。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]] --targets_task--> [[multi-hop-qa]]`
+  - reason: 该论文将 graph-constrained reasoning 用于多跳推理问答。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[EPERM]] --targets_task--> [[multi-hop-qa]]`
+  - reason: EPERM 面向多跳问答中的证据路径增强推理。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]] --targets_task--> [[multi-hop-qa]]`
+  - reason: 该论文将证据路径增强用于复杂多跳问答推理。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
 - `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --targets_task--> [[engineering-design-knowledge-management]]`
   - reason: 该 survey 以复杂产品设计中的知识管理与协同增强任务为综述对象。

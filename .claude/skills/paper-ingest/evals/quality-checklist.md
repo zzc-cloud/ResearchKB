@@ -34,3 +34,7 @@
 - [ ] 如果 empirical / method / application 论文存在明确 benchmark，输出与落库结果必须包含 `evaluated_on` 正式关系。
 - [ ] 如果 survey / framework / taxonomy 论文没有统一 benchmark，不能伪造 `evaluated_on`；必须在输出中明确说明“按规范豁免”。
 - [ ] 只要生成了任一 Evidence 缓存，就必须同步登记 `sourced_from` provenance 关系。
+- [ ] 最终结构化输出必须显式包含 `relation_candidates`，而不是只在正文或关系账本中隐含关系。
+- [ ] `relation_candidates` 至少应覆盖：`proposes`、`targets_task`、`evaluated_on`、`uses_concept`、`supported_by`、`cites`、`sourced_from`。
+- [ ] 若某类关系按规范豁免，最终结构化输出必须显式包含 `relation_exemptions`。
+- [ ] 若存在方向、粒度或本体归属歧义，最终结构化输出必须将对应关系放入 `needs-human-review` 语义，而不是静默忽略。

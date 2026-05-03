@@ -1,0 +1,21 @@
+[
+  {
+    "name": "PathMind-method-paper",
+    "input_assumption": "paper-ingest has emitted relation_candidates for a standard empirical method paper",
+    "must_reconcile": [
+      "proposes",
+      "targets_task",
+      "evaluated_on",
+      "uses_concept",
+      "supported_by",
+      "cites",
+      "sourced_from"
+    ],
+    "quality_checks": [
+      "must classify existing ledger edges as already_present",
+      "must add missing formal edges to the correct ledger file",
+      "must preserve explicit relation exemptions",
+      "must output affected_pages for page-projection-sync"
+    ]
+  }
+]

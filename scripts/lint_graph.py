@@ -205,6 +205,17 @@ CLAUDE_NEEDLES = [
     'wiki/relations/',
     'python3 scripts/lint_graph.py',
 ]
+PIPELINE_SKILL_FILES = [
+    '.claude/skills/relation-reconciliation/SKILL.md',
+    '.claude/skills/page-projection-sync/SKILL.md',
+]
+
+PAPER_INGEST_NEEDLES = [
+    'relation_candidates',
+    'relation_exemptions',
+    'relation-reconciliation',
+    'page-projection-sync',
+]
 GRAPH_STANDARD_NEEDLES = [
     'analysis.md',
     'experiments.md',
@@ -249,19 +260,41 @@ PLACEHOLDER_PAPERS = {
     'wiki/papers/KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs.md',
 }
 
-SERVING_PAGES = {
+SERVING_TYPE_RULES = {
+    'paper': {
+        'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': {},
+    },
+    'method': {
+        'required_headings': ['## 相关概念', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': {'parent_methods', 'child_methods'},
+    },
+    'concept': {
+        'required_headings': ['## 相关任务 / 场景', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+    'task': {
+        'required_headings': ['## 相关 benchmark', '## 证据来源 / 关系索引', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+    'scenario': {
+        'required_headings': ['## 相关任务', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+    'benchmark': {
+        'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+    'evidence': {
+        'required_headings': ['## 对应正式知识节点', '## 本节支撑什么', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+}
+
+SERVING_READY_SAMPLES = {
     'wiki/methods/PathMind.md': {
-        'required_headings': [
-            '## 相关概念',
-            '## 证据来源',
-            '## Formal relations',
-            '### Outgoing',
-            '### Incoming',
-        ],
-        'expected_frontmatter': {
-            'parent_methods': ['路径导向知识图谱推理'],
-            'child_methods': [],
-        },
+        'page_type': 'method',
+        'expected_frontmatter': {'parent_methods': ['路径导向知识图谱推理'], 'child_methods': []},
         'required_edges': [
             ('PathMind', 'based_on', '路径导向知识图谱推理'),
             ('PathMind', 'improves_on', '路径导向知识图谱推理'),
@@ -277,19 +310,8 @@ SERVING_PAGES = {
         ],
     },
     'wiki/methods/RoG.md': {
-        'required_headings': [
-            '## 解决的核心问题',
-            '## 技术原理',
-            '## 相关概念',
-            '## 证据来源',
-            '## Formal relations',
-            '### Outgoing',
-            '### Incoming',
-        ],
-        'expected_frontmatter': {
-            'parent_methods': ['路径导向知识图谱推理'],
-            'child_methods': [],
-        },
+        'page_type': 'method',
+        'expected_frontmatter': {'parent_methods': ['路径导向知识图谱推理'], 'child_methods': []},
         'required_edges': [
             ('RoG', 'based_on', '路径导向知识图谱推理'),
             ('RoG', 'improves_on', '路径导向知识图谱推理'),
@@ -299,12 +321,7 @@ SERVING_PAGES = {
         ],
     },
     'wiki/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md': {
-        'required_headings': [
-            '## 证据来源',
-            '## Formal relations',
-            '### Outgoing',
-            '### Incoming',
-        ],
+        'page_type': 'paper',
         'expected_frontmatter': {},
         'required_edges': [
             ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'proposes', 'PathMind'),
@@ -326,6 +343,11 @@ SERVING_PAGES = {
             ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.refs|PathMind.refs'),
         ],
     },
+    'wiki/concepts/路径优先化.md': {'page_type': 'concept', 'expected_frontmatter': {}, 'required_edges': []},
+    'wiki/tasks/knowledge-graph-reasoning.md': {'page_type': 'task', 'expected_frontmatter': {}, 'required_edges': []},
+    'wiki/scenarios/知识图谱推理问答.md': {'page_type': 'scenario', 'expected_frontmatter': {}, 'required_edges': []},
+    'wiki/benchmarks/WebQSP.md': {'page_type': 'benchmark', 'expected_frontmatter': {}, 'required_edges': []},
+    'intermediate/papers/PathMind.sections.md': {'page_type': 'evidence', 'expected_frontmatter': {}, 'required_edges': []},
 }
 
 FORMAL_RELATION_RE = re.compile(r"- `\[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`]+)--> \[\[(?P<dst>[^\]]+)\]\]`")
@@ -365,13 +387,37 @@ def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
     return edges
 
 
-def require_serving_page(rel: str, rules: dict[str, object]) -> list[str]:
-    text = read_text(rel)
-    frontmatter, _body = split_frontmatter(text)
+def classify_serving_page(rel: str) -> str | None:
+    if rel.startswith('wiki/papers/'):
+        return 'paper'
+    if rel.startswith('wiki/methods/'):
+        return 'method'
+    if rel.startswith('wiki/concepts/'):
+        return 'concept'
+    if rel.startswith('wiki/tasks/'):
+        return 'task'
+    if rel.startswith('wiki/scenarios/'):
+        return 'scenario'
+    if rel.startswith('wiki/benchmarks/'):
+        return 'benchmark'
+    if rel.startswith('intermediate/papers/'):
+        return 'evidence'
+    return None
+
+
+def validate_serving_structure(rel: str, text: str, page_type: str) -> list[str]:
+    rules = SERVING_TYPE_RULES[page_type]
     page_errors: list[str] = []
     for heading in rules['required_headings']:
         if heading not in text:
             page_errors.append(f'missing serving heading {heading} in {rel}')
+    return page_errors
+
+
+def validate_sample_projection(rel: str, rules: dict[str, object]) -> list[str]:
+    text = read_text(rel)
+    frontmatter, _body = split_frontmatter(text)
+    page_errors: list[str] = []
     for key, expected in rules['expected_frontmatter'].items():
         actual = frontmatter.get(key)
         if actual != expected:
@@ -440,6 +486,15 @@ for needle in CLAUDE_NEEDLES:
     if needle not in claude_text:
         errors.append(f'missing {needle} in CLAUDE.md')
 
+paper_ingest_text = read_text('.claude/skills/paper-ingest/SKILL.md')
+for needle in PAPER_INGEST_NEEDLES:
+    if needle not in paper_ingest_text:
+        errors.append(f'missing {needle} in .claude/skills/paper-ingest/SKILL.md')
+
+for rel in PIPELINE_SKILL_FILES:
+    if not (ROOT / rel).exists():
+        errors.append(f'missing pipeline skill file: {rel}')
+
 graph_standard_text = read_text('wiki/ontology/graph-standard.md')
 for needle in GRAPH_STANDARD_NEEDLES:
     if needle not in graph_standard_text:
@@ -456,12 +511,32 @@ for rel, needles in RELATION_LEDGER_NEEDLES.items():
         if needle not in text:
             errors.append(f'missing relation edge {needle} in {rel}')
 
-for rel, rules in SERVING_PAGES.items():
+for path in (ROOT / 'wiki').rglob('*.md'):
+    rel = str(path.relative_to(ROOT))
+    page_type = classify_serving_page(rel)
+    if page_type is None:
+        continue
+    text = path.read_text(encoding='utf-8', errors='ignore')
+    if '## Formal relations' in text:
+        errors.extend(validate_serving_structure(rel, text, page_type))
+
+for path in (ROOT / 'intermediate/papers').rglob('*.md'):
+    rel = str(path.relative_to(ROOT))
+    page_type = classify_serving_page(rel)
+    if page_type != 'evidence':
+        continue
+    text = path.read_text(encoding='utf-8', errors='ignore')
+    if '## Formal relations' in text:
+        errors.extend(validate_serving_structure(rel, text, page_type))
+
+for rel, rules in SERVING_READY_SAMPLES.items():
     path = ROOT / rel
     if not path.exists():
-        errors.append(f'missing serving page: {rel}')
+        errors.append(f'missing serving-ready sample page: {rel}')
         continue
-    errors.extend(require_serving_page(rel, rules))
+    text = read_text(rel)
+    errors.extend(validate_serving_structure(rel, text, rules['page_type']))
+    errors.extend(validate_sample_projection(rel, rules))
 
 if '## `sourced_from` 实例边' in read_text('wiki/relations/evidence_index.md'):
     errors.append('sourced_from must live in wiki/relations/provenance_links.md, not wiki/relations/evidence_index.md')

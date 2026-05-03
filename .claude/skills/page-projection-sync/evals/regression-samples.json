@@ -1,0 +1,16 @@
+[
+  {
+    "name": "method-page-sync",
+    "input_assumption": "relation-reconciliation has added or confirmed method evolution, task, benchmark, and proposes edges",
+    "must_sync": [
+      "Formal relations",
+      "strong-consistency frontmatter",
+      "templated human relation blocks"
+    ],
+    "quality_checks": [
+      "must update parent_methods and child_methods when affected",
+      "must keep interpretive prose untouched",
+      "must report manual followups if prose still needs human review"
+    ]
+  }
+]

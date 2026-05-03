@@ -17,14 +17,32 @@ tags: [benchmark, KGQA, 多跳问答]
 - [[multi-hop-qa]]
 - [[knowledge-graph-reasoning]]
 
-## 代表方法
-- [[PathMind]]
-- [[RoG]]
-- [[GCR]]
-- [[EPERM]]
+## 被哪些方法 / 论文使用
+- 方法：[[PathMind]]、[[RoG]]、[[GCR]]、[[EPERM]]
+- 论文：[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
 
-## 代表论文
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
+## 相关场景
+- [[知识图谱推理问答]]
+
+## 证据来源
+- [[evidence_index]]
+- [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
 
 ## 证据索引
 - [[evidence_index]]
+
+## Formal relations
+### Outgoing
+- 无
+
+### Incoming
+- `[[PathMind]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[RoG]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[GCR]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[EPERM]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]

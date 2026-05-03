@@ -28,13 +28,13 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 3. `full.md` 属于高复用工作底稿，按需生成；若论文需要跨章节深挖、长篇比较、框架抽象或高保真叙事保留时，默认建议生成
 
 ## 架构定位
-本 skill 属于 ResearchKB 的**本体实例编译层**。
+本 skill 属于 ResearchKB 的**本体实例编译入口**。
 它的职责是把原始论文编译成候选知识变更，包括：
 - `intermediate/papers/` 证据缓存
-- `wiki/` 正式节点页变更
-- `wiki/relations/` 正式关系账本变更
+- `wiki/` 正式节点页候选变更
+- formal relation candidates（供后续 relation reconciliation 使用）
 
-它不直接裁决语义合法性；生成结果后必须交给本体治理层继续审查。
+它不直接完成全图 formal relation 闭环，也不裁决语义合法性；生成结果后应先交给 relation reconciliation，再进入本体治理层继续审查。
 
 ## 输入约定
 从用户提示中提取以下信息：
@@ -118,6 +118,26 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - `wiki/ontology/index.md`
    - `wiki/log.md`
 
+### Step 5.5: 汇总候选正式关系
+在完成页面与缓存候选更新后，必须显式整理本次论文直接支撑的 formal relation candidates，而不是只把关系散落写进正文或关系账本。
+
+输出时至少按以下关系类型归类：
+- `proposes`
+- `targets_task`
+- `evaluated_on`
+- `uses_concept`
+- `supported_by`
+- `cites`
+- `applies_to`
+- `based_on`
+- `improves_on`
+- `sourced_from`
+
+并且必须区分三类：
+1. direct relations：证据明确、可直接落账
+2. high-confidence candidate relations：强支持但仍需 graph-level reconciliation
+3. needs-human-review relations：存在方向、粒度或本体归属歧义
+
 ## 分类与抽取规则
 ### 论文页
 必须尽量填充这些结构化字段：
@@ -188,6 +208,20 @@ updated_pages:
   - wiki/concepts/...
   - wiki/scenarios/...
   - wiki/relations/...
+relation_candidates:
+  proposes: []
+  targets_task: []
+  evaluated_on: []
+  uses_concept: []
+  supported_by: []
+  cites: []
+  applies_to: []
+  based_on: []
+  improves_on: []
+  sourced_from: []
+relation_exemptions:
+  - relation_type: evaluated_on
+    reason: no unified benchmark; exempt by graph-standard
 warnings:
   - ...
 skill_update_signals:
@@ -198,7 +232,8 @@ skill_update_signals:
 - `success`：基础缓存、正式页面与应有关系账本更新都已完成，且结构适配良好；如生成了 `full.md`，它作为高复用增强缓存计入 `generated_caches`。
 - `partial`：完成了大部分工作，但某些页面、字段或正式关系账本仍需人工补充。
 - `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围。
-- 若某类关系按规范豁免（例如 survey / framework 论文无统一 benchmark，因此不生成 `evaluated_on`），必须在 `warnings` 中显式说明豁免原因；不要把正常豁免写成“待补充”。
+- `relation_candidates`：必须显式列出本次论文直接支撑或高置信支持的 formal relation 候选，供后续 relation reconciliation 使用。
+- `relation_exemptions`：若某类关系按规范豁免（例如 survey / framework 论文无统一 benchmark，因此不生成 `evaluated_on`），必须在此显式说明；不要把正常豁免写成“待补充”。
 
 ## 触发 `needs-skill-update` 的典型例子
 - “这是一篇 benchmark/survey/framework 论文，当前方法页模板不是最佳落点。”
@@ -241,8 +276,11 @@ skill_update_signals:
 - 当前 skill 该如何升级，才能更好适配这类论文
 - 若某类关系因规范豁免未生成，应明确区分“正常豁免”与“skill 漏写”，避免把豁免项误报为待补。
 
-## Ingest 完成后的治理要求
-当本次摄入已经完成缓存、wiki 页面与关系更新后：
-1. 必须先运行 `python3 scripts/lint_graph.py`
-2. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
-3. 只有结构与语义都合理时，才建议接受本次变更并进入 git 提交
+## Ingest 完成后的后续治理要求
+当本次摄入已经完成缓存、wiki 页面与候选关系输出后：
+1. 必须先交给 `relation-reconciliation` 补齐 formal relation ledger
+2. relation ledger 更新后，必须交给 `page-projection-sync` 回写对象页投影
+3. 然后运行 `python3 scripts/lint_graph.py`
+4. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
+5. 如本次改动涉及 serving-ready 页面，还必须调用 `serving-governance-review`
+6. 只有结构、语义与 serving 都合理时，才建议接受本次变更并进入 git 提交

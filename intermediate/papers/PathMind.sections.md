@@ -174,9 +174,32 @@ authors:
 
 论文结论强调：[[PathMind]] 通过“检索—优先化—推理”三阶段设计，将 LLM-based KGR 从简单的路径提供推进到重要路径识别与利用。其价值不只是提升分数，还体现在更强的解释性和更低的推理成本。
 
-## 10. 适合后续复用的重点
-后续如需进一步分析，可优先定位到以下部分：
-- 比较方法演化：读第 5 节和第 7.3 节
-- 解释 Path Prioritization：读第 7.3 节
-- 比较实验结果：读第 8.3–8.6 节
-- 讨论可解释性与效率：读第 8.5–8.6 节和第 9 节
+## 本节支撑什么
+- 支撑 [[PathMind]] 的总体方法定义、[[路径优先化]] 与 [[重要推理路径]] 的核心概念定位，以及 [[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]] 与 [[知识图谱推理问答]] 上的问题场景描述。
+
+## 来源说明
+- 来源 PDF：[[raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]
+- provenance 账本：[[provenance_links]]
+
+## Formal relations
+### Outgoing
+- `[[intermediate/papers/PathMind.sections|PathMind.sections]] --sourced_from--> [[raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+
+### Incoming
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[路径优先化]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[重要推理路径]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[knowledge-graph-reasoning]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[kgqa]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[multi-hop-qa]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[知识图谱推理问答]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
