@@ -53,14 +53,56 @@ status: processed
 - 待补充
 
 ## 与知识库其他内容的关联
-- 与 [[methods/PathMind|PathMind（方法）]] 的关系：该论文提出并验证了该方法。
-- 与 [[路径优先化]] 的关系：将其作为核心机制显式建模。
-- 与 [[重要推理路径]] 的关系：提出“important reasoning paths”作为支撑忠实推理的关键概念。
-- 与 [[知识图谱推理问答]] 的关系：方法主要面向复杂多跳知识图谱问答任务。
-- 与 [[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]] 的关系：为这些任务提供结构化路径推理与对齐训练方案。
+- 提出的方法：[[methods/PathMind|PathMind（方法）]]
+- 核心概念：[[路径优先化]]、[[重要推理路径]]
+- 主要场景：[[知识图谱推理问答]]
+- 相关任务：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
+- 评测基准：[[WebQSP]]、[[CWQ]]
+- 关键引用对象：[[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]、[[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]、[[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]、[[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]、[[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]、[[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]
 
 ## 证据来源
 - 结构化章节缓存：[[intermediate/papers/PathMind.sections|PathMind.sections]]
 - 引用与基线缓存：[[intermediate/papers/PathMind.refs|PathMind.refs]]
 - 实验缓存：[[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+
+## Formal relations
+### Outgoing
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --proposes--> [[PathMind]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[knowledge-graph-reasoning]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[kgqa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[路径优先化]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[重要推理路径]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[CWQ]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --supported_by--> [[intermediate/papers/PathMind.experiments|PathMind.experiments]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --supported_by--> [[intermediate/papers/PathMind.refs|PathMind.refs]]`
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]]
+
+### Incoming
+- 无
+
 > 这篇论文的重要性不在于“又做了一种 KG + LLM”，而在于把研究重点从检索更多路径推进到识别更有价值的路径，是 retrieval-augmented KGR 向精细路径控制演化的代表工作。

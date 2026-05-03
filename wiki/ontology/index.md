@@ -25,9 +25,10 @@
 - Benchmarks：`wiki/benchmarks/`
 
 ## 4. 按任务进入
+- 想做受约束知识问答 → 先定位对应 `wiki/papers/` 或 `wiki/methods/` 对象页，再按页面中的 Formal relations 区块扩展；需要证据时下钻 `intermediate/papers/`
 - 想判断节点或关系是否合法 → [[graph-standard]]
-- 想看正式知识结论 → 对应 `wiki/` 对象页
-- 想看正式关系账本 → `wiki/relations/`
+- 想看正式对象知识 → 对应 `wiki/` 对象页
+- 想看治理用正式关系账本 → `wiki/relations/`
 - 想核验证据 → `intermediate/papers/`
 - 想生成综述或趋势分析 → `docs/`
 
@@ -36,7 +37,7 @@
 [[graph-standard]] → `wiki/relations/` → 具体对象页 → `intermediate/papers/`
 
 ### 回答知识问题
-对象页 / 关系账本 → `intermediate/papers/` → 必要时 `raw/`
+`wiki/` 对象页（优先 `wiki/methods/` / `wiki/papers/`）→ Formal relations 区块 → `intermediate/papers/` → 必要时治理账本
 
 ### 治理知识变更
 [[graph-standard]] → `wiki/relations/` → 变更对象页 → `intermediate/papers/`

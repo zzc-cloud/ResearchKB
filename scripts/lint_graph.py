@@ -249,9 +249,138 @@ PLACEHOLDER_PAPERS = {
     'wiki/papers/KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs.md',
 }
 
+SERVING_PAGES = {
+    'wiki/methods/PathMind.md': {
+        'required_headings': [
+            '## 相关概念',
+            '## 证据来源',
+            '## Formal relations',
+            '### Outgoing',
+            '### Incoming',
+        ],
+        'expected_frontmatter': {
+            'parent_methods': ['路径导向知识图谱推理'],
+            'child_methods': [],
+        },
+        'required_edges': [
+            ('PathMind', 'based_on', '路径导向知识图谱推理'),
+            ('PathMind', 'improves_on', '路径导向知识图谱推理'),
+            ('PathMind', 'targets_task', 'knowledge-graph-reasoning'),
+            ('PathMind', 'targets_task', 'kgqa'),
+            ('PathMind', 'targets_task', 'multi-hop-qa'),
+            ('PathMind', 'uses_concept', '路径优先化'),
+            ('PathMind', 'uses_concept', '重要推理路径'),
+            ('PathMind', 'applies_to', '知识图谱推理问答'),
+            ('PathMind', 'evaluated_on', 'WebQSP'),
+            ('PathMind', 'evaluated_on', 'CWQ'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'proposes', 'PathMind'),
+        ],
+    },
+    'wiki/methods/RoG.md': {
+        'required_headings': [
+            '## 解决的核心问题',
+            '## 技术原理',
+            '## 相关概念',
+            '## 证据来源',
+            '## Formal relations',
+            '### Outgoing',
+            '### Incoming',
+        ],
+        'expected_frontmatter': {
+            'parent_methods': ['路径导向知识图谱推理'],
+            'child_methods': [],
+        },
+        'required_edges': [
+            ('RoG', 'based_on', '路径导向知识图谱推理'),
+            ('RoG', 'improves_on', '路径导向知识图谱推理'),
+            ('RoG', 'targets_task', 'knowledge-graph-reasoning'),
+            ('RoG', 'targets_task', 'kgqa'),
+            ('RoG', 'targets_task', 'multi-hop-qa'),
+        ],
+    },
+    'wiki/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md': {
+        'required_headings': [
+            '## 证据来源',
+            '## Formal relations',
+            '### Outgoing',
+            '### Incoming',
+        ],
+        'expected_frontmatter': {},
+        'required_edges': [
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'proposes', 'PathMind'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'knowledge-graph-reasoning'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'kgqa'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'multi-hop-qa'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'uses_concept', '路径优先化'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'uses_concept', '重要推理路径'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'evaluated_on', 'WebQSP'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'evaluated_on', 'CWQ'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.sections|PathMind.sections'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.experiments|PathMind.experiments'),
+            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.refs|PathMind.refs'),
+        ],
+    },
+}
+
+FORMAL_RELATION_RE = re.compile(r"- `\[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`]+)--> \[\[(?P<dst>[^\]]+)\]\]`")
+FRONTMATTER_FIELD_RE = re.compile(r'^(?P<key>[a-z_]+):\s*(?P<value>.+)$', re.MULTILINE)
+
 
 def read_text(rel: str) -> str:
     return (ROOT / rel).read_text(encoding='utf-8', errors='ignore')
+
+
+def split_frontmatter(text: str) -> tuple[dict[str, list[str] | str], str]:
+    if not text.startswith('---\n'):
+        return {}, text
+    _, rest = text.split('---\n', 1)
+    frontmatter_block, body = rest.split('\n---\n', 1)
+    data: dict[str, list[str] | str] = {}
+    for match in FRONTMATTER_FIELD_RE.finditer(frontmatter_block):
+        key = match.group('key')
+        raw = match.group('value').strip()
+        if raw.startswith('[') and raw.endswith(']'):
+            inner = raw[1:-1].strip()
+            data[key] = [] if not inner else [part.strip() for part in inner.split(',')]
+        else:
+            data[key] = raw
+    return data, body
+
+
+def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
+    if '## Formal relations' not in text:
+        return []
+    _, formal_tail = text.split('## Formal relations', 1)
+    next_heading = formal_tail.find('\n## ')
+    formal_block = formal_tail if next_heading == -1 else formal_tail[:next_heading]
+    edges: list[tuple[str, str, str]] = []
+    for match in FORMAL_RELATION_RE.finditer(formal_block):
+        edges.append((match.group('src'), match.group('rel'), match.group('dst')))
+    return edges
+
+
+def require_serving_page(rel: str, rules: dict[str, object]) -> list[str]:
+    text = read_text(rel)
+    frontmatter, _body = split_frontmatter(text)
+    page_errors: list[str] = []
+    for heading in rules['required_headings']:
+        if heading not in text:
+            page_errors.append(f'missing serving heading {heading} in {rel}')
+    for key, expected in rules['expected_frontmatter'].items():
+        actual = frontmatter.get(key)
+        if actual != expected:
+            page_errors.append(f'frontmatter mismatch for {key} in {rel}: expected {expected!r}, got {actual!r}')
+    actual_edges = set(extract_formal_relations(text))
+    for edge in rules['required_edges']:
+        if edge not in actual_edges:
+            page_errors.append(f'missing formal relation {edge} in {rel}')
+    return page_errors
 
 
 errors: list[str] = []
@@ -326,6 +455,13 @@ for rel, needles in RELATION_LEDGER_NEEDLES.items():
     for needle in needles:
         if needle not in text:
             errors.append(f'missing relation edge {needle} in {rel}')
+
+for rel, rules in SERVING_PAGES.items():
+    path = ROOT / rel
+    if not path.exists():
+        errors.append(f'missing serving page: {rel}')
+        continue
+    errors.extend(require_serving_page(rel, rules))
 
 if '## `sourced_from` 实例边' in read_text('wiki/relations/evidence_index.md'):
     errors.append('sourced_from must live in wiki/relations/provenance_links.md, not wiki/relations/evidence_index.md')

@@ -131,7 +131,8 @@ status: processed
 - 引用了哪些重要工作
 - 被哪些论文引用（已知）
 - 与知识库其他内容的关联
-- 实验证据
+- 证据来源
+- Formal relations
 - 我的批注
 
 ### Method
@@ -167,6 +168,9 @@ tags: [知识图谱, 本体推理]
 - 方法演化位置
 - 应用场景
 - 代表论文
+- 相关概念
+- 证据来源
+- Formal relations
 - 优势与局限
 - 与其他方法的对比
 
@@ -253,9 +257,10 @@ tags: [金融, 风控, 知识图谱]
 
 ## 实例边层
 - 实例边（instance edge）是两个具体知识节点之间的显式关系记录，不等同于关系类型定义本身。
-- `wiki/relations/` 是正式维护实例边账本的唯一位置。
-- 节点页中的自然语言说明、`[[wikilink]]` 与综述性表述可以辅助理解，但不能替代 `wiki/relations/` 中的正式实例边记录。
-- 查询、分析、拓扑探索与后续图谱扩展，应优先依据实例边账本，而不是仅从正文 prose 推断关系。
+- `wiki/relations/` 是正式维护实例边账本的唯一治理真源。
+- Method / Paper 页中的 `## Formal relations` 是治理通过后、从实例边账本投影出的默认问答读取面。
+- 节点页中的自然语言说明、`[[wikilink]]` 与综述性表述可以辅助理解，但不能替代正式实例边账本；其 serving 有效性依赖治理对投影的一致性与完备性校验。
+- 查询、分析、拓扑探索与后续图谱扩展，应优先依据治理后的正式关系读取面；在治理、修复、审计场景下再回到账本。
 
 ## 实例边记录格式
 规范格式（canonical）：
@@ -304,6 +309,38 @@ tags: [金融, 风控, 知识图谱]
 - 证据优先：每条正式实例边必须至少附带一个 `evidence`，无证据仅可用 `status: placeholder` 暂存。
 - prose 辅助不替代：正文描述与 `[[wikilink]]` 仅作解释层，关系判定以关系账本记录为准。
 - 增量更新：新增论文或新节点时，优先补齐受影响关系文件中的实例边，再更新综述性页面。
+
+## 治理真源层与服务层
+- `wiki/relations/` 继续作为正式实例边的治理真源，用于 authoring、lint、语义审查、补边与修复。
+- `wiki/methods/` 与 `wiki/papers/` 在治理通过后，作为受约束知识问答的默认服务层。
+- `intermediate/papers/` 继续作为证据层，用于机制、实验、引用、基线与 provenance 核验。
+- 问答运行时默认先读治理后的对象页，不再把 `wiki/relations/` 作为默认读取层；但治理与修复仍以 `wiki/relations/` 为准。
+
+## Method / Paper 服务层投影规则
+- Method / Paper 页必须同时包含：frontmatter、面向人类的关系区块、`## Formal relations` 规范化关系区块。
+- frontmatter 只承载紧凑结构化摘要，不承担手写关系真源职责；其派生字段必须来自正式关系账本。
+- `parent_methods` / `child_methods` 继续作为首批强一致派生字段，必须与 `wiki/relations/method_evolution.md` 保持一致。
+- 面向人类的关系区块可按对象视角摘要组织，但不得与正式关系账本冲突。
+- `## Formal relations` 必须覆盖该实体的一跳正式关系投影，作为问答时的正式关系读取面。
+
+## Formal relations 区块规范
+- 区块标题固定为 `## Formal relations`。
+- 必须包含 `### Outgoing` 与 `### Incoming` 两个子区块；无内容时也应显式写 `- 无`。
+- 每条关系使用 canonical 三元组格式：`- `[[Source Node]] --relation_type--> [[Target Node]]``。
+- 每条关系至少附带一个 `- evidence: [[证据页]]` 行；必要时可补 `- note:`，但应避免 prose 污染区块。
+- 该区块供问答时的受约束拓扑探索直接消费，不以综述性表达代替。
+
+## 问答消费规则
+- 受约束知识问答默认先定位关键实体，再读取治理后的 Method / Paper 页。
+- 问答默认基于对象页 frontmatter 与 `## Formal relations` 做一跳扩展，而不是先扫描 `wiki/relations/`。
+- 若需核验机制、实验、引用、基线或 provenance，再下钻 `intermediate/papers/`。
+- `wiki/relations/` 默认留在治理、修复、审计链路中，不作为问答默认读取层。
+
+## 服务层治理校验要求
+- 除结构合法性外，还必须校验 Method / Paper 页的投影一致性、投影完备性与问答可消费性。
+- 投影一致性：frontmatter 派生字段、`## Formal relations` 与正式关系账本一致；人类关系区块不得冲突。
+- 投影完备性：属于该实体的一跳正式关系，必须按规则投影到 `## Formal relations`；指定派生字段必须回填到 frontmatter。
+- 问答可消费性：页面必须存在稳定的 `## Formal relations`、`### Outgoing`、`### Incoming` 结构，以及可回溯 evidence 入口。
 
 ## 节点判定规则
 - 核心方法：在论文贡献、方法或实验章节中被独立描述，并直接支撑主要结论的方法。

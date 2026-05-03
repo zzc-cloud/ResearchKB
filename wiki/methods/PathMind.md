@@ -25,15 +25,13 @@ PathMind 包含三部分：
 3. 知识推理：将筛选出的路径输入 LLM，并通过任务指令微调与路径偏好对齐提升答案准确性与逻辑一致性。
 
 ## 方法演化位置
-- 基于：[[路径导向知识图谱推理]]，并综合借鉴 [[RoG]]、[[GCR]]、[[EPERM]] 等路径导向方法，以及 GNN 子图表征与 LLM 对齐训练思路。
-- 改进点：相比直接检索路径或通过多轮交互搜索路径，[[PathMind]] 显式学习“重要路径”优先级，减少噪声并降低调用成本。
-- 相关任务：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
-- 相关基准：[[WebQSP]]、[[CWQ]]
-- 衍生出：待补充
+- 上游方法：[[路径导向知识图谱推理]]
+- 路线改进：[[PathMind]] 在路径导向路线中引入“重要路径”优先级学习，以减少噪声并降低调用成本。
+- 相关上游参考：[[RoG]]、[[GCR]]、[[EPERM]]
 
 ## 应用场景
-- [[知识图谱推理问答]]
-- 任务节点：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
+- 主要场景：[[知识图谱推理问答]]
+- 相关任务：[[knowledge-graph-reasoning]]、[[kgqa]]、[[multi-hop-qa]]
 - 评测基准：[[WebQSP]]、[[CWQ]]
 
 ## 代表论文
@@ -49,6 +47,33 @@ PathMind 包含三部分：
 - 结构化章节缓存：[[intermediate/papers/PathMind.sections|PathMind.sections]]
 - 实验缓存：[[intermediate/papers/PathMind.experiments|PathMind.experiments]]
 - 引用与基线缓存：[[intermediate/papers/PathMind.refs|PathMind.refs]]
+
+## Formal relations
+### Outgoing
+- `[[PathMind]] --based_on--> [[路径导向知识图谱推理]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --improves_on--> [[路径导向知识图谱推理]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --targets_task--> [[knowledge-graph-reasoning]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --targets_task--> [[kgqa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --targets_task--> [[multi-hop-qa]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --uses_concept--> [[路径优先化]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --uses_concept--> [[重要推理路径]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --applies_to--> [[知识图谱推理问答]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
+- `[[PathMind]] --evaluated_on--> [[WebQSP]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+- `[[PathMind]] --evaluated_on--> [[CWQ]]`
+  - evidence: [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
+
+### Incoming
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --proposes--> [[PathMind]]`
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]]
 
 ## 优势与局限
 | 优势 | 局限 |
