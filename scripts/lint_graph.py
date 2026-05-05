@@ -62,7 +62,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[concept_links]]',
             '[[intermediate/papers/PathMind.sections',
         ],
-        'sections': ['## 与其他概念的关系', '## 关系索引与证据'],
+        'sections': ['## 与其他概念的关系', '## 证据来源'],
     },
     'wiki/concepts/重要推理路径.md': {
         'links': [
@@ -72,7 +72,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[concept_links]]',
             '[[intermediate/papers/PathMind.sections',
         ],
-        'sections': ['## 与其他概念的关系', '## 关系索引与证据'],
+        'sections': ['## 与其他概念的关系', '## 证据来源'],
     },
     'wiki/scenarios/知识图谱推理问答.md': {
         'links': [
@@ -86,7 +86,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[CWQ]]',
             '[[intermediate/papers/PathMind.sections',
         ],
-        'sections': ['## 关联任务', '## 证据来源'],
+        'sections': ['## 相关任务', '## 证据来源'],
     },
     'wiki/tasks/knowledge-graph-reasoning.md': {
         'links': [
@@ -95,7 +95,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[task_method_map]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关方法', '## 关系索引'],
+        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
     },
     'wiki/tasks/kgqa.md': {
         'links': [
@@ -104,7 +104,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[task_method_map]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关方法', '## 关系索引'],
+        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
     },
     'wiki/tasks/multi-hop-qa.md': {
         'links': [
@@ -113,7 +113,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[task_method_map]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关方法', '## 关系索引'],
+        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
     },
     'wiki/benchmarks/WebQSP.md': {
         'links': [
@@ -122,7 +122,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[PathMind]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关任务', '## 证据索引'],
+        'sections': ['## 相关任务', '## 证据来源'],
     },
     'wiki/benchmarks/CWQ.md': {
         'links': [
@@ -131,7 +131,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[PathMind]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关任务', '## 证据索引'],
+        'sections': ['## 相关任务', '## 证据来源'],
     },
     'wiki/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md': {
         'links': [
@@ -141,7 +141,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[复杂产品设计]]',
             '[[intermediate/papers/LLM-KG-CPD-Survey.analysis',
         ],
-        'sections': ['## 核心方法 / 框架', '## 实验证据 / 综述证据'],
+        'sections': ['## 核心方法 / 框架', '## 证据来源'],
     },
     'wiki/scenarios/复杂产品设计.md': {
         'links': [
@@ -150,7 +150,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[engineering-design-knowledge-management]]',
             '[[intermediate/papers/LLM-KG-CPD-Survey.analysis',
         ],
-        'sections': ['## 使用的主要方法 / 框架', '## 证据来源'],
+        'sections': ['## 使用的主要方法 / 框架 / 概念', '## 证据来源'],
     },
     'wiki/concepts/LLM增强知识图谱.md': {
         'links': [
@@ -159,7 +159,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]]',
             '[[intermediate/papers/LLM-KG-CPD-Survey.sections',
         ],
-        'sections': ['## 与其他概念的关系', '## 关系索引与证据'],
+        'sections': ['## 与其他概念的关系', '## 证据来源'],
     },
     'wiki/concepts/复杂产品设计中的LLM-KG协同框架.md': {
         'links': [
@@ -167,7 +167,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[复杂产品设计]]',
             '[[engineering-design-knowledge-management]]',
             '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]]',
-            '[[intermediate/papers/LLM-KG-CPD-Survey.full',
+            '[[intermediate/papers/LLM-KG-CPD-Survey.sections',
         ],
         'sections': ['## 与其他概念的关系', '## 证据来源'],
     },
@@ -177,7 +177,7 @@ PHASE_ONE_CORE_PAGES = {
             '[[复杂产品设计]]',
             '[[evidence_index]]',
         ],
-        'sections': ['## 相关方法 / 框架', '## 关系索引'],
+        'sections': ['## 相关框架 / 概念', '## 证据来源 / 关系索引'],
     },
 }
 
@@ -186,13 +186,11 @@ PHASE_ONE_EVIDENCE_CACHES = {
         'intermediate/papers/PathMind.sections.md',
         'intermediate/papers/PathMind.refs.md',
         'intermediate/papers/PathMind.experiments.md',
-        'intermediate/papers/PathMind.full.md',
     ],
     'survey': [
         'intermediate/papers/LLM-KG-CPD-Survey.sections.md',
         'intermediate/papers/LLM-KG-CPD-Survey.refs.md',
         'intermediate/papers/LLM-KG-CPD-Survey.analysis.md',
-        'intermediate/papers/LLM-KG-CPD-Survey.full.md',
     ],
 }
 
@@ -216,9 +214,18 @@ PAPER_INGEST_NEEDLES = [
     'relation-reconciliation',
     'page-projection-sync',
 ]
+
+DAILY_INGEST_CHAIN_NEEDLES = [
+    'relation-reconciliation',
+    'page-projection-sync',
+    'ontology-semantic-review',
+    'serving-governance-review',
+]
 GRAPH_STANDARD_NEEDLES = [
     'analysis.md',
     'experiments.md',
+    '`cache_type` 使用 `sections` / `refs` / `experiments` / `analysis`',
+    '方法机制优先绑定 `sections.md`。',
     'paper_method_links.md',
     'benchmark_links.md',
     'provenance_links.md',
@@ -350,6 +357,25 @@ SERVING_READY_SAMPLES = {
     'intermediate/papers/PathMind.sections.md': {'page_type': 'evidence', 'expected_frontmatter': {}, 'required_edges': []},
 }
 
+ALLOWED_EVIDENCE_CACHE_TYPES = {'sections', 'refs', 'experiments', 'analysis'}
+FORBIDDEN_FULL_REFERENCE_NEEDLES = (
+    '.full|',
+    '.full]]',
+    'cache_type: full',
+    '高保真工作底稿',
+)
+FULL_REFERENCE_SCAN_PATHS = [
+    ROOT / 'wiki',
+    ROOT / 'intermediate' / 'papers',
+    ROOT / '.claude' / 'skills',
+    ROOT / 'CLAUDE.md',
+]
+FULL_REFERENCE_SCAN_SUFFIXES = {
+    ROOT / 'wiki': ('.md',),
+    ROOT / 'intermediate' / 'papers': ('.md',),
+    ROOT / '.claude' / 'skills': ('.md', '.json'),
+}
+
 FORMAL_RELATION_RE = re.compile(r"- `\[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`]+)--> \[\[(?P<dst>[^\]]+)\]\]`")
 FRONTMATTER_FIELD_RE = re.compile(r'^(?P<key>[a-z_]+):\s*(?P<value>.+)$', re.MULTILINE)
 
@@ -385,6 +411,36 @@ def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
     for match in FORMAL_RELATION_RE.finditer(formal_block):
         edges.append((match.group('src'), match.group('rel'), match.group('dst')))
     return edges
+
+
+def check_evidence_cache_types(errors):
+    for path in sorted((ROOT / 'intermediate' / 'papers').glob('*.md')):
+        text = path.read_text(encoding='utf-8')
+        match = re.search(r'^cache_type:\s*([^\n]+)$', text, re.MULTILINE)
+        if not match:
+            errors.append(f"Missing cache_type in evidence cache: {path.relative_to(ROOT)}")
+            continue
+        cache_type = match.group(1).strip()
+        if cache_type not in ALLOWED_EVIDENCE_CACHE_TYPES:
+            errors.append(
+                f"Forbidden or undeclared cache_type '{cache_type}' in {path.relative_to(ROOT)}"
+            )
+
+
+def check_forbidden_full_references(errors):
+    for scan_path in FULL_REFERENCE_SCAN_PATHS:
+        if scan_path.is_file():
+            paths = [scan_path]
+        else:
+            suffixes = FULL_REFERENCE_SCAN_SUFFIXES.get(scan_path, ('.md',))
+            paths = sorted(
+                p for p in scan_path.rglob('*') if p.is_file() and p.suffix in suffixes
+            )
+        for path in paths:
+            text = path.read_text(encoding='utf-8')
+            for needle in FORBIDDEN_FULL_REFERENCE_NEEDLES:
+                if needle in text:
+                    errors.append(f"Forbidden full-cache reference '{needle}' found in {path.relative_to(ROOT)}")
 
 
 def classify_serving_page(rel: str) -> str | None:
@@ -491,6 +547,16 @@ for needle in PAPER_INGEST_NEEDLES:
     if needle not in paper_ingest_text:
         errors.append(f'missing {needle} in .claude/skills/paper-ingest/SKILL.md')
 
+for needle in DAILY_INGEST_CHAIN_NEEDLES:
+    if needle not in read_text('CLAUDE.md'):
+        errors.append(f'missing {needle} in CLAUDE.md daily ingest chain')
+    if needle in ['ontology-semantic-review', 'serving-governance-review']:
+        if needle not in read_text('.claude/skills/page-projection-sync/SKILL.md'):
+            errors.append(f'missing {needle} in page-projection-sync handoff')
+
+if 'page-projection-sync' not in read_text('.claude/skills/relation-reconciliation/SKILL.md'):
+    errors.append('missing page-projection-sync in relation-reconciliation handoff')
+
 for rel in PIPELINE_SKILL_FILES:
     if not (ROOT / rel).exists():
         errors.append(f'missing pipeline skill file: {rel}')
@@ -510,6 +576,9 @@ for rel, needles in RELATION_LEDGER_NEEDLES.items():
     for needle in needles:
         if needle not in text:
             errors.append(f'missing relation edge {needle} in {rel}')
+
+check_evidence_cache_types(errors)
+check_forbidden_full_references(errors)
 
 for path in (ROOT / 'wiki').rglob('*.md'):
     rel = str(path.relative_to(ROOT))

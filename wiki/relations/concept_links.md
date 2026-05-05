@@ -1,9 +1,20 @@
+> 本页是正式关系账本：维护 `uses_concept` 及登记在本页的概念网络实例边。默认问答优先读取概念页、方法页、任务页或场景页；只有在概念网络治理、修复、审计或真源核对时优先读取本页。
+>
+> 相关对象域：[[../concepts/index|concepts/index]]、[[../methods/index|methods/index]]、[[../tasks/index|tasks/index]]、[[../scenarios/index|scenarios/index]]
+> 相关证据入口：[[evidence_index]]
+
 ## `uses_concept` 与概念网络实例边
 - `[[PathMind]] --uses_concept--> [[路径优先化]]`
   - reason: PathMind 的核心机制之一是路径优先化。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[路径优先化]]`
+  - reason: 论文将路径优先化作为核心机制显式建模。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
 - `[[PathMind]] --uses_concept--> [[重要推理路径]]`
   - reason: PathMind 以识别和筛选重要推理路径为核心目标。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[重要推理路径]]`
+  - reason: 论文将 important reasoning paths 作为核心概念显式提出与使用。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §7.1–7.4
 - `[[PathMind]] --applies_to--> [[知识图谱推理问答]]`
   - reason: PathMind 方法面向知识图谱推理问答场景落地。
@@ -14,6 +25,12 @@
 - `[[GCR]] --applies_to--> [[知识图谱推理问答]]`
   - reason: GCR 作为 grounded reasoning path 方法，面向知识图谱推理问答场景落地。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[EPERM]] --applies_to--> [[知识图谱推理问答]]`
+  - reason: EPERM 作为 evidence path 增强方法，面向知识图谱推理问答场景中的复杂问答推理。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §2–4
+- `[[ToG]] --applies_to--> [[知识图谱推理问答]]`
+  - reason: ToG 作为协同增强式方法，面向知识图谱推理问答中的多轮路径搜索场景。
+  - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §4
 - `[[路径优先化]] --supports--> [[知识图谱推理问答]]`
   - reason: 路径优先化通过突出高价值证据路径支撑知识图谱推理问答场景中的答案推断。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7

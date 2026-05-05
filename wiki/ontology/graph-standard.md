@@ -17,6 +17,11 @@
 - Evidence：`intermediate/` 下的结构化证据缓存
 - RawSource：`raw/` 下的原始来源文件节点；主要用于 provenance 追踪，不承担主图谱组织职责
 
+## survey / framework 建模公理
+- Survey 是 Paper 层节点：它表示可引用、可追溯的论文研究产物，不下沉为 Task，也不上提为 Concept。
+- Framework / taxonomy 若主要承担知识组织、分类、分层或解释框架语义，默认落为 Concept；其中 framework 可使用 `concept_kind: framework` 标记。
+- Framework 若主要承担可执行方法流程、明确实验对比或方法演化语义，则应按 Method 处理，而不是机械落为 Concept。
+- 当论文的核心贡献是 framework / taxonomy 型知识结构时，应根据其主要语义选择 `[[Paper]] --proposes--> [[Concept]]` 或 `[[Paper]] --proposes--> [[Method]]`：Paper 表示论文载体，Concept / Method 表示被提出的核心知识产物。
 ## Frontmatter 受控字段
 
 ### 通用受控字段
@@ -135,6 +140,13 @@ status: processed
 - Formal relations
 - 我的批注
 
+survey Paper / framework-taxonomy 核心贡献论文补充规则：
+- Survey 始终作为 Paper 节点建模；不要把 survey 误写为 Task 或 Concept。
+- 当 `research_role: survey` 或论文核心贡献是 framework / taxonomy / landscape 组织时，Paper 页的人类区块应优先突出：核心框架 / 核心概念、相关任务、应用场景、关键结论、综述证据来源。
+- 当论文提出的主知识资产是 framework / taxonomy 时，Paper 仍是论文载体；对应知识产物优先落为 Concept 节点，并通过 `proposes` 连接。
+- 这类 Paper 的 `Formal relations` 重点为：`proposes`（到 framework / concept）、`uses_concept`、`targets_task`、`cites`、`supported_by`。
+- 若无统一 benchmark，必须显式以 `relation_exemptions` 说明 `evaluated_on` 按规范豁免，而不是伪造 benchmark formal edge。
+
 ### Method
 必填字段：`title`、`type`、`problem`、`industry`、`research_role`
 
@@ -181,7 +193,11 @@ tags: [知识图谱, 本体推理]
 
 说明：
 - `concept_kind` 为可选辅助字段，可使用 `general` / `framework` / `taxonomy` 标记概念子型。
-- 当论文的核心贡献是分层框架、角色划分或 taxonomy 时，优先作为 Concept 节点中的框架型 / taxonomy 型概念落库，而不是再拆分独立节点类型。
+- Framework 若主要承担知识组织、分类、分层或解释框架语义，默认使用 `concept_kind: framework` 作为 Concept 落库；若主要承担可执行方法流程、明确实验对比或方法演化语义，则应按 Method 处理。
+- 当论文的核心贡献是分层框架、角色划分或 taxonomy 时，优先作为 Concept 节点中的框架型 / taxonomy 型概念落库；但若其主语义是方法流程与评测对象，则可按 Method 建模，而不是机械归入 Concept。
+- framework 型 Concept 补充规则：
+  - 若 `concept_kind: framework`，页面应优先描述：框架定义、层级结构 / 组成部分、相关概念、相关场景、相关任务、相关论文、证据来源。
+  - framework 型 Concept 的 `Formal relations` 重点为：incoming `proposes`、outgoing `uses_concept`、outgoing `applies_to`、outgoing / incoming `supports`、`supported_by`。
 
 参考骨架：
 ```yaml
@@ -237,6 +253,10 @@ tags: [研究任务]
 - 相关论文
 - 证据来源 / 关系索引
 - Formal relations
+
+survey / framework 主线的 Task 补充规则：
+- 若任务页主要由 survey / framework 节点驱动，而非方法-基准驱动，人类区块应优先突出：相关框架 / 概念、相关场景、相关论文、证据来源 / 关系索引。
+- `Formal relations` 重点为 incoming `targets_task`、incoming `supports`，以及必要时的 `supported_by`。
 
 ### Benchmark
 必填字段：`title`、`problem`、`industry`、`research_role`
@@ -296,13 +316,22 @@ tags: [金融, 风控, 知识图谱]
 - Formal relations
 - 开放问题
 
+survey / framework 主线的 Scenario 补充规则：
+- 若场景页主要由 framework / survey 节点供给，人类区块应优先突出：使用的主要框架 / 概念 / 方法、相关任务、相关论文、证据来源。
+- `Formal relations` 重点为 incoming `applies_to`、incoming `supports`，以及必要时的 `supported_by`。
+
 ### Evidence
 必填字段：`title`、`short_name`、`source_pdf`、`cache_type`、`status`
 
 推荐字段：`venue`、`year`
 
 约束：
-- `cache_type` 使用 `sections` / `refs` / `experiments` / `analysis` / `full`
+- `cache_type` 使用 `sections` / `refs` / `experiments` / `analysis`
+- 按论文类型执行最小缓存集合：
+  - empirical / method / application 论文：`sections` + `refs` + `experiments`
+  - survey / framework / taxonomy / benchmark-landscape 论文：`sections` + `refs` + `analysis`
+  - theoretical / position 论文：`sections` + `refs`
+- 不允许在未更新本规范前新增其他正式 cache 类型。
 - 每个 Evidence 页面都必须显式回链正式论文页，并链接关键方法、概念、任务与基准或其豁免说明
 
 正文标准结构：
@@ -312,8 +341,13 @@ tags: [金融, 风控, 知识图谱]
 - 来源说明
 - Formal relations
 
+补充边界：
+- `sections` 用于章节结构、核心机制与足以支撑 formal relation 审计的章节级摘要；不得扩张为接近整篇论文的重写稿，或与正式论文页形成大段叙述重复。
+- `analysis` 仅用于 survey / framework / taxonomy / benchmark-landscape 类论文的统计、landscape、阶段分析、框架拆解或非统一实验型证据；不得作为 empirical 论文的常规第三缓存，也不得充当泛化“额外总结页”。
+- 若新增 `sections` 内容不能提升 formal relation 可审计性或章节级复用性，则不应写入。
+
 ## 关系类型
-- `proposes`：`[[Paper]] --proposes--> [[Method|Concept]]`；表示论文首次提出或正式定义某方法，或提出 framework / taxonomy 型核心概念。
+- `proposes`：`[[Paper]] --proposes--> [[Method|Concept]]`；表示论文首次提出或正式定义某方法，或提出 framework / taxonomy 型核心概念。Survey 保持为 Paper 层节点；framework / taxonomy 等核心知识产物优先作为 Concept 节点承接。
 - `uses_concept`：`[[Paper|Method]] --uses_concept--> [[Concept]]`；表示论文或方法在定义、建模、机制设计或实现上依赖某概念。方法与概念之间的正式关系默认优先使用该边，而不是 `based_on`。
 - `targets_task`：`[[Paper|Method]] --targets_task--> [[Task]]`；表示论文或方法主要面向的研究任务。
 - `applies_to`：`[[Method|Concept]] --applies_to--> [[Scenario]]`；表示方法或框架型概念面向的应用场景。
@@ -322,7 +356,7 @@ tags: [金融, 风控, 知识图谱]
 - `based_on`：`[[Method]] --based_on--> [[Method]]`；表示方法建立在某个上游方法之上，只用于方法演化谱系，不指向概念、框架或场景。
 - `cites`：`[[Paper]] --cites--> [[Paper]]`；表示论文对论文的显式引用。
 - `supported_by`：`[[Paper|Method|Concept|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识页由证据缓存支撑。
-- `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示证据缓存来源于 `raw/` 下的原始文件。RawSource 节点默认使用 `[[raw/文件名.pdf]]` 形式命名，以保持与 `source_pdf` 路径和 provenance 账本一致。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若缓存尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。
+- `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示证据缓存来源于 `raw/` 下的原始文件。RawSource 节点默认使用 `[[raw/文件名.pdf]]` 形式命名，以保持与 `source_pdf` 路径和 provenance 账本一致。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若缓存尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。保留的 `sections`、`refs`、`experiments`、`analysis` 均可直接承担 `sourced_from` provenance 锚点，不依赖额外全文型 cache。
 - `supports`：`[[Concept]] --supports--> [[Concept|Task|Scenario]]`；表示某概念或框架对另一概念、任务或场景形成支撑语义。
 - `depends_on`：`[[Concept]] --depends_on--> [[Concept]]`；表示某概念依赖另一概念才能成立或被解释。
 
@@ -425,6 +459,21 @@ tags: [金融, 风控, 知识图谱]
 - 本体语义治理：`ontology-semantic-review`
 - serving 治理：`serving-governance-review`
 
+## 单篇论文编译链
+单篇论文进入正式图谱时，默认按以下顺序完成：
+1. `paper-ingest`
+2. `relation-reconciliation`
+3. `page-projection-sync`
+4. `python3 scripts/lint_graph.py`
+5. `ontology-semantic-review`
+6. `serving-governance-review`
+
+其中：
+- `paper-ingest` 负责抽取与候选输出
+- `relation-reconciliation` 负责 formal relation ledger 补齐
+- `page-projection-sync` 负责把 formal graph truth 同步回对象页
+- 只有三层治理通过后，才视为可进入正式图谱
+
 其中 serving 治理是独立发布门槛，不等同于结构 lint，也不等同于本体语义审查。
 
 ## 节点判定规则
@@ -437,7 +486,8 @@ tags: [金融, 风控, 知识图谱]
 - empirical 论文：默认需要任务、benchmark、实验结果与引用关系的完整绑定。
 - theoretical / position 论文：若无实验或 benchmark，可豁免 benchmark 节点与 experiments 缓存，但仍需绑定核心方法、概念、上游工作与证据来源。
 - survey / benchmark 论文：可弱化单一方法节点要求，但必须强化任务、benchmark、关系索引与综述定位。
-- 当论文的核心贡献是分层框架、角色划分或 taxonomy 时，优先把核心知识落为 Concept 节点中的框架型 / taxonomy 型概念，并连接到 scenario / task / synthesis，而不是再拆分独立节点类型。
+- survey 论文属于 Paper 层；若论文的核心知识产物是 framework / taxonomy，则应按其主要语义落为 Concept 或 Method，并通过 `proposes` 与论文连接，而不是误写为 Task 或独立节点类型。
+- 当论文的核心贡献是分层框架、角色划分或 taxonomy 时，若其主要承担知识组织、分类或解释语义，优先把核心知识落为 Concept 节点中的框架型 / taxonomy 型概念；若其主要承担可执行方法流程、实验对比或方法演化语义，则可按 Method 建模。
 - 如某篇论文不适合完整满足默认最小链接义务，应在页面或缓存中显式写明缺省原因，避免形式化凑数。
 
 ## 最小链接义务
@@ -453,8 +503,12 @@ tags: [金融, 风控, 知识图谱]
 - 论文页若同时涉及同名论文节点与方法节点，应优先使用带别名或带路径的写法消歧。
 - 当对象尚无正式方法页、但必须保留关系时，应使用占位论文页或占位说明，而不是伪造方法节点。
 
+## 冗余 cache 判废规则
+- 若某 cache 类型不承载独立证据职责，且相对现有 cache 类型不提供不可替代的结构化审计价值，则不得作为正式 cache 类型保留。
+- 新增 cache 类型前，必须先在本规范中声明其证据职责、适用论文类型与 relation / provenance 作用范围。
+
 ## 证据要求
-- 方法机制优先绑定 `sections.md` 或 `full.md`。
+- 方法机制优先绑定 `sections.md`。
 - empirical 论文的实验结果优先绑定 `experiments.md`。
 - 引用与基线关系优先绑定 `refs.md`。
 - 对 survey / benchmark / taxonomy / dataset 论文，第三类缓存默认使用 `analysis.md`，用于承载统计、landscape、阶段分析、software-gap 分析或框架型概念支撑证据。

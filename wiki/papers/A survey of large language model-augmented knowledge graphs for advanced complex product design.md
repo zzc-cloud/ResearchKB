@@ -14,6 +14,12 @@ status: processed
 paper_type: survey
 ---
 
+> 导航：返回 [[index|papers/index]]；相关对象域 [[../methods/index|methods/index]]、[[../concepts/index|concepts/index]]、[[../tasks/index|tasks/index]]、[[../scenarios/index|scenarios/index]]、[[../benchmarks/index|benchmarks/index]]。
+>
+> 相关 relation ledger：[[../relations/paper_method_links|paper_method_links]]、[[../relations/task_method_map|task_method_map]]、[[../relations/concept_links|concept_links]]、[[../relations/benchmark_links|benchmark_links]]、[[../relations/citation_graph|citation_graph]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready 论文入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 核心问题
 > 这篇论文系统梳理了 LLM 与知识图谱在复杂产品设计中的协同方式、能力分层、应用阶段和主要挑战，试图为复杂产品设计场景建立一个可解释的技术框架与研究地图。
 
@@ -54,16 +60,54 @@ paper_type: survey
 - 待补充
 
 ## 与知识库其他内容的关联
-- 与 [[复杂产品设计中的LLM-KG协同框架]] 的关系：该论文提出并系统解释了这一分层框架。
-- 与 [[LLM增强知识图谱]] 的关系：给出了领域应用中的角色划分与能力结构。
-- 与 [[复杂产品设计]] 的关系：将该场景作为 LLM-KG 协同落地的核心应用域。
-- 与 [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 的关系：二者都涉及 LLM + KG，但 PathMind 是单方法论文，而本文是领域综述 / framework 论文，说明知识库规范必须同时覆盖两类论文。
+- 核心框架：[[复杂产品设计中的LLM-KG协同框架]]
+- 核心概念：[[LLM增强知识图谱]]
+- 主要场景：[[复杂产品设计]]
+- 相关任务：[[engineering-design-knowledge-management]]
+- 关键引用对象：[[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]、[[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]、[[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]、[[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]、[[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]、[[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]
 
-## 实验证据 / 综述证据
+## 综述证据来源
 - 结构化章节缓存：[[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
 - 引用与路线缓存：[[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
 - 分析与统计缓存：[[intermediate/papers/LLM-KG-CPD-Survey.analysis|LLM-KG-CPD-Survey.analysis]]
-- 高保真工作底稿：[[intermediate/papers/LLM-KG-CPD-Survey.full|LLM-KG-CPD-Survey.full]]
+
+## 证据来源
+- 结构化章节缓存：[[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
+- 引用与路线缓存：[[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- 分析与统计缓存：[[intermediate/papers/LLM-KG-CPD-Survey.analysis|LLM-KG-CPD-Survey.analysis]]
+
+## Formal relations
+### Outgoing
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --proposes--> [[复杂产品设计中的LLM-KG协同框架]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --uses_concept--> [[LLM增强知识图谱]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --targets_task--> [[engineering-design-knowledge-management]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --cites--> [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --supported_by--> [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --supported_by--> [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.refs|LLM-KG-CPD-Survey.refs]]
+- `[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --supported_by--> [[intermediate/papers/LLM-KG-CPD-Survey.analysis|LLM-KG-CPD-Survey.analysis]]`
+  - evidence: [[intermediate/papers/LLM-KG-CPD-Survey.analysis|LLM-KG-CPD-Survey.analysis]]
+
+### Incoming
+- 无
+
+## Relation exemptions
+- `evaluated_on`：按综述 / framework 论文规范豁免，无统一 benchmark。
 
 ## 我的批注
 > 这篇论文的重要意义不在“证明某个模型更强”，而在于它暴露了知识库设计不能只围绕方法论文组织：对于 framework / survey / taxonomy 论文，概念、场景、任务阶段、角色划分和 research gaps 才是主知识资产。

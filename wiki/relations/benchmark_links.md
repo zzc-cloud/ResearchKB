@@ -1,3 +1,8 @@
+> 本页是正式关系账本：维护 `evaluated_on` 实例边。默认问答优先读取 benchmark 页、方法页或论文页；只有在 benchmark 绑定治理、修复、审计或真源核对时优先读取本页。
+>
+> 相关对象域：[[../benchmarks/index|benchmarks/index]]、[[../methods/index|methods/index]]、[[../papers/index|papers/index]]
+> 相关证据入口：[[evidence_index]]
+
 ## `evaluated_on` 实例边
 - `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]`
   - reason: 论文在 WebQSP 上报告主要实验结果与对比结果。

@@ -21,11 +21,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 ## 核心原则
 1. 把 `CLAUDE.md` 视为最高约束，尤其是 taxonomy、缓存模板、目录结构和工作流要求。
-2. 默认生成 3 份基础缓存：
-   - `[short_name].sections.md`
-   - `[short_name].refs.md`
-   - 第三缓存按论文类型分流（`experiments.md` 或 `analysis.md`）
-3. `full.md` 属于高复用工作底稿，按需生成；若论文需要跨章节深挖、长篇比较、框架抽象或高保真叙事保留时，默认建议生成
+2. 默认按论文类型生成最小缓存集合：
+   - empirical / method / application 论文：`[short_name].sections.md`、`[short_name].refs.md`、`[short_name].experiments.md`
+   - survey / framework / taxonomy / benchmark-landscape 论文：`[short_name].sections.md`、`[short_name].refs.md`、`[short_name].analysis.md`
+   - theoretical / position 论文：`[short_name].sections.md`、`[short_name].refs.md`
+3. 不生成 `full.md`；若未来需要新增 cache 类型，必须先更新本体规范与 skill 合约，而不是临时加文件
 
 ## 架构定位
 本 skill 属于 ResearchKB 的**本体实例编译入口**。
@@ -35,6 +35,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - formal relation candidates（供后续 relation reconciliation 使用）
 
 它不直接完成全图 formal relation 闭环，也不裁决语义合法性；生成结果后应先交给 relation reconciliation，再进入本体治理层继续审查。
+在日常处理论文流程中，本 skill 默认只负责编译入口；完成后必须显式进入 `relation-reconciliation`，而不是把 ingest 结果直接当作正式入图结果。
 
 ## 输入约定
 从用户提示中提取以下信息：
@@ -68,23 +69,22 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - 是否存在明显附录依赖、图表依赖、章节标题异常、关键信息缺失
 
 ### Step 3: 生成 intermediate 缓存
-在 `intermediate/papers/` 下默认生成以下 3 份基础缓存：
+在 `intermediate/papers/` 下按论文类型生成最小缓存集合：
 
-1. `[short_name].sections.md`
-2. `[short_name].refs.md`
-3. 第三缓存按论文类型分流：
-   - 方法 / 应用 / empirical 论文：`[short_name].experiments.md`
-   - survey / framework / benchmark / taxonomy / dataset 论文：`[short_name].analysis.md`
-
-按需生成：
-4. `[short_name].full.md`
+1. 所有论文默认生成：
+   - `[short_name].sections.md`
+   - `[short_name].refs.md`
+2. 第三缓存按论文类型分流：
+   - empirical / method / application 论文：`[short_name].experiments.md`
+   - survey / framework / benchmark / taxonomy / dataset / benchmark-landscape 论文：`[short_name].analysis.md`
+3. theoretical / position 论文不生成第三缓存，除非本体规范后续明确扩展
 
 生成要求：
-- `sections.md` 是默认分析入口
-- `refs.md` 服务引用关系与方法演化
-- `experiments.md` 仅用于实验、消融、效率、泛化信息
-- `analysis.md` 用于综述统计、landscape、阶段分析、software-gap 分析、framework 支撑证据或 benchmark 设计分析
-- `full.md` 是高保真工作底稿，不是逐字 OCR 转录，而是面向后续分析复用的高保真重写版
+- `sections.md` 是默认分析入口，承担章节结构、核心机制与 formal relation 审计所需的最小章节级摘要
+- `refs.md` 服务引用关系、方法演化与上游基线 grounding
+- `experiments.md` 仅用于实验、消融、效率、泛化与 benchmark 结果证据
+- `analysis.md` 仅用于综述统计、landscape、阶段分析、software-gap 分析、framework 支撑证据或 benchmark 设计分析
+- 不生成 `full.md`，也不以长篇高保真重写稿替代 `sections.md`
 
 写缓存时优先遵循 `CLAUDE.md` 中的缓存模板规范。
 
@@ -171,7 +171,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
   - 若该 benchmark 同时明确服务某个核心 Method 的正式评测，也应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`
   - survey / framework / taxonomy / dataset / benchmark 类型论文若无统一 benchmark，不生成 `evaluated_on`，并在最终输出中显式写明“按规范豁免”
 - `sourced_from`：
-  - 只要本次生成了 `sections.md`、`refs.md`、`experiments.md`、`analysis.md`、`full.md` 任一 Evidence 缓存，就必须同步登记 `[[Evidence]] --sourced_from--> [[RawSource]]`
+  - 只要本次生成了 `sections.md`、`refs.md`、`experiments.md`、`analysis.md` 任一 Evidence 缓存，就必须同步登记 `[[Evidence]] --sourced_from--> [[RawSource]]`
 
 ## 异常结构检测
 以下情况说明当前论文可能不适合直接套用标准模板：
@@ -201,7 +201,6 @@ generated_caches:
   - intermediate/papers/<short_name>.sections.md
   - intermediate/papers/<short_name>.refs.md
   - intermediate/papers/<short_name>.experiments.md | intermediate/papers/<short_name>.analysis.md
-  - intermediate/papers/<short_name>.full.md (optional, generated when deep cross-section tracing is needed)
 updated_pages:
   - wiki/papers/...
   - wiki/methods/...
@@ -229,7 +228,7 @@ skill_update_signals:
 ```
 
 解释：
-- `success`：基础缓存、正式页面与应有关系账本更新都已完成，且结构适配良好；如生成了 `full.md`，它作为高复用增强缓存计入 `generated_caches`。
+- `success`：基础缓存、正式页面与应有关系账本更新都已完成，且结构适配良好。
 - `partial`：完成了大部分工作，但某些页面、字段或正式关系账本仍需人工补充。
 - `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围。
 - `relation_candidates`：必须显式列出本次论文直接支撑或高置信支持的 formal relation 候选，供后续 relation reconciliation 使用。
@@ -255,7 +254,7 @@ skill_update_signals:
 - `处理论文：raw/PathMind.pdf，重点看方法演化`
 
 预期：
-- 生成 4 个缓存
+- 生成 3 个缓存（`sections`、`refs`、`experiments`）
 - 创建/更新 paper + method + concept + scenario + relation 页面
 - 重点输出 PathMind 相对 RoG / GCR / EPERM 的演化关系
 

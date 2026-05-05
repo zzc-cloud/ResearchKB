@@ -2,7 +2,7 @@
 title: PathMind: A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models
 short_name: PathMind
 source_pdf: /Users/yyzz/Desktop/MyClaudeCode/ResearchKB/raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf
-cache_type: references
+cache_type: refs
 status: parsed
 ---
 

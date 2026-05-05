@@ -1,3 +1,8 @@
+> 本页是正式关系账本：维护 `targets_task` 实例边。默认问答优先读取任务页或方法页；只有在任务映射治理、修复、审计或真源核对时优先读取本页。
+>
+> 相关对象域：[[../tasks/index|tasks/index]]、[[../methods/index|methods/index]]、[[../papers/index|papers/index]]
+> 相关证据入口：[[evidence_index]]
+
 ## `targets_task` 实例边
 - `[[PathMind]] --targets_task--> [[knowledge-graph-reasoning]]`
   - reason: PathMind 以知识图谱推理为核心任务定位。
@@ -14,6 +19,9 @@
 - `[[ToG]] --targets_task--> [[knowledge-graph-reasoning]]`
   - reason: ToG 面向知识图谱推理任务。
   - evidence: [[intermediate/papers/PathMind.refs|PathMind.refs]] §4
+- `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[knowledge-graph-reasoning]]`
+  - reason: 论文以知识图谱推理作为核心问题设定与验证任务之一。
+  - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7
 - `[[PathMind]] --targets_task--> [[kgqa]]`
   - reason: PathMind 在知识图谱问答场景中验证方法有效性。
   - evidence: [[intermediate/papers/PathMind.sections|PathMind.sections]] §1、§7

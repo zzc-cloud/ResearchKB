@@ -1,3 +1,8 @@
+> 本页是正式关系账本：维护 `cites` 实例边。默认问答优先读取 `wiki/papers/index.md` → 论文页；只有在治理、修复、审计或 formal truth 核对时优先读取本页。
+>
+> 相关对象域：[[../papers/index|papers/index]]
+> 相关证据入口：[[evidence_index]]
+
 ## `cites` 实例边
 - `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]`
   - reason: 方法借鉴，作为 retrieval-augmented 路径推理代表工作。

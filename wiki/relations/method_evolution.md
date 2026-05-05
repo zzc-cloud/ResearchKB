@@ -1,3 +1,8 @@
+> 本页是正式关系账本：维护 `based_on` / `improves_on` 实例边。默认问答优先读取 `wiki/methods/index.md` → 方法页；只有在演化链治理、修复、审计或真源核对时优先读取本页。
+>
+> 相关对象域：[[../methods/index|methods/index]]
+> 相关证据入口：[[evidence_index]]
+
 ## `based_on` / `improves_on` 实例边
 - `[[路径导向知识图谱推理]] --based_on--> [[检索增强式知识图谱推理]]`
   - reason: 路径导向路线建立在检索增强式知识图谱推理范式之上。

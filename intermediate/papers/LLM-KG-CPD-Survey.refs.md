@@ -2,7 +2,7 @@
 title: A survey of large language model-augmented knowledge graphs for advanced complex product design
 short_name: LLM-KG-CPD-Survey
 source_pdf: /Users/yyzz/Desktop/MyClaudeCode/ResearchKB/raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf
-cache_type: references
+cache_type: refs
 status: parsed
 venue: Journal of Manufacturing Systems
 year: 2025

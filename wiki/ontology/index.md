@@ -16,31 +16,31 @@
 - [[benchmark_links]]
 - [[provenance_links]]
 
-## 3. 正式知识对象入口
-- Papers：`wiki/papers/`
-- Methods：`wiki/methods/`
-- Concepts：`wiki/concepts/`
-- Tasks：`wiki/tasks/`
-- Scenarios：`wiki/scenarios/`
-- Benchmarks：`wiki/benchmarks/`
+## 3. 正式知识对象域入口
+- Papers：[[../papers/index|wiki/papers/index.md]]
+- Methods：[[../methods/index|wiki/methods/index.md]]
+- Concepts：[[../concepts/index|wiki/concepts/index.md]]
+- Tasks：[[../tasks/index|wiki/tasks/index.md]]
+- Scenarios：[[../scenarios/index|wiki/scenarios/index.md]]
+- Benchmarks：[[../benchmarks/index|wiki/benchmarks/index.md]]
 
 ## 4. 按任务进入
-- 想做受约束知识问答 → 先定位 serving-ready 对象页（`wiki/papers/`、`wiki/methods/`、`wiki/concepts/`、`wiki/tasks/`、`wiki/scenarios/`、`wiki/benchmarks/`、`intermediate/papers/`），再按页面中的 Formal relations 区块扩展；需要证据细节时优先下钻对应 Evidence 页
+- 想做受约束知识问答 → 先进入对应 `wiki/<对象域>/index.md` 锁定正式对象，再读取 serving-ready 对象页，并按 `Formal relations` 扩展；需要证据细节时再下钻对应 Evidence 页
 - 想判断节点或关系是否合法 → [[graph-standard]]
-- 想看正式对象知识 → 对应 `wiki/` 对象页或 Evidence 页
-- 想看治理用正式关系账本 → `wiki/relations/`
+- 想看正式对象知识 → 对应对象域 index → 对象页
+- 想看治理用正式关系账本 → 对应 `wiki/relations/*.md`
 - 想核验证据 → `intermediate/papers/`
 - 想生成综述或趋势分析 → `docs/`
 
 ## 5. 推荐阅读路径
 ### 初次进入系统
-[[graph-standard]] → `wiki/relations/` → 代表对象页 → `intermediate/papers/`
+[[graph-standard]] → 本页 → 对应对象域 index → 代表对象页 → 必要时 Evidence / relation ledger
 
 ### 回答知识问题
-serving-ready 对象页 → Formal relations 区块 → 邻接对象页 / Evidence 页 → 必要时治理账本
+对象域 index → serving-ready 对象页 → `Formal relations` → 邻接对象页 / Evidence 页 → 必要时 relation ledger
 
 ### 治理知识变更
-[[graph-standard]] → `wiki/relations/` → 变更对象页 / Evidence 页 → `intermediate/papers/`
+[[graph-standard]] → relation ledger → 变更对象页 / Evidence 页 → 必要时对象域 index 回链
 
 ## 6. 说明
 - 本页负责导航，不负责规范定义。

@@ -1,3 +1,8 @@
+> 本页是正式关系账本：维护 `supported_by` 实例边。默认问答优先读取对象页；只有在证据绑定核对、治理、修复或审计时优先读取本页。
+>
+> 相关对象域：[[../papers/index|papers/index]]、[[../methods/index|methods/index]]、[[../concepts/index|concepts/index]]、[[../tasks/index|tasks/index]]、[[../scenarios/index|scenarios/index]]、[[../benchmarks/index|benchmarks/index]]
+> 相关 provenance 入口：[[provenance_links]]
+
 ## `supported_by` 实例边
 - `[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --supported_by--> [[intermediate/papers/PathMind.sections|PathMind.sections]]`
   - reason: 方法机制证据。

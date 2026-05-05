@@ -9,6 +9,12 @@ research_role: [benchmark]
 tags: [benchmark, KGQA, 多跳问答]
 ---
 
+> 导航：返回 [[index|benchmarks/index]]；相关对象域 [[../tasks/index|tasks/index]]、[[../methods/index|methods/index]]、[[../papers/index|papers/index]]、[[../scenarios/index|scenarios/index]]。
+>
+> 相关 relation ledger：[[../relations/benchmark_links|benchmark_links]]、[[../relations/task_method_map|task_method_map]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready benchmark 入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 基准定义
 面向知识图谱问答的经典评测基准，用于衡量方法在结构化图问答任务中的答案命中率与推理质量。
 
@@ -27,9 +33,6 @@ tags: [benchmark, KGQA, 多跳问答]
 ## 证据来源
 - [[evidence_index]]
 - [[intermediate/papers/PathMind.experiments|PathMind.experiments]]
-
-## 证据索引
-- [[evidence_index]]
 
 ## Formal relations
 ### Outgoing

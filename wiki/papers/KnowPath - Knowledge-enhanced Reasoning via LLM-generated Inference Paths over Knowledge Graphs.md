@@ -10,6 +10,12 @@ tags: [placeholder, cited-work, llm-generated-paths]
 status: placeholder
 ---
 
+> 导航：返回 [[index|papers/index]]；相关对象域 [[../methods/index|methods/index]]、[[../concepts/index|concepts/index]]、[[../tasks/index|tasks/index]]、[[../scenarios/index|scenarios/index]]、[[../benchmarks/index|benchmarks/index]]。
+>
+> 相关 relation ledger：[[../relations/paper_method_links|paper_method_links]]、[[../relations/task_method_map|task_method_map]]、[[../relations/concept_links|concept_links]]、[[../relations/benchmark_links|benchmark_links]]、[[../relations/citation_graph|citation_graph]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready 论文入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 当前定位
 - 当前作为 [[PathMind]] 的关键上游工作与“生成路径”路线对比对象。
 

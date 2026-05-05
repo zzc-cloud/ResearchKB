@@ -12,6 +12,12 @@ research_role: [integrated]
 tags: [知识图谱推理, 路径优先化, 可解释推理, LLM]
 ---
 
+> 导航：返回 [[index|methods/index]]；相关对象域 [[../tasks/index|tasks/index]]、[[../concepts/index|concepts/index]]、[[../benchmarks/index|benchmarks/index]]、[[../papers/index|papers/index]]。
+>
+> 相关 relation ledger：[[../relations/method_evolution|method_evolution]]、[[../relations/task_method_map|task_method_map]]、[[../relations/concept_links|concept_links]]、[[../relations/benchmark_links|benchmark_links]]、[[../relations/paper_method_links|paper_method_links]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready 方法入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 方法定义
 > 一种先检索查询相关子图、再优先选择重要推理路径、最后用 LLM 完成知识图谱推理的集成方法。
 

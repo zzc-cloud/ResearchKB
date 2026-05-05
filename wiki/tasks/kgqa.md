@@ -9,6 +9,12 @@ research_role: [application]
 tags: [知识图谱问答, 研究任务]
 ---
 
+> 导航：返回 [[index|tasks/index]]；相关对象域 [[../methods/index|methods/index]]、[[../concepts/index|concepts/index]]、[[../benchmarks/index|benchmarks/index]]、[[../scenarios/index|scenarios/index]]、[[../papers/index|papers/index]]。
+>
+> 相关 relation ledger：[[../relations/task_method_map|task_method_map]]、[[../relations/concept_links|concept_links]]、[[../relations/benchmark_links|benchmark_links]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready 任务入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 任务定义
 以自然语言问题为输入，在知识图谱中定位相关实体、关系与证据路径，并输出答案及其支撑依据的问答任务。
 
@@ -43,10 +49,6 @@ tags: [知识图谱问答, 研究任务]
 - 方法映射：[[task_method_map]]
 - 证据索引：[[evidence_index]]
 - 结构化证据：[[intermediate/papers/PathMind.sections|PathMind.sections]]
-
-## 关系索引
-- 方法映射：[[task_method_map]]
-- 证据索引：[[evidence_index]]
 
 ## Formal relations
 ### Outgoing

@@ -13,6 +13,12 @@ tags: [知识图谱推理, LLM, 多跳问答, 路径优先化, 可解释推理]
 status: processed
 ---
 
+> 导航：返回 [[index|papers/index]]；相关对象域 [[../methods/index|methods/index]]、[[../concepts/index|concepts/index]]、[[../tasks/index|tasks/index]]、[[../scenarios/index|scenarios/index]]、[[../benchmarks/index|benchmarks/index]]。
+>
+> 相关 relation ledger：[[../relations/paper_method_links|paper_method_links]]、[[../relations/task_method_map|task_method_map]]、[[../relations/concept_links|concept_links]]、[[../relations/benchmark_links|benchmark_links]]、[[../relations/citation_graph|citation_graph]]、[[../relations/evidence_index|evidence_index]]。
+>
+> 本页是默认 serving-ready 论文入口；formal graph truth 以 relation ledger 为准，证据细节下钻 `intermediate/papers/`。
+
 ## 核心问题
 > 这篇论文解决如何让大语言模型在知识图谱推理中既保持较高准确率，又减少噪声路径干扰，并提供更忠实、可解释的推理证据。
 
