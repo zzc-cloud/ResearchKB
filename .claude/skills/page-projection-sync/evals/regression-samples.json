@@ -9,6 +9,10 @@
     ],
     "quality_checks": [
       "must update parent_methods and child_methods when affected",
+      "must emit semi-expanded projection lines with explicit document paths",
+      "must include fixed role sentences after Outgoing and Incoming headings",
+      "must project edge_semantics and evidence for every relation instance",
+      "must keep repeated neighbor relations separate when edge_semantics or evidence differ",
       "must keep interpretive prose untouched",
       "must report manual followups if prose still needs human review"
     ]

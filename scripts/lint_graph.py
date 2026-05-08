@@ -6,206 +6,45 @@ ROOT = Path(__file__).resolve().parent.parent
 WIKILINK_RE = re.compile(r"\[\[[^\]]+\]\]")
 
 REQUIRED_DIRECTORIES = [
-    'wiki/tasks',
-    'wiki/benchmarks',
-    'wiki/ontology',
-    'wiki/relations',
-    'intermediate/papers',
+    'ontology/entities/tasks',
+    'ontology/entities/benchmarks',
+    'ontology/entities/papers',
+    'ontology/entities/methods',
+    'ontology/entities/concepts',
+    'ontology/entities/scenarios',
+    'ontology/relations',
+    'ontology/entities/evidence',
+    'ontology/entities/raw-sources',
     'scripts',
 ]
 
 REQUIRED_FILES = [
-    'wiki/ontology/graph-standard.md',
-    'wiki/relations/citation_graph.md',
-    'wiki/relations/method_evolution.md',
-    'wiki/relations/concept_links.md',
-    'wiki/relations/task_method_map.md',
-    'wiki/relations/evidence_index.md',
-    'wiki/relations/paper_method_links.md',
-    'wiki/relations/benchmark_links.md',
-    'wiki/relations/provenance_links.md',
+    'ontology/graph-standard.md',
+    'ontology/log.md',
+    'ontology/entities/benchmarks/index.md',
+    'ontology/relations/cites.md',
+    'ontology/relations/proposes.md',
+    'ontology/relations/based_on.md',
+    'ontology/relations/targets_task.md',
+    'ontology/relations/uses_concept.md',
+    'ontology/relations/evaluated_on.md',
+    'ontology/relations/supported_by.md',
+    'ontology/relations/sourced_from.md',
     'scripts/lint_graph.py',
 ]
 
-PHASE_ONE_CORE_PAGES = {
-    'wiki/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md': {
-        'links': [
-            '[[PathMind',
-            '[[路径优先化]]',
-            '[[重要推理路径]]',
-            '[[knowledge-graph-reasoning]]',
-            '[[kgqa]]',
-            '[[multi-hop-qa]]',
-            '[[WebQSP]]',
-            '[[CWQ]]',
-            '[[intermediate/papers/PathMind.sections',
-        ],
-        'sections': ['## 与知识库其他内容的关联', '## 证据来源'],
-    },
-    'wiki/methods/PathMind.md': {
-        'links': [
-            '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]',
-            '[[路径优先化]]',
-            '[[重要推理路径]]',
-            '[[知识图谱推理问答]]',
-            '[[knowledge-graph-reasoning]]',
-            '[[WebQSP]]',
-            '[[intermediate/papers/PathMind.sections',
-        ],
-        'sections': ['## 方法演化位置', '## 证据来源'],
-    },
-    'wiki/concepts/路径优先化.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[knowledge-graph-reasoning]]',
-            '[[知识图谱推理问答]]',
-            '[[concept_links]]',
-            '[[intermediate/papers/PathMind.sections',
-        ],
-        'sections': ['## 与其他概念的关系', '## 证据来源'],
-    },
-    'wiki/concepts/重要推理路径.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[知识图谱推理问答]]',
-            '[[knowledge-graph-reasoning]]',
-            '[[concept_links]]',
-            '[[intermediate/papers/PathMind.sections',
-        ],
-        'sections': ['## 与其他概念的关系', '## 证据来源'],
-    },
-    'wiki/scenarios/知识图谱推理问答.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[RoG]]',
-            '[[GCR]]',
-            '[[knowledge-graph-reasoning]]',
-            '[[kgqa]]',
-            '[[multi-hop-qa]]',
-            '[[WebQSP]]',
-            '[[CWQ]]',
-            '[[intermediate/papers/PathMind.sections',
-        ],
-        'sections': ['## 相关任务', '## 证据来源'],
-    },
-    'wiki/tasks/knowledge-graph-reasoning.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[知识图谱推理问答]]',
-            '[[task_method_map]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
-    },
-    'wiki/tasks/kgqa.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[知识图谱推理问答]]',
-            '[[task_method_map]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
-    },
-    'wiki/tasks/multi-hop-qa.md': {
-        'links': [
-            '[[PathMind]]',
-            '[[知识图谱推理问答]]',
-            '[[task_method_map]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关方法', '## 证据来源 / 关系索引'],
-    },
-    'wiki/benchmarks/WebQSP.md': {
-        'links': [
-            '[[kgqa]]',
-            '[[multi-hop-qa]]',
-            '[[PathMind]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关任务', '## 证据来源'],
-    },
-    'wiki/benchmarks/CWQ.md': {
-        'links': [
-            '[[kgqa]]',
-            '[[multi-hop-qa]]',
-            '[[PathMind]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关任务', '## 证据来源'],
-    },
-    'wiki/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md': {
-        'links': [
-            '[[复杂产品设计中的LLM-KG协同框架]]',
-            '[[LLM增强知识图谱]]',
-            '[[engineering-design-knowledge-management]]',
-            '[[复杂产品设计]]',
-            '[[intermediate/papers/LLM-KG-CPD-Survey.analysis',
-        ],
-        'sections': ['## 核心方法 / 框架', '## 证据来源'],
-    },
-    'wiki/scenarios/复杂产品设计.md': {
-        'links': [
-            '[[复杂产品设计中的LLM-KG协同框架]]',
-            '[[LLM增强知识图谱]]',
-            '[[engineering-design-knowledge-management]]',
-            '[[intermediate/papers/LLM-KG-CPD-Survey.analysis',
-        ],
-        'sections': ['## 使用的主要方法 / 框架 / 概念', '## 证据来源'],
-    },
-    'wiki/concepts/LLM增强知识图谱.md': {
-        'links': [
-            '[[复杂产品设计中的LLM-KG协同框架]]',
-            '[[复杂产品设计]]',
-            '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]]',
-            '[[intermediate/papers/LLM-KG-CPD-Survey.sections',
-        ],
-        'sections': ['## 与其他概念的关系', '## 证据来源'],
-    },
-    'wiki/concepts/复杂产品设计中的LLM-KG协同框架.md': {
-        'links': [
-            '[[LLM增强知识图谱]]',
-            '[[复杂产品设计]]',
-            '[[engineering-design-knowledge-management]]',
-            '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]]',
-            '[[intermediate/papers/LLM-KG-CPD-Survey.sections',
-        ],
-        'sections': ['## 与其他概念的关系', '## 证据来源'],
-    },
-    'wiki/tasks/engineering-design-knowledge-management.md': {
-        'links': [
-            '[[复杂产品设计中的LLM-KG协同框架]]',
-            '[[复杂产品设计]]',
-            '[[evidence_index]]',
-        ],
-        'sections': ['## 相关框架 / 概念', '## 证据来源 / 关系索引'],
-    },
-}
-
-PHASE_ONE_EVIDENCE_CACHES = {
-    'method': [
-        'intermediate/papers/PathMind.sections.md',
-        'intermediate/papers/PathMind.refs.md',
-        'intermediate/papers/PathMind.experiments.md',
-    ],
-    'survey': [
-        'intermediate/papers/LLM-KG-CPD-Survey.sections.md',
-        'intermediate/papers/LLM-KG-CPD-Survey.refs.md',
-        'intermediate/papers/LLM-KG-CPD-Survey.analysis.md',
-    ],
-}
-
-FORMAL_PAPER = '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]'
-SURVEY_PAPER = '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]]'
 CLAUDE_NEEDLES = [
-    'tasks/',
-    'benchmarks/',
-    'wiki/ontology/',
-    'wiki/relations/',
+    'ontology/entities/tasks/',
+    'ontology/entities/benchmarks/',
+    'ontology/graph-standard.md',
+    'ontology/relations/',
     'python3 scripts/lint_graph.py',
 ]
+
 PIPELINE_SKILL_FILES = [
     '.claude/skills/relation-reconciliation/SKILL.md',
     '.claude/skills/page-projection-sync/SKILL.md',
+    '.claude/skills/index-sync/SKILL.md',
 ]
 
 PAPER_INGEST_NEEDLES = [
@@ -213,59 +52,67 @@ PAPER_INGEST_NEEDLES = [
     'relation_exemptions',
     'relation-reconciliation',
     'page-projection-sync',
+    'index-sync',
 ]
 
 DAILY_INGEST_CHAIN_NEEDLES = [
     'relation-reconciliation',
     'page-projection-sync',
+    'index-sync',
     'ontology-semantic-review',
     'serving-governance-review',
 ]
+
+INDEX_SYNC_NEEDLES = [
+    '# Index Sync',
+    '受管区块',
+    'synced_indexes',
+    'skipped_pages',
+    'manual_followups',
+]
+
 GRAPH_STANDARD_NEEDLES = [
     'analysis.md',
     'experiments.md',
     '`cache_type` 使用 `sections` / `refs` / `experiments` / `analysis`',
     '方法机制优先绑定 `sections.md`。',
-    'paper_method_links.md',
-    'benchmark_links.md',
-    'provenance_links.md',
-    '`wiki/relations/paper_method_links.md`：维护 `proposes`',
-    '`wiki/relations/benchmark_links.md`：维护 `evaluated_on`',
-    '`wiki/relations/evidence_index.md`：维护 `supported_by`',
-    '`wiki/relations/provenance_links.md`：维护 `sourced_from`',
+    '`ontology/relations/proposes.md`：维护 `proposes`',
+    '`ontology/relations/evaluated_on.md`：维护 `evaluated_on`',
+    '`ontology/relations/supported_by.md`：维护 `supported_by`',
+    '`ontology/relations/sourced_from.md`：维护 `sourced_from`',
+    '## Index 导航投影层',
+    '`index-sync`',
+    '可被 index 收录',
+    '默认 serving 入口',
 ]
-INDEX_NEEDLES = [
-    '[[graph-standard]]',
-    '[[paper_method_links]]',
-    '[[benchmark_links]]',
-    '[[provenance_links]]',
+SERVING_GOVERNANCE_NEEDLES = [
+    'domain index pages',
+    'default navigation/QA entry surfaces',
 ]
-NAVIGATION_ENTRY_PATH = 'wiki/ontology/index.md'
-RELATION_LEDGER_NEEDLES = {
-    'wiki/relations/paper_method_links.md': [
-        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --proposes--> [[PathMind]]',
-        '[[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --proposes--> [[复杂产品设计中的LLM-KG协同框架]]',
-    ],
-    'wiki/relations/benchmark_links.md': [
-        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]',
-        '[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[CWQ]]',
-        '[[PathMind]] --evaluated_on--> [[WebQSP]]',
-        '[[PathMind]] --evaluated_on--> [[CWQ]]',
-    ],
-    'wiki/relations/provenance_links.md': [
-        '[[intermediate/papers/PathMind.sections|PathMind.sections]] --sourced_from--> [[raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]',
-        '[[intermediate/papers/LLM-KG-CPD-Survey.sections|LLM-KG-CPD-Survey.sections]] --sourced_from--> [[raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf]]',
-    ],
+DOMAIN_INDEX_FILES = [
+    'ontology/entities/papers/index.md',
+    'ontology/entities/methods/index.md',
+    'ontology/entities/concepts/index.md',
+    'ontology/entities/tasks/index.md',
+    'ontology/entities/scenarios/index.md',
+    'ontology/entities/benchmarks/index.md',
+    'ontology/entities/evidence/index.md',
+    'ontology/entities/raw-sources/index.md',
+]
+
+INDEX_MANAGED_BLOCKS = {
+    'ontology/entities/papers/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/methods/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/concepts/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/tasks/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/scenarios/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/benchmarks/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/evidence/index.md': ['navigation-entries', 'non-serving-placeholders'],
+    'ontology/entities/raw-sources/index.md': ['navigation-entries'],
 }
 
-PLACEHOLDER_PAPERS = {
-    'wiki/papers/Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning.md',
-    'wiki/papers/Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models.md',
-    'wiki/papers/An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering.md',
-    'wiki/papers/Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs.md',
-    'wiki/papers/Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation.md',
-    'wiki/papers/KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs.md',
-}
+INDEX_ENTRY_PATH_RE = re.compile(r'（文档：`(?P<doc>[^`]+)`）：\[\[(?P<link>[^\]]+)\]\]')
+ALLOWED_EVIDENCE_CACHE_TYPES = {'sections', 'refs', 'experiments', 'analysis'}
 
 SERVING_TYPE_RULES = {
     'paper': {
@@ -298,66 +145,6 @@ SERVING_TYPE_RULES = {
     },
 }
 
-SERVING_READY_SAMPLES = {
-    'wiki/methods/PathMind.md': {
-        'page_type': 'method',
-        'expected_frontmatter': {'parent_methods': ['路径导向知识图谱推理'], 'child_methods': []},
-        'required_edges': [
-            ('PathMind', 'based_on', '路径导向知识图谱推理'),
-            ('PathMind', 'improves_on', '路径导向知识图谱推理'),
-            ('PathMind', 'targets_task', 'knowledge-graph-reasoning'),
-            ('PathMind', 'targets_task', 'kgqa'),
-            ('PathMind', 'targets_task', 'multi-hop-qa'),
-            ('PathMind', 'uses_concept', '路径优先化'),
-            ('PathMind', 'uses_concept', '重要推理路径'),
-            ('PathMind', 'applies_to', '知识图谱推理问答'),
-            ('PathMind', 'evaluated_on', 'WebQSP'),
-            ('PathMind', 'evaluated_on', 'CWQ'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'proposes', 'PathMind'),
-        ],
-    },
-    'wiki/methods/RoG.md': {
-        'page_type': 'method',
-        'expected_frontmatter': {'parent_methods': ['路径导向知识图谱推理'], 'child_methods': []},
-        'required_edges': [
-            ('RoG', 'based_on', '路径导向知识图谱推理'),
-            ('RoG', 'improves_on', '路径导向知识图谱推理'),
-            ('RoG', 'targets_task', 'knowledge-graph-reasoning'),
-            ('RoG', 'targets_task', 'kgqa'),
-            ('RoG', 'targets_task', 'multi-hop-qa'),
-        ],
-    },
-    'wiki/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md': {
-        'page_type': 'paper',
-        'expected_frontmatter': {},
-        'required_edges': [
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'proposes', 'PathMind'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'knowledge-graph-reasoning'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'kgqa'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'targets_task', 'multi-hop-qa'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'uses_concept', '路径优先化'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'uses_concept', '重要推理路径'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'evaluated_on', 'WebQSP'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'evaluated_on', 'CWQ'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'cites', 'KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.sections|PathMind.sections'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.experiments|PathMind.experiments'),
-            ('PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models', 'supported_by', 'intermediate/papers/PathMind.refs|PathMind.refs'),
-        ],
-    },
-    'wiki/concepts/路径优先化.md': {'page_type': 'concept', 'expected_frontmatter': {}, 'required_edges': []},
-    'wiki/tasks/knowledge-graph-reasoning.md': {'page_type': 'task', 'expected_frontmatter': {}, 'required_edges': []},
-    'wiki/scenarios/知识图谱推理问答.md': {'page_type': 'scenario', 'expected_frontmatter': {}, 'required_edges': []},
-    'wiki/benchmarks/WebQSP.md': {'page_type': 'benchmark', 'expected_frontmatter': {}, 'required_edges': []},
-    'intermediate/papers/PathMind.sections.md': {'page_type': 'evidence', 'expected_frontmatter': {}, 'required_edges': []},
-}
-
-ALLOWED_EVIDENCE_CACHE_TYPES = {'sections', 'refs', 'experiments', 'analysis'}
 FORBIDDEN_FULL_REFERENCE_NEEDLES = (
     '.full|',
     '.full]]',
@@ -365,18 +152,76 @@ FORBIDDEN_FULL_REFERENCE_NEEDLES = (
     '高保真工作底稿',
 )
 FULL_REFERENCE_SCAN_PATHS = [
-    ROOT / 'wiki',
-    ROOT / 'intermediate' / 'papers',
+    ROOT / 'ontology',
+    ROOT / 'ontology' / 'entities' / 'evidence',
     ROOT / '.claude' / 'skills',
     ROOT / 'CLAUDE.md',
 ]
 FULL_REFERENCE_SCAN_SUFFIXES = {
-    ROOT / 'wiki': ('.md',),
-    ROOT / 'intermediate' / 'papers': ('.md',),
+    ROOT / 'ontology': ('.md',),
+    ROOT / 'ontology' / 'entities' / 'evidence': ('.md',),
     ROOT / '.claude' / 'skills': ('.md', '.json'),
 }
 
-FORMAL_RELATION_RE = re.compile(r"- `\[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`]+)--> \[\[(?P<dst>[^\]]+)\]\]`")
+FORMAL_RELATION_RE = re.compile(r"- \[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`\n]+)--> \[\[(?P<dst>[^\]]+)\]\]")
+LEGACY_FULL_EDGE_RE = re.compile(r"- `\[\[(?P<src>[^\]]+)\]\] --(?P<rel>[^`]+)--> \[\[(?P<dst>[^\]]+)\]\]`")
+SEMI_EXPANDED_RELATION_RE = re.compile(
+    r"- `(?P<rel>[^`]+)`：(?P<label>[^（]+)（文档：`(?P<doc>[^`]+)`）：\[\[(?P<link_target>[^\]|]+)(?:\|(?P<link_label>[^\]]+))?\]\]"
+)
+BODY_WIKILINK_RE = re.compile(r"\[\[(?P<link>[^\]]+)\]\]")
+RELATION_CHILD_FIELD_ORDER = [
+    'source_path',
+    'target_path',
+    'edge_semantics',
+    'evidence',
+    'evidence_link',
+    'evidence_path',
+]
+RELATION_LEDGER_FILES = [
+    'ontology/relations/cites.md',
+    'ontology/relations/proposes.md',
+    'ontology/relations/based_on.md',
+    'ontology/relations/targets_task.md',
+    'ontology/relations/uses_concept.md',
+    'ontology/relations/evaluated_on.md',
+    'ontology/relations/supported_by.md',
+    'ontology/relations/sourced_from.md',
+]
+ROLE_SENTENCE_BY_HEADING = {
+    '### Outgoing': [
+        '当前对象作为 source；以下列出当前对象指向的邻接对象。',
+        '当前对象作为 source；以下列出当前对象指向的 relation 实例。',
+    ],
+    '### Incoming': [
+        '当前对象作为 target；以下列出指向当前对象的邻接对象。',
+        '当前对象作为 target；以下列出指向当前对象的 relation 实例。',
+    ],
+}
+SUPPORTED_BY_ALLOWED_SOURCES = {'Method', 'Concept', 'Task', 'Scenario', 'Benchmark'}
+ENTITY_TITLE_TO_TYPE = {
+    'PathMind': 'Method',
+    '路径优先化': 'Concept',
+    '重要推理路径': 'Concept',
+    'knowledge-graph-reasoning': 'Task',
+    'kgqa': 'Task',
+    'multi-hop-qa': 'Task',
+    '知识图谱推理问答': 'Scenario',
+    'WebQSP': 'Benchmark',
+    'CWQ': 'Benchmark',
+    'PathMind.sections': 'Evidence',
+    'PathMind.refs': 'Evidence',
+    'PathMind.experiments': 'Evidence',
+    'PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models': 'Paper',
+}
+ENTITY_DIRS_BY_TYPE = {
+    'Paper': ROOT / 'ontology' / 'entities' / 'papers',
+    'Method': ROOT / 'ontology' / 'entities' / 'methods',
+    'Concept': ROOT / 'ontology' / 'entities' / 'concepts',
+    'Task': ROOT / 'ontology' / 'entities' / 'tasks',
+    'Scenario': ROOT / 'ontology' / 'entities' / 'scenarios',
+    'Benchmark': ROOT / 'ontology' / 'entities' / 'benchmarks',
+    'Evidence': ROOT / 'ontology' / 'entities' / 'evidence',
+}
 FRONTMATTER_FIELD_RE = re.compile(r'^(?P<key>[a-z_]+):\s*(?P<value>.+)$', re.MULTILINE)
 
 
@@ -401,6 +246,39 @@ def split_frontmatter(text: str) -> tuple[dict[str, list[str] | str], str]:
     return data, body
 
 
+def extract_legacy_full_edge_lines(text: str) -> list[str]:
+    if '## Formal relations' not in text:
+        return []
+    _, formal_tail = text.split('## Formal relations', 1)
+    next_heading = formal_tail.find('\n## ')
+    formal_block = formal_tail if next_heading == -1 else formal_tail[:next_heading]
+    return [line.strip() for line in formal_block.splitlines() if LEGACY_FULL_EDGE_RE.match(line.strip())]
+
+
+def extract_projected_links(text: str) -> dict[str, set[str]]:
+    if '## Formal relations' not in text:
+        return {'Outgoing': set(), 'Incoming': set()}
+    _, formal_tail = text.split('## Formal relations', 1)
+    next_heading = formal_tail.find('\n## ')
+    formal_block = formal_tail if next_heading == -1 else formal_tail[:next_heading]
+    result = {'Outgoing': set(), 'Incoming': set()}
+    current = None
+    for raw_line in formal_block.splitlines():
+        line = raw_line.strip()
+        if line == '### Outgoing':
+            current = 'Outgoing'
+            continue
+        if line == '### Incoming':
+            current = 'Incoming'
+            continue
+        if current and (match := SEMI_EXPANDED_RELATION_RE.match(line)):
+            link = match.group('link_target')
+            if match.group('link_label'):
+                link = f"{link}|{match.group('link_label')}"
+            result[current].add(link)
+    return result
+
+
 def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
     if '## Formal relations' not in text:
         return []
@@ -411,6 +289,151 @@ def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
     for match in FORMAL_RELATION_RE.finditer(formal_block):
         edges.append((match.group('src'), match.group('rel'), match.group('dst')))
     return edges
+
+
+def extract_managed_block(text: str, name: str) -> str | None:
+    start = f'<!-- BEGIN MANAGED BLOCK:{name} -->'
+    end = f'<!-- END MANAGED BLOCK:{name} -->'
+    if start not in text or end not in text:
+        return None
+    return text.split(start, 1)[1].split(end, 1)[0]
+
+
+def extract_ledger_edges(text: str) -> list[tuple[str, str, str]]:
+    edges: list[tuple[str, str, str]] = []
+    for match in FORMAL_RELATION_RE.finditer(text):
+        edges.append((match.group('src'), match.group('rel'), match.group('dst')))
+    return edges
+
+
+def extract_relation_ledger_blocks(text: str) -> tuple[str, str] | None:
+    if '## 关系语义说明' not in text or '## 实例边' not in text:
+        return None
+    semantic_block = text.split('## 关系语义说明', 1)[1].split('## 实例边', 1)[0]
+    ledger_block = text.split('## 实例边', 1)[1]
+    return semantic_block, ledger_block
+
+
+def parse_relation_instance_records(text: str) -> list[dict[str, object]]:
+    blocks = extract_relation_ledger_blocks(text)
+    if blocks is None:
+        return []
+    _semantic_block, ledger_block = blocks
+    records: list[dict[str, object]] = []
+    current: dict[str, object] | None = None
+    for raw_line in ledger_block.splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if not stripped or stripped == '- 无':
+            continue
+        if stripped.startswith('- [[') and '--' in stripped:
+            match = FORMAL_RELATION_RE.match(stripped)
+            if not match:
+                continue
+            current = {
+                'main_line': stripped,
+                'src': match.group('src'),
+                'rel': match.group('rel'),
+                'dst': match.group('dst'),
+                'fields': [],
+            }
+            records.append(current)
+            continue
+        if current is not None and stripped.startswith('- '):
+            field_line = stripped[2:]
+            if ': ' not in field_line:
+                continue
+            key, value = field_line.split(': ', 1)
+            current['fields'].append((key, value))
+    return records
+
+
+def collect_relation_page_wikilinks(text: str) -> list[str]:
+    return [match.group('link') for match in BODY_WIKILINK_RE.finditer(text)]
+
+
+def validate_relation_ledger(rel: str, text: str) -> list[str]:
+    errors: list[str] = []
+    blocks = extract_relation_ledger_blocks(text)
+    if blocks is None:
+        errors.append(f'missing relation ledger sections in {rel}')
+        return errors
+    semantic_block, _ledger_block = blocks
+
+    for match in BODY_WIKILINK_RE.finditer(semantic_block):
+        errors.append(
+            f'forbidden relation-page wikilink outside allowed positions in {rel}: {match.group("link")}'
+        )
+
+    records = parse_relation_instance_records(text)
+    for record in records:
+        field_pairs = record['fields']
+        field_names = [key for key, _value in field_pairs]
+        if field_names != RELATION_CHILD_FIELD_ORDER:
+            errors.append(f'invalid relation child-field order in {rel}')
+            continue
+        field_map = dict(field_pairs)
+        for forbidden_field in ['source_path', 'target_path', 'edge_semantics', 'evidence', 'evidence_path']:
+            if WIKILINK_RE.search(field_map[forbidden_field]):
+                errors.append(
+                    f'forbidden relation-page wikilink outside allowed positions in {rel}: {field_map[forbidden_field]}'
+                )
+    return errors
+
+
+def validate_index_pages(errors: list[str]) -> None:
+    for rel in DOMAIN_INDEX_FILES:
+        path = ROOT / rel
+        if not path.exists():
+            errors.append(f'missing domain index file: {rel}')
+            continue
+        text = read_text(rel)
+        for block_name in INDEX_MANAGED_BLOCKS[rel]:
+            block = extract_managed_block(text, block_name)
+            if block is None:
+                errors.append(f'missing managed block {block_name} in {rel}')
+
+        if '## 5. 相关关系账本' in text:
+            errors.append(f'legacy relation-entry section must be removed from {rel}')
+
+        navigation_block = extract_managed_block(text, 'navigation-entries') or ''
+        placeholder_block = extract_managed_block(text, 'non-serving-placeholders') or ''
+
+        for line in [ln.rstrip() for ln in navigation_block.splitlines() if ln.strip()]:
+            stripped = line.strip()
+            if not stripped.startswith('- '):
+                continue
+            if line.startswith('  - '):
+                continue
+            if '（文档：`' not in stripped or '）：[[' not in stripped:
+                errors.append(f'missing navigation entry document-path format in {rel}: {stripped}')
+                continue
+            if '状态=placeholder' in stripped or '占位节点' in stripped:
+                errors.append(f'placeholder promoted into navigation entries in {rel}: {stripped}')
+            match = INDEX_ENTRY_PATH_RE.search(stripped)
+            if match:
+                target_path = ROOT / match.group('doc')
+                if not target_path.exists():
+                    errors.append(f'missing index entry target file in {rel}: {match.group("doc")}')
+
+        validate_index_entry_projection(navigation_block, rel, errors)
+
+        if 'non-serving-placeholders' in text:
+            for line in [ln.rstrip() for ln in placeholder_block.splitlines() if ln.strip()]:
+                stripped = line.strip()
+                if not stripped.startswith('- '):
+                    continue
+                if line.startswith('  - '):
+                    continue
+                if '（文档：`' not in stripped or '）：[[' not in stripped:
+                    errors.append(f'missing placeholder entry document-path format in {rel}: {stripped}')
+                    continue
+                match = INDEX_ENTRY_PATH_RE.search(stripped)
+                if match:
+                    target_path = ROOT / match.group('doc')
+                    if not target_path.exists():
+                        errors.append(f'missing index entry target file in {rel}: {match.group("doc")}')
+            validate_index_entry_projection(placeholder_block, rel, errors)
 
 
 def check_evidence_cache_types(errors):
@@ -444,19 +467,19 @@ def check_forbidden_full_references(errors):
 
 
 def classify_serving_page(rel: str) -> str | None:
-    if rel.startswith('wiki/papers/'):
+    if rel.startswith('ontology/entities/papers/'):
         return 'paper'
-    if rel.startswith('wiki/methods/'):
+    if rel.startswith('ontology/entities/methods/'):
         return 'method'
-    if rel.startswith('wiki/concepts/'):
+    if rel.startswith('ontology/entities/concepts/'):
         return 'concept'
-    if rel.startswith('wiki/tasks/'):
+    if rel.startswith('ontology/entities/tasks/'):
         return 'task'
-    if rel.startswith('wiki/scenarios/'):
+    if rel.startswith('ontology/entities/scenarios/'):
         return 'scenario'
-    if rel.startswith('wiki/benchmarks/'):
+    if rel.startswith('ontology/entities/benchmarks/'):
         return 'benchmark'
-    if rel.startswith('intermediate/papers/'):
+    if rel.startswith('ontology/entities/evidence/'):
         return 'evidence'
     return None
 
@@ -469,6 +492,150 @@ def validate_serving_structure(rel: str, text: str, page_type: str) -> list[str]
             page_errors.append(f'missing serving heading {heading} in {rel}')
     return page_errors
 
+
+def infer_entity_type_from_name(name: str) -> str | None:
+    if name in ENTITY_TITLE_TO_TYPE:
+        return ENTITY_TITLE_TO_TYPE[name]
+    for entity_type, directory in ENTITY_DIRS_BY_TYPE.items():
+        candidate = directory / f'{name}.md'
+        if candidate.exists():
+            return entity_type
+    return None
+
+
+def extract_non_formal_relations_text(text: str) -> str:
+    if '## Formal relations' not in text:
+        return text
+    before, after = text.split('## Formal relations', 1)
+    next_heading = after.find('\n## ')
+    if next_heading == -1:
+        return before
+    return before + after[next_heading + 1:]
+
+
+def parse_projected_relation_items(text: str) -> list[dict[str, object]]:
+    if '## Formal relations' not in text:
+        return []
+    _, formal_tail = text.split('## Formal relations', 1)
+    next_heading = formal_tail.find('\n## ')
+    formal_block = formal_tail if next_heading == -1 else formal_tail[:next_heading]
+    items: list[dict[str, object]] = []
+    current: dict[str, object] | None = None
+    current_heading = None
+    for raw_line in formal_block.splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if stripped == '### Outgoing':
+            current_heading = 'Outgoing'
+            continue
+        if stripped == '### Incoming':
+            current_heading = 'Incoming'
+            continue
+        if stripped.startswith('- `') and '（文档：`' in stripped and '）：[[' in stripped:
+            current = {'heading': current_heading, 'main_line': stripped, 'fields': []}
+            items.append(current)
+            continue
+        if current is not None and stripped.startswith('- '):
+            field_line = stripped[2:]
+            if ': ' not in field_line:
+                continue
+            key, value = field_line.split(': ', 1)
+            current['fields'].append((key, value))
+    return items
+
+
+def validate_index_entry_projection(block: str, rel: str, errors: list[str]) -> None:
+    lines = [ln.rstrip() for ln in block.splitlines() if ln.strip()]
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        if not line.startswith('- '):
+            i += 1
+            continue
+        child_lines = []
+        j = i + 1
+        while j < len(lines) and lines[j].startswith('  - '):
+            child_lines.append(lines[j].strip())
+            j += 1
+        if not any(cl.startswith('- object_semantics: ') for cl in child_lines):
+            errors.append(f'missing object_semantics projection in {rel}')
+        if not any(cl.startswith('- status: ') for cl in child_lines):
+            errors.append(f'missing status projection in {rel}')
+        i = j
+
+
+def validate_projection_contract(rel: str, text: str) -> list[str]:
+    page_errors: list[str] = []
+    if '## Formal relations' not in text:
+        return page_errors
+
+    formal_block = text.split('## Formal relations', 1)[1]
+    for heading, sentences in ROLE_SENTENCE_BY_HEADING.items():
+        if heading in formal_block and not any(sentence in formal_block for sentence in sentences):
+            page_errors.append(f'missing role sentence {heading} in {rel}')
+
+    if extract_legacy_full_edge_lines(text):
+        page_errors.append(f'legacy full-edge projection found in {rel}')
+
+    projected = extract_projected_links(text)
+    allowed_links = projected['Outgoing'] | projected['Incoming']
+    body = extract_non_formal_relations_text(text)
+    for match in BODY_WIKILINK_RE.finditer(body):
+        link = match.group('link')
+        if link.startswith('#'):
+            continue
+        if link not in allowed_links:
+            page_errors.append(f'body wikilink missing from Formal relations in {rel}: {link}')
+
+    for item in parse_projected_relation_items(text):
+        field_map = dict(item['fields'])
+        if 'edge_semantics' not in field_map:
+            page_errors.append(f'missing edge_semantics field in projected relation item: {rel}')
+        if 'evidence' not in field_map:
+            page_errors.append(f'missing evidence field in projected relation item: {rel}')
+
+    if rel.startswith('ontology/entities/evidence/'):
+        for match in BODY_WIKILINK_RE.finditer(body):
+            target = match.group('link')
+            if target.startswith('../papers/') or target.startswith('ontology/entities/papers/'):
+                page_errors.append(f'Evidence body may not link to Paper: {rel}')
+                break
+
+    return page_errors
+
+
+def validate_supported_by_contract(errors: list[str]) -> None:
+    text = read_text('ontology/relations/supported_by.md')
+    for src, rel, _dst in extract_ledger_edges(text):
+        if rel != 'supported_by':
+            continue
+        source_name = src.split('|', 1)[0]
+        source_type = infer_entity_type_from_name(source_name)
+        if source_type == 'Paper':
+            errors.append(f'Paper may not appear as supported_by source: {source_name}')
+        elif source_type is None:
+            errors.append(f'unknown supported_by source type for {source_name}')
+        elif source_type not in SUPPORTED_BY_ALLOWED_SOURCES:
+            errors.append(f'unsupported supported_by source type for {source_name}: {source_type}')
+
+
+def validate_cited_paper_targets(errors: list[str]) -> None:
+    cites_text = read_text('ontology/relations/cites.md')
+    for _src, rel, dst in extract_ledger_edges(cites_text):
+        if rel != 'cites':
+            continue
+        target_name = dst.split('|', 1)[0]
+        target_path = ROOT / 'ontology' / 'entities' / 'papers' / f'{target_name}.md'
+        if not target_path.exists():
+            errors.append(f'missing cited paper target page: {target_name}')
+            continue
+        target_text = target_path.read_text(encoding='utf-8', errors='ignore')
+        if 'status: placeholder' not in target_text and 'status: processed' not in target_text:
+            errors.append(f'cited paper target missing status marker: {target_name}')
+        if 'status: placeholder' in target_text:
+            for needle in ['## 当前定位', '## 与知识库现有内容的关系', '## 待补充']:
+                if needle not in target_text:
+                    errors.append(f'missing {needle} in cited placeholder paper: {target_name}')
 
 def validate_sample_projection(rel: str, rules: dict[str, object]) -> list[str]:
     text = read_text(rel)
@@ -496,47 +663,6 @@ for rel in REQUIRED_FILES:
     if not (ROOT / rel).exists():
         errors.append(f'missing file: {rel}')
 
-for rel, rules in PHASE_ONE_CORE_PAGES.items():
-    path = ROOT / rel
-    if not path.exists():
-        errors.append(f'missing phase-one core page: {rel}')
-        continue
-    text = read_text(rel)
-    for needle in rules['links']:
-        if needle not in text:
-            errors.append(f'missing link {needle} in {rel}')
-    for section in rules['sections']:
-        if section not in text:
-            errors.append(f'missing section {section} in {rel}')
-
-for rel in PHASE_ONE_EVIDENCE_CACHES['method']:
-    path = ROOT / rel
-    if not path.exists():
-        errors.append(f'missing evidence cache: {rel}')
-        continue
-    text = read_text(rel)
-    if FORMAL_PAPER not in text:
-        errors.append(f'missing formal paper backlink in {rel}')
-    if '[[WebQSP]]' not in text and '[[CWQ]]' not in text:
-        errors.append(f'missing benchmark backlink in {rel}')
-    if '## 对应正式知识节点' not in text:
-        errors.append(f'missing node mapping block in {rel}')
-    if '本节支撑' not in text:
-        errors.append(f'missing evidence intent lines in {rel}')
-
-for rel in PHASE_ONE_EVIDENCE_CACHES['survey']:
-    path = ROOT / rel
-    if not path.exists():
-        errors.append(f'missing survey evidence cache: {rel}')
-        continue
-    text = read_text(rel)
-    if SURVEY_PAPER not in text:
-        errors.append(f'missing survey paper backlink in {rel}')
-    if '## 对应正式知识节点' not in text:
-        errors.append(f'missing node mapping block in {rel}')
-    if '本节支撑' not in text:
-        errors.append(f'missing evidence intent lines in {rel}')
-
 claude_text = read_text('CLAUDE.md')
 for needle in CLAUDE_NEEDLES:
     if needle not in claude_text:
@@ -550,37 +676,43 @@ for needle in PAPER_INGEST_NEEDLES:
 for needle in DAILY_INGEST_CHAIN_NEEDLES:
     if needle not in read_text('CLAUDE.md'):
         errors.append(f'missing {needle} in CLAUDE.md daily ingest chain')
-    if needle in ['ontology-semantic-review', 'serving-governance-review']:
-        if needle not in read_text('.claude/skills/page-projection-sync/SKILL.md'):
-            errors.append(f'missing {needle} in page-projection-sync handoff')
+
+page_projection_text = read_text('.claude/skills/page-projection-sync/SKILL.md')
+for needle in ['index-sync', 'ontology-semantic-review', 'serving-governance-review']:
+    if needle not in page_projection_text:
+        errors.append(f'missing {needle} in page-projection-sync handoff')
 
 if 'page-projection-sync' not in read_text('.claude/skills/relation-reconciliation/SKILL.md'):
     errors.append('missing page-projection-sync in relation-reconciliation handoff')
+
+index_sync_path = ROOT / '.claude/skills/index-sync/SKILL.md'
+if index_sync_path.exists():
+    index_sync_text = read_text('.claude/skills/index-sync/SKILL.md')
+    for needle in INDEX_SYNC_NEEDLES:
+        if needle not in index_sync_text:
+            errors.append(f'missing {needle} in .claude/skills/index-sync/SKILL.md')
 
 for rel in PIPELINE_SKILL_FILES:
     if not (ROOT / rel).exists():
         errors.append(f'missing pipeline skill file: {rel}')
 
-graph_standard_text = read_text('wiki/ontology/graph-standard.md')
+graph_standard_text = read_text('ontology/graph-standard.md')
 for needle in GRAPH_STANDARD_NEEDLES:
     if needle not in graph_standard_text:
-        errors.append(f'missing {needle} in wiki/ontology/graph-standard.md')
+        errors.append(f'missing {needle} in ontology/graph-standard.md')
 
-navigation_text = read_text(NAVIGATION_ENTRY_PATH)
-for needle in INDEX_NEEDLES:
-    if needle not in navigation_text:
-        errors.append(f'missing {needle} in {NAVIGATION_ENTRY_PATH}')
-
-for rel, needles in RELATION_LEDGER_NEEDLES.items():
-    text = read_text(rel)
-    for needle in needles:
-        if needle not in text:
-            errors.append(f'missing relation edge {needle} in {rel}')
+serving_review_text = read_text('.claude/skills/serving-governance-review/SKILL.md')
+for needle in SERVING_GOVERNANCE_NEEDLES:
+    if needle not in serving_review_text:
+        errors.append(f'missing {needle} in .claude/skills/serving-governance-review/SKILL.md')
 
 check_evidence_cache_types(errors)
 check_forbidden_full_references(errors)
+validate_index_pages(errors)
+validate_cited_paper_targets(errors)
+validate_supported_by_contract(errors)
 
-for path in (ROOT / 'wiki').rglob('*.md'):
+for path in (ROOT / 'ontology').rglob('*.md'):
     rel = str(path.relative_to(ROOT))
     page_type = classify_serving_page(rel)
     if page_type is None:
@@ -588,8 +720,9 @@ for path in (ROOT / 'wiki').rglob('*.md'):
     text = path.read_text(encoding='utf-8', errors='ignore')
     if '## Formal relations' in text:
         errors.extend(validate_serving_structure(rel, text, page_type))
+        errors.extend(validate_projection_contract(rel, text))
 
-for path in (ROOT / 'intermediate/papers').rglob('*.md'):
+for path in (ROOT / 'ontology/entities/evidence').rglob('*.md'):
     rel = str(path.relative_to(ROOT))
     page_type = classify_serving_page(rel)
     if page_type != 'evidence':
@@ -597,38 +730,34 @@ for path in (ROOT / 'intermediate/papers').rglob('*.md'):
     text = path.read_text(encoding='utf-8', errors='ignore')
     if '## Formal relations' in text:
         errors.extend(validate_serving_structure(rel, text, page_type))
+        errors.extend(validate_projection_contract(rel, text))
 
-for rel, rules in SERVING_READY_SAMPLES.items():
-    path = ROOT / rel
-    if not path.exists():
-        errors.append(f'missing serving-ready sample page: {rel}')
-        continue
+for rel in RELATION_LEDGER_FILES:
     text = read_text(rel)
-    errors.extend(validate_serving_structure(rel, text, rules['page_type']))
-    errors.extend(validate_sample_projection(rel, rules))
+    errors.extend(validate_relation_ledger(rel, text))
 
-if '## `sourced_from` 实例边' in read_text('wiki/relations/evidence_index.md'):
-    errors.append('sourced_from must live in wiki/relations/provenance_links.md, not wiki/relations/evidence_index.md')
+if '## `sourced_from` 实例边' in read_text('ontology/relations/supported_by.md'):
+    errors.append('sourced_from must live in ontology/relations/sourced_from.md, not ontology/relations/supported_by.md')
 
-for rel in PLACEHOLDER_PAPERS:
-    path = ROOT / rel
-    if not path.exists():
-        errors.append(f'missing placeholder paper: {rel}')
-        continue
-    text = read_text(rel)
-    for needle in ['status: placeholder', '## 当前定位', '## 与知识库现有内容的关系', '## 待补充']:
-        if needle not in text:
-            errors.append(f'missing {needle} in {rel}')
-
-wiki_pages = []
+knowledge_pages = []
 with_wikilinks = 0
-for path in (ROOT / 'wiki').rglob('*.md'):
-    wiki_pages.append(path)
+for path in (ROOT / 'ontology').rglob('*.md'):
+    knowledge_pages.append(path)
+    rel = str(path.relative_to(ROOT))
     text = path.read_text(encoding='utf-8', errors='ignore')
+    if rel in RELATION_LEDGER_FILES and '## 实例边\n- 无' in text:
+        with_wikilinks += 1
+        continue
+    if rel in DOMAIN_INDEX_FILES:
+        navigation_block = extract_managed_block(text, 'navigation-entries') or ''
+        placeholder_block = extract_managed_block(text, 'non-serving-placeholders') or ''
+        if not navigation_block.strip() and not placeholder_block.strip():
+            with_wikilinks += 1
+            continue
     if WIKILINK_RE.search(text):
         with_wikilinks += 1
     else:
-        errors.append(f'wiki page has no wikilinks: {path.relative_to(ROOT)}')
+        errors.append(f'ontology page has no wikilinks: {path.relative_to(ROOT)}')
 
 if errors:
     print('FAIL')
@@ -637,4 +766,4 @@ if errors:
     sys.exit(1)
 
 print('PASS: graph lint succeeded')
-print({'wiki_pages': len(wiki_pages), 'with_wikilinks': with_wikilinks})
+print({'ontology_pages': len(knowledge_pages), 'with_wikilinks': with_wikilinks})

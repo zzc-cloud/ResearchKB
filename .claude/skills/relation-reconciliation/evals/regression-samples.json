@@ -15,7 +15,12 @@
       "must classify existing ledger edges as already_present",
       "must add missing formal edges to the correct ledger file",
       "must preserve explicit relation exemptions",
-      "must output affected_pages for page-projection-sync"
+      "must output affected_pages for page-projection-sync",
+      "must reject or surface for review any Paper --supported_by--> Evidence candidate",
+      "must render relation pages as 关系语义说明区 + 实例边账本区",
+      "must write ledger child fields in canonical order: source_path, target_path, edge_semantics, evidence, evidence_link, evidence_path",
+      "must keep wikilinks limited to main-line source/target and evidence_link",
+      "must fall back to path-based wikilinks when basename is not unique"
     ]
   }
 ]

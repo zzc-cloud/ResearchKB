@@ -1,10 +1,10 @@
 [
   {
-    "query": "处理论文：raw/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf，重点看方法演化与实验对比，并直接完整落库。",
+    "query": "处理论文：ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf，重点看方法演化与实验对比，并直接完整落库。",
     "should_trigger": true
   },
   {
-    "query": "把这篇 survey 论文落库，并生成 intermediate 缓存、概念页、场景页和关系更新。PDF 在 raw/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf。",
+    "query": "把这篇 survey 论文落库，并生成 intermediate 缓存、概念页、场景页和关系更新。PDF 在 ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf。",
     "should_trigger": true
   },
   {
@@ -16,7 +16,7 @@
     "should_trigger": true
   },
   {
-    "query": "处理论文：raw/某篇framework论文.pdf，重点看分层框架和研究空白，尽量完整落库。",
+    "query": "处理论文：ontology/entities/raw-sources/files/某篇framework论文.pdf，重点看分层框架和研究空白，尽量完整落库。",
     "should_trigger": true
   },
   {

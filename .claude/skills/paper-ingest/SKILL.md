@@ -1,6 +1,6 @@
 ---
 name: paper-ingest
-description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever the user says 处理论文、摄入论文、解析论文、落库论文、为某篇 paper 建缓存/摘要/方法页/关系页，或给出 PDF 路径希望完整提取并写入知识库时，都应使用此 skill，即使用户只明确提到其中一步。它会解析论文、生成全部 intermediate 缓存、按用户当前关注方向强化提取、更新 wiki/relations/index/log，并在遇到异常结构论文时输出 needs-skill-update 告警。
+description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever the user says 处理论文、摄入论文、解析论文、落库论文、为某篇 paper 建缓存/摘要/方法页/关系页，或给出 PDF 路径希望完整提取并写入知识库时，都应使用此 skill，即使用户只明确提到其中一步。它会解析论文、生成全部 intermediate 缓存、按用户当前关注方向强化提取、更新 `ontology/log.md`，并产出供后续 `relation-reconciliation`、`page-projection-sync` 与 `index-sync` 消费的对象页候选与关系候选；在遇到异常结构论文时输出 `needs-skill-update` 告警。
 ---
 
 # Paper Ingest
@@ -30,8 +30,8 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 ## 架构定位
 本 skill 属于 ResearchKB 的**本体实例编译入口**。
 它的职责是把原始论文编译成候选知识变更，包括：
-- `intermediate/papers/` 证据缓存
-- `wiki/` 正式节点页候选变更
+- `ontology/entities/evidence/` 证据缓存
+- `ontology/entities/` 正式节点页候选变更
 - formal relation candidates（供后续 relation reconciliation 使用）
 
 它不直接完成全图 formal relation 闭环，也不裁决语义合法性；生成结果后应先交给 relation reconciliation，再进入本体治理层继续审查。
@@ -53,7 +53,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 ### Step 1: 解析任务并确认输入
 1. 识别论文路径或标题。
-2. 如果用户给出的是标题但未给路径，先在 `raw/` 目录定位文件。
+2. 如果用户给出的是标题但未给路径，先在 `ontology/entities/raw-sources/files/` 目录定位文件。
 3. 提取当前关注方向；若未提供，使用默认关注方向。
 4. 生成稳定短名 `short_name`：优先用论文方法名或公认简称，避免使用超长全文标题直接命名缓存文件。
 
@@ -69,7 +69,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - 是否存在明显附录依赖、图表依赖、章节标题异常、关键信息缺失
 
 ### Step 3: 生成 intermediate 缓存
-在 `intermediate/papers/` 下按论文类型生成最小缓存集合：
+在 `ontology/entities/evidence/` 下按论文类型生成最小缓存集合：
 
 1. 所有论文默认生成：
    - `[short_name].sections.md`
@@ -100,26 +100,56 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 ### Step 5: 创建/更新知识库页面
 按 `CLAUDE.md` 的模板和 frontmatter 规范进行落库：
 
-1. 论文页：`wiki/papers/[论文名].md`
-2. 方法页：若是方法论文，为核心方法创建或更新 `wiki/methods/`
-3. 概念页：为核心概念创建或更新 `wiki/concepts/`
-4. 场景页：为核心场景创建或更新 `wiki/scenarios/`
+1. 论文页：`ontology/entities/papers/[论文名].md`
+2. 方法页：若是方法论文，为核心方法创建或更新 `ontology/entities/methods/`
+3. 概念页：为核心概念创建或更新 `ontology/entities/concepts/`
+4. 场景页：为核心场景创建或更新 `ontology/entities/scenarios/`
 5. 对于 survey / framework / taxonomy 论文：优先把核心知识落到 concept / framework / scenario / synthesis，而不是强行抽取单一方法页
 6. 关联关系：在落库完成前，逐类判断是否存在应正式落账的关系；只要存在就写入对应账本，而不是留在正文 prose 中。
-   - `wiki/relations/citation_graph.md`
-   - `wiki/relations/method_evolution.md`
-   - `wiki/relations/concept_links.md`
-   - `wiki/relations/task_method_map.md`
-   - `wiki/relations/evidence_index.md`
-   - `wiki/relations/paper_method_links.md`
-   - `wiki/relations/benchmark_links.md`
-   - `wiki/relations/provenance_links.md`
+   - 在写入 `cites` 前，必须先对所有 `cites` target 做存在性检查；若对应 paper 页不存在，先调用同目录下的 `materialize_cited_paper_placeholders.py` 生成最小 placeholder paper 页，再写入 `ontology/relations/cites.md`。
+   - `materialize_cited_paper_placeholders.py` 的职责仅限于：为缺失 cited papers 生成可解析的最小 Paper placeholder，不替代正式 ingest。
+   - placeholder paper 页至少应包含：`status: placeholder`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 待补充`。
+   - `cites` target 不允许在 ledger 中保持不可解析状态。
+   - `ontology/relations/cites.md`
+   - `ontology/relations/proposes.md`
+   - `ontology/relations/based_on.md`
+   - `ontology/relations/targets_task.md`
+   - `ontology/relations/uses_concept.md`
+   - `ontology/relations/evaluated_on.md`
+   - `ontology/relations/supported_by.md`
+   - `ontology/relations/sourced_from.md`
 7. 更新：
-   - `wiki/ontology/index.md`
-   - `wiki/log.md`
+   - `ontology/log.md`
 
-### Step 5.5: 汇总候选正式关系
+### Step 6: 汇总候选正式关系
 在完成页面与缓存候选更新后，必须显式整理本次论文直接支撑的 formal relation candidates，而不是只把关系散落写进正文或关系账本。
+
+每条 relation candidate 至少包含以下规范化元数据字段：
+- `relation`
+- `source_name`
+- `source_type`
+- `source_path`
+- `target_name`
+- `target_type`
+- `target_path`
+- `edge_semantics`
+- `evidence_name`
+- `evidence_path`
+
+对象级语义要求：
+- 每个正式对象页候选必须同时产出对象级语义真源 `object_semantics`，供后续 `index-sync` 投影到对象域入口项。
+- `object_semantics` 用于表达“该对象实例是什么”，不替代 relation candidate 的 `edge_semantics`。
+
+表示层边界：
+- `paper-ingest` 不直接生成 relation ledger 最终 markdown。
+- `paper-ingest` 不在此阶段决定使用短 wikilink 还是带路径 wikilink。
+- 这些 relation 页表示层决策由 `relation-reconciliation` 负责。
+
+补充约束：
+- `supported_by` 候选只允许从 `Method`、`Concept`、`Task`、`Scenario`、`Benchmark` 指向 `Evidence`。
+- 不生成 `Paper --supported_by--> Evidence`。
+- Evidence 页保留 `source_file` provenance 锚点，但不通过正文或单独 formal relation 直接链接回 Paper。
+- 对象页与 Evidence 页正文中的所有 wikilink，必须已经在各自的 `Formal relations` 中出现。
 
 输出时至少按以下关系类型归类：
 - `proposes`
@@ -128,9 +158,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - `uses_concept`
 - `supported_by`
 - `cites`
-- `applies_to`
 - `based_on`
-- `improves_on`
 - `sourced_from`
 
 并且必须区分三类：
@@ -161,6 +189,9 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 ### 关系文件
 - 对重要上游论文，即使知识库中尚未有完整页，也可先在 citation graph 中预登记。
+- 对 `cites` 指向但当前不存在的论文节点，必须在 ingest 阶段自动创建最小 placeholder paper 页；不得只写 relation ledger 而让 target 保持不可解析。
+- 自动生成的 cited paper placeholder 只允许进入对象域 index 的“其他实例（不可导航）”区块，不得提升到默认导航入口。
+- placeholder paper 页至少应包含：`status: placeholder`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 待补充`。
 - 对高频上游方法，优先建立最小 stub 页，而不是只留下空链接。
 - `proposes`：
   - 方法论文若提出核心方法，必须登记 `[[Paper]] --proposes--> [[Method]]`
@@ -198,15 +229,15 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 status: success | partial | needs-skill-update
 paper_type_guess: method | application | survey | benchmark | dataset | taxonomy | framework | mixed
 generated_caches:
-  - intermediate/papers/<short_name>.sections.md
-  - intermediate/papers/<short_name>.refs.md
-  - intermediate/papers/<short_name>.experiments.md | intermediate/papers/<short_name>.analysis.md
+  - ontology/entities/evidence/<short_name>.sections.md
+  - ontology/entities/evidence/<short_name>.refs.md
+  - ontology/entities/evidence/<short_name>.experiments.md | ontology/entities/evidence/<short_name>.analysis.md
 updated_pages:
-  - wiki/papers/...
-  - wiki/methods/...
-  - wiki/concepts/...
-  - wiki/scenarios/...
-  - wiki/relations/...
+  - ontology/entities/papers/...
+  - ontology/entities/methods/...
+  - ontology/entities/concepts/...
+  - ontology/entities/scenarios/...
+  - ontology/relations/...
 relation_candidates:
   proposes: []
   targets_task: []
@@ -214,9 +245,7 @@ relation_candidates:
   uses_concept: []
   supported_by: []
   cites: []
-  applies_to: []
   based_on: []
-  improves_on: []
   sourced_from: []
 relation_exemptions:
   - relation_type: evaluated_on
@@ -233,6 +262,7 @@ skill_update_signals:
 - `needs-skill-update`：当前论文类型或结构已经超出本 skill 的稳定适配范围。
 - `relation_candidates`：必须显式列出本次论文直接支撑或高置信支持的 formal relation 候选，供后续 relation reconciliation 使用。
 - `relation_exemptions`：若某类关系按规范豁免（例如 survey / framework 论文无统一 benchmark，因此不生成 `evaluated_on`），必须在此显式说明；不要把正常豁免写成“待补充”。
+- 改进、前提依赖、应用场景与概念性支撑语义默认写入 `edge_semantics`、frontmatter 或对象页正文，而不再单独输出为 formal relation candidate。
 
 ## 触发 `needs-skill-update` 的典型例子
 - “这是一篇 benchmark/survey/framework 论文，当前方法页模板不是最佳落点。”
@@ -251,7 +281,7 @@ skill_update_signals:
 ## 示例
 ### 示例 1：标准方法论文
 输入：
-- `处理论文：raw/PathMind.pdf，重点看方法演化`
+- `处理论文：ontology/entities/raw-sources/files/PathMind.pdf，重点看方法演化`
 
 预期：
 - 生成 3 个缓存（`sections`、`refs`、`experiments`）
@@ -260,7 +290,7 @@ skill_update_signals:
 
 ### 示例 2：结构异常论文
 输入：
-- `处理论文：raw/某篇benchmark论文.pdf，重点看评测设计`
+- `处理论文：ontology/entities/raw-sources/files/某篇benchmark论文.pdf，重点看评测设计`
 
 预期：
 - 尽量生成 4 个缓存
@@ -277,9 +307,10 @@ skill_update_signals:
 
 ## Ingest 完成后的后续治理要求
 当本次摄入已经完成缓存、wiki 页面与候选关系输出后：
-1. 必须先交给 `relation-reconciliation` 补齐 formal relation ledger
-2. relation ledger 更新后，必须交给 `page-projection-sync` 回写对象页投影
-3. 然后运行 `python3 scripts/lint_graph.py`
-4. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
-5. 如本次改动涉及 serving-ready 页面，还必须调用 `serving-governance-review`
-6. 只有结构、语义与 serving 都合理时，才建议接受本次变更并进入 git 提交
+1. 在日常 ingest 流程中，`paper-ingest` 结束后默认进入 `relation-reconciliation`
+2. `relation-reconciliation` 完成后，必须进入 `page-projection-sync`
+3. `page-projection-sync` 完成后，必须进入 `index-sync`
+4. `index-sync` 完成后，必须运行 `python3 scripts/lint_graph.py`
+5. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
+6. 如本次改动涉及 serving-ready 页面，还必须调用 `serving-governance-review`
+7. 只有结构、语义与 serving 都合理时，才建议接受本次变更并进入 git 提交

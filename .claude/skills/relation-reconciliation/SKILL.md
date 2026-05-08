@@ -1,6 +1,6 @@
 ---
 name: relation-reconciliation
-description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidence 缓存、对象页与当前 `wiki/relations/*.md` 正式账本，补齐 formal relation ledger，并输出 added/already_present/exempt/needs-human-review 结果。Whenever 单篇论文 ingest 完成后需要补齐 formal relations、比较 evidence 与 ledger 差异、检查哪些关系已存在/缺失/应豁免、或要把候选关系正确分发到各关系账本时，都应使用本 skill。
+description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidence 缓存、对象页与当前 `ontology/relations/*.md` 正式账本，补齐 formal relation ledger，并输出 added/already_present/exempt/needs-human-review 结果。Whenever 单篇论文 ingest 完成后需要补齐 formal relations、比较 evidence 与 ledger 差异、检查哪些关系已存在/缺失/应豁免、或要把候选关系正确分发到各关系账本时，都应使用本 skill。
 ---
 
 # Relation Reconciliation
@@ -14,7 +14,7 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 ## 核心职责
 1. 读取 `paper-ingest` 输出中的 `relation_candidates` 与 `relation_exemptions`
 2. 读取本次改动涉及的对象页与 Evidence 缓存
-3. 读取当前 `wiki/relations/*.md` 正式账本
+3. 读取当前 `ontology/relations/*.md` 正式账本
 4. 进行 normalize → diff → reconcile
 5. 将缺失正式边写入正确的关系文件
 6. 输出结构化 reconciliation 摘要，并指出受影响对象页供 `page-projection-sync` 使用
@@ -27,11 +27,44 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 
 ## Normalize
 把所有候选关系统一规范成：
-- source
+- source_name
+- source_type
+- source_path
 - relation_type
-- target
-- evidence
+- target_name
+- target_type
+- target_path
+- edge_semantics
+- evidence_name
+- evidence_path
 - source_of_claim（ingest / page / evidence / ledger）
+
+补充约束：
+- 正式 relation 实例唯一按 `relation_type + source + target` 识别。
+- `edge_semantics`、`evidence`、`status`、`note` 仅作为该实例属性，不构成新实例。
+- `supported_by` 只允许 `Method`、`Concept`、`Task`、`Scenario`、`Benchmark` 作为 source。
+- 若候选关系试图把 `Paper` 作为 `supported_by` source，必须归入 `needs_human_review` 或直接判为非法，不得落账。
+- 不得新增 Evidence 与 Paper 之间的 formal relation。
+
+## Canonical ledger rendering
+`relation-reconciliation` 是 relation ledger 的 canonical formatter。
+
+relation 页固定由两部分组成：
+1. `关系语义说明区`
+2. `实例边账本区`
+
+渲染规则：
+- relation 页顶部的对象域导航和证据入口导航必须移除。
+- 每条实例边主行必须渲染为：`[[source]] --relation_type--> [[target]]`
+- 每条实例边子项必须固定按以下顺序输出：
+  - `source_path: ...`
+  - `target_path: ...`
+  - `edge_semantics: ...`
+  - `evidence: ...`
+  - `evidence_link: [[...]]`
+  - `evidence_path: ...`
+- `source`、`target`、`evidence_link` 默认使用短 wikilink；若 basename 在 vault 中不唯一，则必须退化为带路径的 wikilink并保留原显示名。
+- relation 页除主行 `source` / `target` 与 `evidence_link` 外，不得出现其他 wikilink。
 
 ## Diff
 对比：
@@ -70,23 +103,23 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 即使某页人类区块中出现大量 `[[wikilink]]`，也不得机械全部升级。 broad “相关方法 / 路线”、对比对象、背景路线、延伸阅读仍默认按 context-only 处理，除非存在单独明确的 formal relation 语义与证据支撑。
 
 ## Ledger routing
-- `proposes` → `wiki/relations/paper_method_links.md`
-- `targets_task` → `wiki/relations/task_method_map.md`
-- `evaluated_on` → `wiki/relations/benchmark_links.md`
-- `uses_concept` / `supports` / `depends_on` / `applies_to` → `wiki/relations/concept_links.md`
-- `based_on` / `improves_on` → `wiki/relations/method_evolution.md`
-- `cites` → `wiki/relations/citation_graph.md`
-- `supported_by` → `wiki/relations/evidence_index.md`
-- `sourced_from` → `wiki/relations/provenance_links.md`
+- `cites` → `ontology/relations/cites.md`
+- `proposes` → `ontology/relations/proposes.md`
+- `based_on` → `ontology/relations/based_on.md`
+- `targets_task` → `ontology/relations/targets_task.md`
+- `uses_concept` → `ontology/relations/uses_concept.md`
+- `evaluated_on` → `ontology/relations/evaluated_on.md`
+- `supported_by` → `ontology/relations/supported_by.md`
+- `sourced_from` → `ontology/relations/sourced_from.md`
 
 ## 结构化输出模板
 ```yaml
 status: success | partial | needs-human-review
 already_present: []
 added_relations:
-  - file: wiki/relations/task_method_map.md
+  - file: ontology/relations/targets_task.md
     edge: "[[Paper]] --targets_task--> [[Task]]"
-    evidence: "[[intermediate/papers/foo.sections|foo.sections]] §x"
+    evidence: "[[ontology/entities/evidence/foo.sections|foo.sections]] §x"
 exemptions: []
 needs_human_review: []
 affected_pages: []

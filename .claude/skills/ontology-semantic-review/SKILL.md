@@ -13,12 +13,15 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 它不负责抽取论文内容，也不负责基础结构 lint；它负责在 `paper-ingest` 与 `python3 scripts/lint_graph.py` 之后，对候选知识变更做语义审查，判断这些变更是否可以进入正式图谱。
 
 ## 先阅读
-- `wiki/ontology/graph-standard.md`
-- `wiki/relations/citation_graph.md`
-- `wiki/relations/method_evolution.md`
-- `wiki/relations/concept_links.md`
-- `wiki/relations/task_method_map.md`
-- `wiki/relations/evidence_index.md`
+- `ontology/graph-standard.md`
+- `ontology/relations/cites.md`
+- `ontology/relations/proposes.md`
+- `ontology/relations/based_on.md`
+- `ontology/relations/targets_task.md`
+- `ontology/relations/uses_concept.md`
+- `ontology/relations/evaluated_on.md`
+- `ontology/relations/supported_by.md`
+- `ontology/relations/sourced_from.md`
 - `references/review-output-template.md`
 - `references/review-scope-rules.md`
 - `references/diff-review-playbook.md`
@@ -27,7 +30,7 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 使用以下输入做审查：
 1. 当前 git diff 或本次修改文件列表
 2. 上述本体与关系规则文件
-3. 本次新增或修改的 wiki / intermediate 页面
+3. 本次新增或修改的 ontology / intermediate 页面
 
 ## 审查重点
 检查：
@@ -37,6 +40,14 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - 是否与现有图谱保持一致
 - 是否存在重复 / 冲突 / 伪关系
 - 是否存在关系方向错误或粒度不匹配
+- `supported_by` 是否被错误用于 `Paper`
+- Evidence 是否通过正文或 formal relation 直接连接回 Paper
+- 对象页 / Evidence 页正文中的 wikilink 是否超出 formal relation 已投影邻接
+- relation 页的“关系语义说明区”是否与 `ontology/graph-standard.md` 一致
+- relation 页的“关系语义说明区”是否足以帮助判断 source / target 合法性与实例边归属
+- relation 页的“关系语义说明区”是否重新引入了导航型噪声或无关跳转预期
+- relation 实例的 `edge_semantics` 是否准确表达边成立语义
+- index 入口项投影的 `object_semantics` 是否准确表达对象实例身份
 
 ## 判断原则
 - 优先给出能恢复本体一致性的最小修正方案。
