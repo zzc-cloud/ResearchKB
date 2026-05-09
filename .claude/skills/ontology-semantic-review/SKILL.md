@@ -17,14 +17,15 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - `ontology/relations/cites.md`
 - `ontology/relations/proposes.md`
 - `ontology/relations/based_on.md`
+- `ontology/relations/references_method.md`
 - `ontology/relations/targets_task.md`
 - `ontology/relations/uses_concept.md`
 - `ontology/relations/evaluated_on.md`
 - `ontology/relations/supported_by.md`
 - `ontology/relations/sourced_from.md`
-- `references/review-output-template.md`
-- `references/review-scope-rules.md`
-- `references/diff-review-playbook.md`
+- `.claude/skills/ontology-semantic-review/references/review-output-template.md`
+- `.claude/skills/ontology-semantic-review/references/review-scope-rules.md`
+- `.claude/skills/ontology-semantic-review/references/diff-review-playbook.md`
 
 ## 输入
 使用以下输入做审查：
@@ -52,7 +53,8 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 ## 判断原则
 - 优先给出能恢复本体一致性的最小修正方案。
 - 区分“论文支撑关系”和“本体层概念关系”。
-- 必须使用 `references/review-output-template.md` 中的报告格式与 verdict 语义，不要临时发明自己的 verdict 规则。
+- 若方法间关系表达的是比较、借鉴或路线参照，而非严格谱系继承，应优先审查其是否应落为 `references_method`，而不是 `based_on`。
+- 必须使用 `.claude/skills/ontology-semantic-review/references/review-output-template.md` 中的报告格式与 verdict 语义，不要临时发明自己的 verdict 规则。
 
 ## 输出
-不要直接改写本体。必须使用 `references/review-output-template.md` 的固定结构输出一份语义审查报告。
+不要直接改写本体。必须使用 `.claude/skills/ontology-semantic-review/references/review-output-template.md` 的固定结构输出一份语义审查报告。

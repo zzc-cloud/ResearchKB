@@ -4,8 +4,6 @@
 
 **Goal:** Make `supported_by` a strict relation-type exception so its ledger entries never include `- evidence:`, while all other formal relation types still require explicit `- evidence:` and the full compile/governance pipeline stays aligned.
 
-**Architecture:** First lock the new rule in `scripts/test_lint_graph.py` with regression tests proving that `supported_by` must omit `- evidence:` and non-`supported_by` ledgers still require it. Then update the normative rule in `ontology/graph-standard.md`, rewrite the live `supported_by` ledger examples, and align the skill contracts (`paper-ingest`, `relation-reconciliation`, `page-projection-sync`, governance skills/evals) so generation and review use the same exception. Finally, add the structural lint checks that enforce the exception and run full verification.
-
 **Tech Stack:** Obsidian-flavored Markdown under `ontology/` and `.claude/skills/`, Python 3 `unittest` and repository linting in `scripts/lint_graph.py`, relation ledgers in `ontology/relations/`, skill eval checklists and regression JSON fixtures.
 
 ---
@@ -29,7 +27,6 @@
 ### Governance and review contracts
 - Modify: `scripts/lint_graph.py`
   - Add ledger-level validation: `supported_by` entries must not contain `- evidence:`; other relation ledgers still require it.
-- Modify: `scripts/test_lint_graph.py`
   - Add failing tests first for the new ledger exception and preserve the existing index/projection regressions.
 - Modify: `.claude/skills/ontology-semantic-review/SKILL.md`
   - Add review guidance that missing `evidence` on `supported_by` is correct, but duplicated `evidence` is outdated formatting.
@@ -47,8 +44,6 @@
   - Clarify that `supported_by` projections rely on target Evidence and reason, not a ledger `evidence` field.
 
 ### Verification surface
-- Test: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_supported_by_evidence_lines scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_evidence_on_non_supported_by_ledgers -v`
-- Test: `python3 -m unittest scripts.test_lint_graph -v`
 - Test: `python3 scripts/lint_graph.py`
 
 ---
@@ -56,12 +51,8 @@
 ### Task 1: Lock the `supported_by` exception in tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add a failing regression test that forbids `- evidence:` inside `supported_by.md`**
-
-Insert this method above `test_lint_graph_requires_index_entry_target_files_to_exist` in `scripts/test_lint_graph.py`:
 
 ```python
     def test_lint_graph_rejects_supported_by_evidence_lines(self):
@@ -125,8 +116,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_supported_by_evidence_lines \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_evidence_on_non_supported_by_ledgers -v
 ```
 
 Expected:
@@ -200,7 +189,6 @@ Expected:
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add a helper that validates ledger evidence-field rules by relation type**
 
@@ -256,8 +244,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_supported_by_evidence_lines \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_evidence_on_non_supported_by_ledgers -v
 ```
 
 Expected:
@@ -269,7 +255,6 @@ Expected:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 python3 scripts/lint_graph.py
 ```
 
@@ -415,7 +400,6 @@ Expected:
 ### Task 6: Final verification and focused commit
 
 **Files:**
-- Test: `scripts/test_lint_graph.py`
 - Test: `scripts/lint_graph.py`
 
 - [ ] **Step 1: Run the targeted `supported_by` exception tests**
@@ -424,8 +408,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_supported_by_evidence_lines \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_evidence_on_non_supported_by_ledgers -v
 ```
 
 Expected:
@@ -436,7 +418,6 @@ Expected:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected:
@@ -470,7 +451,6 @@ git add \
   .claude/skills/relation-reconciliation/evals/regression-samples.json \
   .claude/skills/page-projection-sync/evals/quality-checklist.md \
   scripts/lint_graph.py \
-  scripts/test_lint_graph.py
 
 git commit -m "refactor: remove redundant evidence from supported_by"
 ```

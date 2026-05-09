@@ -57,7 +57,6 @@
 
 ### Lint and regression coverage
 - Modify: `scripts/lint_graph.py`
-- Modify: `scripts/test_lint_graph.py`
 
 ---
 
@@ -66,11 +65,8 @@
 **Files:**
 - Modify: `ontology/graph-standard.md`
 - Modify: `CLAUDE.md`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing regression test for old clustered ledger names in lint contracts**
-
-Add this test method to `scripts/test_lint_graph.py` below the existing missing-root-index test:
 
 ```python
     def test_lint_graph_uses_relation_type_ledger_names(self):
@@ -97,7 +93,6 @@ Add this test method to `scripts/test_lint_graph.py` below the existing missing-
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_uses_relation_type_ledger_names -v
 ```
 
 Expected:
@@ -190,7 +185,6 @@ Make these exact textual edits in `CLAUDE.md`:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_uses_relation_type_ledger_names -v
 ```
 
 Expected:
@@ -507,7 +501,6 @@ Expected:
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Modify: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Replace all old relation-ledger file-name constants and required-file checks**
 
@@ -529,8 +522,6 @@ Adjust any logic that assumes:
 so it now accepts:
 - `based_on.md` and `improves_on.md` as the method-evolution truth sources
 - `uses_concept.md`, `depends_on.md`, `supports.md`, and `applies_to.md` as the split concept-network truth sources
-
-- [ ] **Step 3: Expand `scripts/test_lint_graph.py` with a focused regression for new ledger names**
 
 Add this test method:
 
@@ -561,12 +552,10 @@ Add this test method:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected:
 - PASS
-- Both regression tests in `scripts/test_lint_graph.py` pass
 
 ---
 

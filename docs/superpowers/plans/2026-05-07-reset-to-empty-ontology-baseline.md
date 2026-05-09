@@ -6,8 +6,6 @@
 
 **Architecture:** Add a dedicated skill directory containing a checked-in `baseline/ontology/` snapshot plus a small Python restore script. The baseline snapshot will reflect the current `navigation-entries` / `non-serving-placeholders` index model and empty relation ledgers; the restore script will validate git state, replace the live `ontology/` tree with the snapshot, and run `python3 scripts/lint_graph.py` before reporting success.
 
-**Tech Stack:** Python 3, git CLI, checked-in Obsidian Markdown baseline files, ResearchKB lint (`scripts/lint_graph.py`), unittest (`scripts/test_lint_graph.py`)
-
 ---
 
 ## File structure
@@ -18,7 +16,6 @@
   - Restores `baseline/ontology/` over the live `ontology/` tree and runs lint.
 - Create: `.claude/skills/reset-to-empty-ontology-baseline/baseline/ontology/`
   - Checked-in strict empty ontology snapshot that matches current index block conventions.
-- Modify: `scripts/test_lint_graph.py`
   - Add regression tests for reset-baseline behavior and snapshot validity.
 
 ---
@@ -26,12 +23,8 @@
 ### Task 1: Add failing reset-baseline tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing existence tests**
-
-Add these test methods near the other lint-related tests in `scripts/test_lint_graph.py`:
 
 ```python
     def test_restore_baseline_script_exists(self):
@@ -45,7 +38,6 @@ Add these test methods near the other lint-related tests in `scripts/test_lint_g
 
 - [ ] **Step 2: Run the two tests to verify they fail**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_exists scripts.test_lint_graph.LintGraphTests.test_empty_baseline_snapshot_exists -v`
 Expected: FAIL because the skill directory, restore script, and baseline snapshot do not exist yet.
 
 - [ ] **Step 3: Write the failing dirty-ontology guard test**
@@ -75,13 +67,11 @@ Add this test method:
 
 - [ ] **Step 4: Run the dirty-ontology guard test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_blocks_dirty_ontology_without_force -v`
 Expected: FAIL because the restore script does not exist yet.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scripts/test_lint_graph.py
 git commit -m "test: add reset-baseline regression coverage"
 ```
 
@@ -89,7 +79,6 @@ git commit -m "test: add reset-baseline regression coverage"
 
 **Files:**
 - Create: `.claude/skills/reset-to-empty-ontology-baseline/baseline/ontology/**`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Create the baseline directory structure**
 
@@ -151,13 +140,11 @@ Ensure the baseline copies use the current block model and are empty where requi
 
 - [ ] **Step 4: Run the two existence tests again**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_exists scripts.test_lint_graph.LintGraphTests.test_empty_baseline_snapshot_exists -v`
 Expected: the baseline snapshot test PASSES, the restore-script test still FAILS.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .claude/skills/reset-to-empty-ontology-baseline/baseline scripts/test_lint_graph.py
 git commit -m "feat: add empty ontology baseline snapshot"
 ```
 
@@ -165,11 +152,9 @@ git commit -m "feat: add empty ontology baseline snapshot"
 
 **Files:**
 - Create: `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Run the dirty-ontology guard test again to confirm RED**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_blocks_dirty_ontology_without_force -v`
 Expected: FAIL because the restore script still does not exist.
 
 - [ ] **Step 2: Write the minimal restore script**
@@ -190,13 +175,11 @@ ROOT = Path(__file__).resolve().parents[3]
 BASELINE = Path(__file__).resolve().parent / 'baseline' / 'ontology'
 ONTOLOGY = ROOT / 'ontology'
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--force', action='store_true')
     parser.add_argument('--check-only', action='store_true')
     return parser.parse_args()
-
 
 def ontology_is_dirty() -> bool:
     result = subprocess.run(
@@ -208,7 +191,6 @@ def ontology_is_dirty() -> bool:
     )
     return bool(result.stdout.strip())
 
-
 def run_lint() -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, str(ROOT / 'scripts' / 'lint_graph.py')],
@@ -217,7 +199,6 @@ def run_lint() -> subprocess.CompletedProcess[str]:
         text=True,
         check=False,
     )
-
 
 def main() -> int:
     args = parse_args()
@@ -248,33 +229,27 @@ def main() -> int:
     print('success: ontology restored to empty baseline')
     return 0
 
-
 if __name__ == '__main__':
     raise SystemExit(main())
 ```
 
 - [ ] **Step 3: Run the dirty-ontology guard test to verify GREEN**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_blocks_dirty_ontology_without_force -v`
 Expected: PASS
 
 - [ ] **Step 4: Run the restore-script existence test**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_exists -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py scripts/test_lint_graph.py
 git commit -m "feat: add reset-baseline restore script"
 ```
 
 ### Task 4: Add the end-to-end restore integration test
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing integration test**
 
@@ -301,7 +276,6 @@ Add this test method:
 
 - [ ] **Step 2: Run the integration test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_restores_ontology_and_passes_lint -v`
 Expected: FAIL until the baseline snapshot is fully aligned with current lint expectations.
 
 - [ ] **Step 3: Complete the integration assertions**
@@ -317,13 +291,11 @@ Expand the test so it also asserts:
 
 - [ ] **Step 4: Run the integration test to verify it passes**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_restore_baseline_script_restores_ontology_and_passes_lint -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scripts/test_lint_graph.py
 git commit -m "test: verify reset-baseline restore end-to-end"
 ```
 
@@ -373,7 +345,6 @@ Expected: `success: baseline snapshot available and overwrite preconditions sati
 
 - [ ] **Step 3: Run the full lint test suite**
 
-Run: `python3 -m unittest scripts.test_lint_graph -v`
 Expected: all tests PASS
 
 - [ ] **Step 4: Run graph lint**
@@ -384,7 +355,6 @@ Expected: `PASS: graph lint succeeded`
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .claude/skills/reset-to-empty-ontology-baseline/SKILL.md scripts/test_lint_graph.py
 git commit -m "feat: add reset-baseline skill"
 ```
 

@@ -6,8 +6,6 @@
 
 **Architecture:** Replace the old `core-entry` / `grouped-navigation` / `canonical-list` model with two object-navigation managed blocks: `navigation-entries` and `non-serving-placeholders`. Teach index generation and linting to derive domain-specific semantic descriptions from object pages and to enforce that placeholder pages never appear in default navigation entries.
 
-**Tech Stack:** Python (`scripts/lint_graph.py`, `scripts/test_lint_graph.py`), Obsidian Markdown knowledge pages, ResearchKB skill contracts in `.claude/skills/index-sync/SKILL.md` and `.claude/skills/paper-ingest/SKILL.md`
-
 ---
 
 ## File structure
@@ -26,7 +24,6 @@
   - Update the managed-block contract and generation responsibilities.
 - Modify: `scripts/lint_graph.py`
   - Enforce the new index structure and semantic-entry rules.
-- Modify: `scripts/test_lint_graph.py`
   - Add regression tests for new managed blocks, semantic descriptions, and placeholder placement.
 
 ---
@@ -34,12 +31,9 @@
 ### Task 1: Lock the new index contract in tests and the index-sync skill
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
 - Modify: `.claude/skills/index-sync/SKILL.md`
 
 - [ ] **Step 1: Write the failing test for new index block names**
-
-Add this test method to `scripts/test_lint_graph.py`:
 
 ```python
     def test_lint_graph_uses_new_index_managed_block_names(self):
@@ -53,7 +47,6 @@ Add this test method to `scripts/test_lint_graph.py`:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_uses_new_index_managed_block_names -v`
 Expected: FAIL because `scripts/lint_graph.py` still references the old block names.
 
 - [ ] **Step 3: Update the index-sync skill contract**
@@ -70,13 +63,11 @@ In `.claude/skills/index-sync/SKILL.md`, replace the old managed-block wording w
 
 - [ ] **Step 4: Run the targeted test again**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_uses_new_index_managed_block_names -v`
 Expected: Still FAIL, because lint has not been updated yet.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scripts/test_lint_graph.py .claude/skills/index-sync/SKILL.md
 git commit -m "docs: define object-domain index block contract"
 ```
 
@@ -84,7 +75,6 @@ git commit -m "docs: define object-domain index block contract"
 
 **Files:**
 - Modify: `ontology/entities/papers/index.md`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing structure test**
 
@@ -100,7 +90,6 @@ Add this test method:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_papers_index_uses_object_navigation_only_structure -v`
 Expected: FAIL because `papers/index.md` still uses the old sections and contains relation-entry content.
 
 - [ ] **Step 3: Rewrite `ontology/entities/papers/index.md` minimally**
@@ -135,13 +124,11 @@ Replace the current body with this structure:
 
 - [ ] **Step 4: Run the targeted test to verify it passes**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_papers_index_uses_object_navigation_only_structure -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add ontology/entities/papers/index.md scripts/test_lint_graph.py
 git commit -m "refactor: redesign papers index as object navigation"
 ```
 
@@ -155,7 +142,6 @@ git commit -m "refactor: redesign papers index as object navigation"
 - Modify: `ontology/entities/benchmarks/index.md`
 - Modify: `ontology/entities/evidence/index.md`
 - Modify: `ontology/entities/raw-sources/index.md`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing lint-structure test**
 
@@ -181,7 +167,6 @@ Add this test:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_all_entity_indexes_use_navigation_and_placeholder_blocks -v`
 Expected: FAIL because the remaining indexes still use the old structure.
 
 - [ ] **Step 3: Rewrite the indexes with domain-specific semantics**
@@ -327,13 +312,11 @@ Use these exact replacements:
 
 - [ ] **Step 4: Run the targeted test to verify it passes**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_all_entity_indexes_use_navigation_and_placeholder_blocks -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add ontology/entities/methods/index.md ontology/entities/concepts/index.md ontology/entities/tasks/index.md ontology/entities/scenarios/index.md ontology/entities/benchmarks/index.md ontology/entities/evidence/index.md ontology/entities/raw-sources/index.md scripts/test_lint_graph.py
 git commit -m "refactor: convert entity indexes to navigation blocks"
 ```
 
@@ -341,7 +324,6 @@ git commit -m "refactor: convert entity indexes to navigation blocks"
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing lint-behavior test**
 
@@ -357,7 +339,6 @@ Add this test:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_placeholder_in_navigation_entries -v`
 Expected: FAIL because lint still enforces the old block names and old canonical-list behavior.
 
 - [ ] **Step 3: Replace the old index validation logic minimally**
@@ -417,18 +398,15 @@ def validate_index_pages(errors: list[str]) -> None:
 
 - [ ] **Step 4: Run the targeted test to verify it passes**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_placeholder_in_navigation_entries -v`
 Expected: PASS
 
 - [ ] **Step 5: Run the full lint suite**
 
-Run: `python3 -m unittest scripts.test_lint_graph -v`
 Expected: all tests PASS
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add scripts/lint_graph.py scripts/test_lint_graph.py
 git commit -m "test: enforce object-domain index navigation rules"
 ```
 
@@ -437,7 +415,6 @@ git commit -m "test: enforce object-domain index navigation rules"
 **Files:**
 - Modify: `.claude/skills/paper-ingest/materialize_cited_paper_placeholders.py`
 - Modify: `.claude/skills/paper-ingest/SKILL.md`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write the failing behavior test**
 
@@ -452,7 +429,6 @@ Add this test:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_materializer_puts_cited_placeholders_only_in_non_serving_block -v`
 Expected: FAIL because the materializer still knows the old block model.
 
 - [ ] **Step 3: Update the materializer minimally**
@@ -498,8 +474,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_materialize_cited_paper_placeholders_creates_missing_pages \
-  scripts.test_lint_graph.LintGraphTests.test_materializer_puts_cited_placeholders_only_in_non_serving_block -v
 ```
 
 Expected: both PASS
@@ -507,7 +481,6 @@ Expected: both PASS
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .claude/skills/paper-ingest/materialize_cited_paper_placeholders.py .claude/skills/paper-ingest/SKILL.md scripts/test_lint_graph.py
 git commit -m "feat: keep cited placeholders out of default navigation"
 ```
 
@@ -533,7 +506,6 @@ Expected: placeholders exist and are added only to the non-serving block.
 
 - [ ] **Step 2: Run the full lint suite**
 
-Run: `python3 -m unittest scripts.test_lint_graph -v`
 Expected: all tests PASS
 
 - [ ] **Step 3: Run graph lint**

@@ -25,6 +25,7 @@ REQUIRED_FILES = [
     'ontology/relations/cites.md',
     'ontology/relations/proposes.md',
     'ontology/relations/based_on.md',
+    'ontology/relations/references_method.md',
     'ontology/relations/targets_task.md',
     'ontology/relations/uses_concept.md',
     'ontology/relations/evaluated_on.md',
@@ -50,6 +51,7 @@ PIPELINE_SKILL_FILES = [
 PAPER_INGEST_NEEDLES = [
     'relation_candidates',
     'relation_exemptions',
+    'semantic_stub_candidates',
     'relation-reconciliation',
     'page-projection-sync',
     'index-sync',
@@ -69,6 +71,9 @@ INDEX_SYNC_NEEDLES = [
     'synced_indexes',
     'skipped_pages',
     'manual_followups',
+    '`placeholder`：只进入 non-serving block',
+    '`partial`：可被 index 收录，但不得进入默认 entry',
+    '`serving-ready`：进入默认导航入口',
 ]
 
 GRAPH_STANDARD_NEEDLES = [
@@ -84,6 +89,9 @@ GRAPH_STANDARD_NEEDLES = [
     '`index-sync`',
     '可被 index 收录',
     '默认 serving 入口',
+    'semantic stub',
+    '## 最小定义/角色',
+    '`partial` 表示对象可被正式链接',
 ]
 SERVING_GOVERNANCE_NEEDLES = [
     'domain index pages',
@@ -119,9 +127,17 @@ SERVING_TYPE_RULES = {
         'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
         'strong_frontmatter_fields': {},
     },
-    'method': {
+    'method_processed': {
         'required_headings': ['## 相关概念', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
         'strong_frontmatter_fields': {'parent_methods', 'child_methods'},
+    },
+    'method_partial': {
+        'required_headings': ['## Object semantics', '## 当前定位', '## 与知识库现有内容的关系', '## 最小定义/角色', '## 待补充', '## Formal relations', '### Outgoing', '### Incoming'],
+        'strong_frontmatter_fields': set(),
+    },
+    'method_placeholder': {
+        'required_headings': ['## 当前定位', '## 与知识库现有内容的关系', '## 待补充'],
+        'strong_frontmatter_fields': set(),
     },
     'concept': {
         'required_headings': ['## 相关任务 / 场景', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
@@ -181,6 +197,7 @@ RELATION_LEDGER_FILES = [
     'ontology/relations/cites.md',
     'ontology/relations/proposes.md',
     'ontology/relations/based_on.md',
+    'ontology/relations/references_method.md',
     'ontology/relations/targets_task.md',
     'ontology/relations/uses_concept.md',
     'ontology/relations/evaluated_on.md',
@@ -485,11 +502,25 @@ def classify_serving_page(rel: str) -> str | None:
 
 
 def validate_serving_structure(rel: str, text: str, page_type: str) -> list[str]:
-    rules = SERVING_TYPE_RULES[page_type]
+    frontmatter, _body = split_frontmatter(text)
+    if page_type == 'method':
+        status = frontmatter.get('status')
+        if status == 'partial':
+            rules = SERVING_TYPE_RULES['method_partial']
+        elif status == 'placeholder':
+            rules = SERVING_TYPE_RULES['method_placeholder']
+        else:
+            rules = SERVING_TYPE_RULES['method_processed']
+    else:
+        rules = SERVING_TYPE_RULES[page_type]
     page_errors: list[str] = []
     for heading in rules['required_headings']:
         if heading not in text:
             page_errors.append(f'missing serving heading {heading} in {rel}')
+    if page_type == 'method' and frontmatter.get('status') == 'placeholder' and 'references_method' in text:
+        for heading in ['## Formal relations', '### Outgoing', '### Incoming']:
+            if heading not in text:
+                page_errors.append(f'missing serving heading {heading} in {rel}')
     return page_errors
 
 
@@ -678,12 +709,15 @@ for needle in DAILY_INGEST_CHAIN_NEEDLES:
         errors.append(f'missing {needle} in CLAUDE.md daily ingest chain')
 
 page_projection_text = read_text('.claude/skills/page-projection-sync/SKILL.md')
-for needle in ['index-sync', 'ontology-semantic-review', 'serving-governance-review']:
+for needle in ['index-sync', 'ontology-semantic-review', 'serving-governance-review', 'semantic_stub_candidates', 'serving_status_recommendations', '## 最小定义/角色', 'status: partial']:
     if needle not in page_projection_text:
         errors.append(f'missing {needle} in page-projection-sync handoff')
 
 if 'page-projection-sync' not in read_text('.claude/skills/relation-reconciliation/SKILL.md'):
     errors.append('missing page-projection-sync in relation-reconciliation handoff')
+for needle in ['affected_stub_pages', 'serving_status_recommendations']:
+    if needle not in read_text('.claude/skills/relation-reconciliation/SKILL.md'):
+        errors.append(f'missing {needle} in relation-reconciliation output contract')
 
 index_sync_path = ROOT / '.claude/skills/index-sync/SKILL.md'
 if index_sync_path.exists():

@@ -4,8 +4,6 @@
 
 **Goal:** Update ResearchKB so relation ledgers remain the only formal instance-edge truth source while object pages and Evidence pages use the new semi-expanded serving projection format, `Paper` is removed from `supported_by`, and the full ingest → reconciliation → projection → governance pipeline automatically enforces the new contract.
 
-**Architecture:** First lock the new contract in executable checks by extending `scripts/test_lint_graph.py` and `scripts/lint_graph.py` to understand semi-expanded projections, body-wikilink restrictions, and the contracted `supported_by` semantics. Then update the normative docs and pipeline skills (`CLAUDE.md`, `ontology/graph-standard.md`, `ontology/relations/supported_by.md`, `paper-ingest`, `relation-reconciliation`, `page-projection-sync`, governance skills/evals) so writers and reviewers agree on the same model. Finally, migrate the live PathMind serving pages and Evidence pages, run lint/tests, and confirm the pipeline now preserves the new representation automatically.
-
 **Tech Stack:** Obsidian-flavored Markdown under `ontology/` and `docs/`, Claude skill contracts under `.claude/skills/`, Python 3 `unittest` and repository linting in `scripts/lint_graph.py`, relation ledgers under `ontology/relations/`, serving pages under `ontology/entities/`.
 
 ---
@@ -23,7 +21,6 @@
 ### Lint runtime and tests
 - Modify: `scripts/lint_graph.py`
   - Parse semi-expanded projections, validate role sentences, validate body-wikilink subsets, reject Evidence→Paper body links, and reject `Paper` as `supported_by` source.
-- Modify: `scripts/test_lint_graph.py`
   - Add regression tests that pin the new projection format, body-link rule, and contracted `supported_by` model.
 
 ### Pipeline skill contracts and review gates
@@ -69,7 +66,6 @@
 - Reference only: `docs/superpowers/plans/2026-05-06-formal-relation-simplification-migration.md`
 
 ### Verification surface
-- Test: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_paper_supported_by_edges scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_semi_expanded_projection_format scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_evidence_body_links_to_paper scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_body_wikilinks_to_be_projected -v`
 - Test: `python3 scripts/lint_graph.py`
 
 ---
@@ -77,12 +73,8 @@
 ### Task 1: Lock the new serving and `supported_by` contract in tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add a regression test that forbids `Paper` as a `supported_by` source**
-
-Append this method near the bottom of `scripts/test_lint_graph.py`, above `if __name__ == '__main__':`:
 
 ```python
     def test_lint_graph_rejects_paper_supported_by_edges(self):
@@ -204,10 +196,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_paper_supported_by_edges \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_semi_expanded_projection_format \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_evidence_body_links_to_paper \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_body_wikilinks_to_be_projected -v
 ```
 
 Expected:
@@ -221,7 +209,6 @@ Expected:
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add regex helpers for the semi-expanded projection format and body-link parsing**
 
@@ -267,7 +254,6 @@ def extract_legacy_full_edge_lines(text: str) -> list[str]:
     formal_block = formal_tail if next_heading == -1 else formal_tail[:next_heading]
     return [line.strip() for line in formal_block.splitlines() if FORMAL_RELATION_RE.match(line.strip())]
 
-
 def extract_projected_links(text: str) -> dict[str, set[str]]:
     if '## Formal relations' not in text:
         return {'Outgoing': set(), 'Incoming': set()}
@@ -298,7 +284,6 @@ def extract_body_before_formal_relations(text: str) -> str:
     if '## Formal relations' not in text:
         return text
     return text.split('## Formal relations', 1)[0]
-
 
 def validate_projection_contract(rel: str, text: str) -> list[str]:
     page_errors: list[str] = []
@@ -377,10 +362,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_paper_supported_by_edges \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_semi_expanded_projection_format \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_evidence_body_links_to_paper \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_body_wikilinks_to_be_projected -v
 ```
 
 Expected:
@@ -879,7 +860,6 @@ Expected:
 ### Task 7: Run the targeted unittest suite and full verification
 
 **Files:**
-- Test: `scripts/test_lint_graph.py`
 - Test: `scripts/lint_graph.py`
 
 - [ ] **Step 1: Run the targeted new lint-contract tests**
@@ -888,10 +868,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_paper_supported_by_edges \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_semi_expanded_projection_format \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_rejects_evidence_body_links_to_paper \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_body_wikilinks_to_be_projected -v
 ```
 
 Expected:
@@ -903,7 +879,6 @@ Expected:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected:
@@ -930,7 +905,6 @@ git add \
   ontology/graph-standard.md \
   ontology/relations/supported_by.md \
   scripts/lint_graph.py \
-  scripts/test_lint_graph.py \
   .claude/skills/paper-ingest/SKILL.md \
   .claude/skills/relation-reconciliation/SKILL.md \
   .claude/skills/relation-reconciliation/evals/quality-checklist.md \

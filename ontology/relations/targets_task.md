@@ -5,4 +5,45 @@
 - 与应用场景相关的落地语义默认写入对象页 `scenario`、正文或 `edge_semantics`，而不再单独拆分 formal relation。
 
 ## 实例边
-- 无
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[knowledge-graph-reasoning]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/tasks/knowledge-graph-reasoning.md
+  - edge_semantics: 论文将知识图谱推理作为总任务设定。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[kgqa]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/tasks/kgqa.md
+  - edge_semantics: 论文在 KGQA benchmark 上验证其方法表现。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[multi-hop-qa]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/tasks/multi-hop-qa.md
+  - edge_semantics: 论文强调其对复杂多跳问答的增益。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind]] --targets_task--> [[knowledge-graph-reasoning]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/tasks/knowledge-graph-reasoning.md
+  - edge_semantics: PathMind 面向知识图谱推理总任务。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind]] --targets_task--> [[kgqa]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/tasks/kgqa.md
+  - edge_semantics: PathMind 用于知识图谱问答中的结构化多跳推理。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind]] --targets_task--> [[multi-hop-qa]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/tasks/multi-hop-qa.md
+  - edge_semantics: PathMind 通过优先关键推理路径来处理多跳问答。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md

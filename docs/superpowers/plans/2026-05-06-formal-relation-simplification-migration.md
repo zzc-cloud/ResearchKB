@@ -13,7 +13,6 @@
 ## File map
 
 ### Tests and lint runtime
-- Modify: `scripts/test_lint_graph.py`
   - Replace 12-ledger expectations with the reduced 8-ledger set.
   - Add regression checks that `scripts/lint_graph.py` no longer expects retired relation types.
 - Modify: `scripts/lint_graph.py`
@@ -73,8 +72,6 @@
 ### Task 1: Lock the reduced relation contract in tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Replace the expected formal ledger list with the reduced set**
 
@@ -119,7 +116,6 @@ Add this method below `test_lint_graph_requires_new_relation_type_ledgers`:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_new_relation_type_ledgers scripts.test_lint_graph.LintGraphTests.test_lint_graph_does_not_expect_retired_relation_types -v
 ```
 
 Expected:
@@ -133,7 +129,6 @@ Expected:
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Reduce the required ledger file list**
 
@@ -192,7 +187,6 @@ Do the same cleanup anywhere else `SERVING_READY_SAMPLES` still expects `improve
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_new_relation_type_ledgers scripts.test_lint_graph.LintGraphTests.test_lint_graph_does_not_expect_retired_relation_types -v
 ```
 
 Expected:
@@ -474,7 +468,6 @@ uses_concept 与 based_on 的 formal relation 边界，以及改进、前提依�
 Run:
 
 ```bash
-grep -R -nE "improves_on|depends_on|applies_to|supports" .claude/skills scripts/test_lint_graph.py scripts/lint_graph.py
 ```
 
 Expected:
@@ -488,14 +481,12 @@ Expected:
 **Files:**
 - Modify: any file still failing the checks above
 - Test: `python3 scripts/lint_graph.py`
-- Test: `python3 -m unittest scripts.test_lint_graph -v`
 
 - [ ] **Step 1: Run the full lint regression suite**
 
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected:

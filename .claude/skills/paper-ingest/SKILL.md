@@ -139,6 +139,24 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 对象级语义要求：
 - 每个正式对象页候选必须同时产出对象级语义真源 `object_semantics`，供后续 `index-sync` 投影到对象域入口项。
 - `object_semantics` 用于表达“该对象实例是什么”，不替代 relation candidate 的 `edge_semantics`。
+- 对于当前论文已经稳定提供最小对象语义、但证据仍不足以支持完整 serving-ready 页的高价值邻接对象，必须额外产出 `semantic_stub_candidates`，供后续 `relation-reconciliation`、`page-projection-sync` 与 `index-sync` 使用。
+
+`semantic_stub_candidates` 中每个对象至少包含：
+- `object_name`
+- `object_type`
+- `source_evidence`
+- `object_semantics`
+- `minimal_sections`
+  - `当前定位`
+  - `与知识库现有内容的关系`
+  - `最小定义/角色`
+  - `待补充`
+- `serving_readiness_hint`
+  - `placeholder`
+  - `partial`
+  - `candidate-serving`
+
+这些 semantic stubs 用于表达“当前论文已稳定支撑该对象的最小语义骨架，但尚未完成 full ingest”，它们不替代正式完整 ingest，也不应被自动视为 default serving-ready 页面。
 
 表示层边界：
 - `paper-ingest` 不直接生成 relation ledger 最终 markdown。
@@ -165,6 +183,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 1. direct relations：证据明确、可直接落账
 2. high-confidence candidate relations：强支持但仍需 graph-level reconciliation
 3. needs-human-review relations：存在方向、粒度或本体归属歧义
+
+`references_method` 使用规则：
+- 当方法间关系表达的是关键比较对象、借鉴路线或方法参照，而非严格谱系继承时，可将其输出为 `references_method` candidate。
+- 若仅存在论文级引用事实而缺少稳定方法对象语义，不得从 `cites` 升格为 `references_method`。
+- `references_method` 强于论文引用、弱于 `based_on`；它不驱动 `parent_methods` / `child_methods`。
 
 ## 分类与抽取规则
 ### 论文页

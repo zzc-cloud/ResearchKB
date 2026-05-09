@@ -4,8 +4,6 @@
 
 **Goal:** Replace the old snapshot-copy reset skill with a live-derived reset flow that preserves current live index/raw-source structure, deletes object instance pages, clears relation ledgers to the current empty-ledger form, rewrites `ontology/log.md` to an empty baseline, and verifies the result with lint.
 
-**Architecture:** Keep the implementation centered in `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`, but refactor it away from static baseline-copy behavior into small helpers: one to clear relation-ledger instance blocks, one to delete object instance pages while preserving indexes and raw PDFs, one to rewrite the empty log, and one orchestration entrypoint. Add a test-friendly root override via environment variable so `scripts/test_lint_graph.py` can run destructive end-to-end checks against temporary fixture repositories instead of the live vault.
-
 **Tech Stack:** Python 3 standard library (`argparse`, `os`, `pathlib`, `subprocess`, `sys`, `tempfile`, `importlib.util`), git CLI, unittest, Obsidian Markdown files under `ontology/`, ResearchKB lint (`scripts/lint_graph.py`).
 
 ---
@@ -16,7 +14,6 @@
   - Replace baseline-copy logic with live-derived reset helpers and a test-only root override.
 - Modify: `.claude/skills/reset-to-empty-ontology-baseline/SKILL.md`
   - Rewrite the skill contract so it describes live-derived reset semantics instead of copying from `baseline/ontology/`.
-- Modify: `scripts/test_lint_graph.py`
   - Remove outdated baseline-snapshot assumptions and add behavior tests for relation clearing, entity cleanup, log reset, dirty-worktree blocking, and force-reset integration.
 
 ---
@@ -24,12 +21,8 @@
 ### Task 1: Replace outdated reset-baseline tests with live-derived failing tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add helper imports and loader utilities for the reset script**
-
-At the top of `scripts/test_lint_graph.py`, extend the imports and add two helper functions right after `ROOT = ...`:
 
 ```python
 import importlib.util
@@ -42,7 +35,6 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 
-
 def load_reset_baseline_module():
     script_path = ROOT / '.claude' / 'skills' / 'reset-to-empty-ontology-baseline' / 'restore_baseline.py'
     spec = importlib.util.spec_from_file_location('reset_to_empty_ontology_baseline', script_path)
@@ -50,7 +42,6 @@ def load_reset_baseline_module():
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
-
 
 def write_file(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -214,12 +205,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_keeps_semantics_and_empties_instances \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_requires_instance_heading \
-  scripts.test_lint_graph.LintGraphTests.test_remove_entity_instance_pages_preserves_indexes_and_raw_pdfs \
-  scripts.test_lint_graph.LintGraphTests.test_write_empty_log_rewrites_history \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_blocks_dirty_ontology_without_force_in_temp_repo \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_force_resets_temp_repo_and_runs_lint \
   -v
 ```
 
@@ -228,7 +213,6 @@ Expected: FAIL. The current script does not expose `clear_relation_ledger_text`,
 - [ ] **Step 4: Commit the failing tests**
 
 ```bash
-git add scripts/test_lint_graph.py
 git commit -m "test: cover live-derived ontology reset"
 ```
 
@@ -236,7 +220,6 @@ git commit -m "test: cover live-derived ontology reset"
 
 **Files:**
 - Modify: `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Re-run the RED tests for the script behavior**
 
@@ -244,12 +227,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_keeps_semantics_and_empties_instances \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_requires_instance_heading \
-  scripts.test_lint_graph.LintGraphTests.test_remove_entity_instance_pages_preserves_indexes_and_raw_pdfs \
-  scripts.test_lint_graph.LintGraphTests.test_write_empty_log_rewrites_history \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_blocks_dirty_ontology_without_force_in_temp_repo \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_force_resets_temp_repo_and_runs_lint \
   -v
 ```
 
@@ -286,13 +263,11 @@ RESET_ENTITY_DIRS = [
 ]
 EMPTY_LOG = '# 操作日志\n\n- 系统级导航：`CLAUDE.md`\n- 图谱规范：[[graph-standard]]\n'
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--force', action='store_true')
     parser.add_argument('--check-only', action='store_true')
     return parser.parse_args()
-
 
 def ontology_is_dirty() -> bool:
     result = subprocess.run(
@@ -304,7 +279,6 @@ def ontology_is_dirty() -> bool:
     )
     return bool(result.stdout.strip())
 
-
 def run_lint() -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, str(ROOT / 'scripts' / 'lint_graph.py')],
@@ -314,7 +288,6 @@ def run_lint() -> subprocess.CompletedProcess[str]:
         check=False,
     )
 
-
 def clear_relation_ledger_text(text: str) -> str:
     marker = '## 实例边'
     if marker not in text:
@@ -322,11 +295,9 @@ def clear_relation_ledger_text(text: str) -> str:
     prefix = text.split(marker, 1)[0].rstrip()
     return f"{prefix}\n\n{marker}\n- 无\n"
 
-
 def clear_relation_ledgers(relations_dir: Path) -> None:
     for path in sorted(relations_dir.glob('*.md')):
         path.write_text(clear_relation_ledger_text(path.read_text(encoding='utf-8')), encoding='utf-8')
-
 
 def clear_entity_instance_pages(entities_dir: Path) -> None:
     for dirname in RESET_ENTITY_DIRS:
@@ -336,10 +307,8 @@ def clear_entity_instance_pages(entities_dir: Path) -> None:
             if path.name != 'index.md':
                 path.unlink()
 
-
 def write_empty_log(log_path: Path) -> None:
     log_path.write_text(EMPTY_LOG, encoding='utf-8')
-
 
 def ensure_required_paths() -> None:
     if not ONTOLOGY.exists():
@@ -349,13 +318,11 @@ def ensure_required_paths() -> None:
     if not RELATIONS.exists():
         raise FileNotFoundError(f'missing relations directory: {RELATIONS}')
 
-
 def reset_live_ontology() -> None:
     ensure_required_paths()
     clear_entity_instance_pages(ENTITIES)
     clear_relation_ledgers(RELATIONS)
     write_empty_log(LOG_FILE)
-
 
 def main() -> int:
     args = parse_args()
@@ -390,7 +357,6 @@ def main() -> int:
     print('success: ontology restored to empty baseline')
     return 0
 
-
 if __name__ == '__main__':
     raise SystemExit(main())
 ```
@@ -401,12 +367,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_keeps_semantics_and_empties_instances \
-  scripts.test_lint_graph.LintGraphTests.test_clear_relation_ledger_text_requires_instance_heading \
-  scripts.test_lint_graph.LintGraphTests.test_remove_entity_instance_pages_preserves_indexes_and_raw_pdfs \
-  scripts.test_lint_graph.LintGraphTests.test_write_empty_log_rewrites_history \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_blocks_dirty_ontology_without_force_in_temp_repo \
-  scripts.test_lint_graph.LintGraphTests.test_restore_script_force_resets_temp_repo_and_runs_lint \
   -v
 ```
 
@@ -415,7 +375,6 @@ Expected: PASS.
 - [ ] **Step 4: Commit the script refactor**
 
 ```bash
-git add .claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py scripts/test_lint_graph.py
 git commit -m "feat: derive empty ontology reset from live structure"
 ```
 
@@ -487,10 +446,8 @@ git commit -m "docs: update reset skill for live-derived behavior"
 ### Task 4: Run full verification and capture the live safety behavior
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
 - Modify: `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`
 - Modify: `.claude/skills/reset-to-empty-ontology-baseline/SKILL.md`
-- Test: `scripts/test_lint_graph.py`
 - Test: `scripts/lint_graph.py`
 
 - [ ] **Step 1: Run the complete reset-related unittest coverage**
@@ -498,7 +455,6 @@ git commit -m "docs: update reset skill for live-derived behavior"
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected: PASS.
@@ -526,7 +482,6 @@ Expected in the current dirty working tree: `blocked: ontology has uncommitted c
 - [ ] **Step 4: Commit the final verified redesign**
 
 ```bash
-git add scripts/test_lint_graph.py \
   .claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py \
   .claude/skills/reset-to-empty-ontology-baseline/SKILL.md
 git commit -m "feat: redesign empty ontology reset workflow"

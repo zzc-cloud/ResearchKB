@@ -40,6 +40,9 @@ description: 在 `page-projection-sync` 完成后，把对象页与 index 层之
 
 ## 收录规则
 - 页面可被 index 收录，不等于页面可作为默认 serving 入口
+- `placeholder`：只进入 non-serving block
+- `partial`：可被 index 收录，但不得进入默认 entry
+- `serving-ready`：进入默认导航入口
 - 若页面缺少安全收录所需结构，应跳过并记录 followup
 - 不得通过猜测补齐分组或伪造入口状态
 

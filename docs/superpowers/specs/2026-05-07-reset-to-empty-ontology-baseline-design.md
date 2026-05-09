@@ -162,12 +162,10 @@ manual_followups: []
 ## Recommended implementation direction
 下一步实现不应沿用旧 plan，而要围绕当前结构重新落地：
 
-1. 先在 `scripts/test_lint_graph.py` 中新增 reset-baseline 相关测试
 2. 再创建与当前结构一致的 baseline snapshot
 3. 再实现 restore script
 4. 再补 skill contract
 5. 最后跑：
-   - `python3 -m unittest scripts.test_lint_graph -v`
    - `python3 scripts/lint_graph.py`
 
 ## Success criteria

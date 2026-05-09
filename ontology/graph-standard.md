@@ -29,6 +29,7 @@
 - `targets_task`：`[[Paper|Method]] --targets_task--> [[Task]]`；表示论文或方法主要面向的研究任务。
 - `evaluated_on`：`[[Paper|Method]] --evaluated_on--> [[Benchmark]]`；表示论文或方法在某基准上进行评测。
 - `based_on`：`[[Method]] --based_on--> [[Method]]`；表示方法建立在某个上游方法之上，只用于方法演化谱系，不指向概念、框架或场景。若需要表达改进、增强或优化等增量语义，默认写入 `edge_semantics`，而不额外拆分 formal relation。
+- `references_method`：`[[Method]] --references_method--> [[Method]]`；表示方法将另一方法作为关键比较对象、借鉴路线或方法参照。该关系用于方法级比较、借鉴、路线参照，不表示方法谱系继承，不驱动 `parent_methods` / `child_methods`；若仅存在论文级引用事实而缺少稳定方法对象语义，应保留在 `cites`，不得升格为 `references_method`。
 - `cites`：`[[Paper]] --cites--> [[Paper]]`；表示论文对论文的显式引用。
 - `supported_by`：`[[Method|Concept|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识对象页由 Evidence 对象页支撑。`Paper` 不再作为 `supported_by` 的 source；Evidence 与 Paper 之间也不单独建立 formal relation。
 - `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示 Evidence 对象页来源于 `ontology/entities/raw-sources/files/` 下的受管原始文件。RawSource 不再为每个 PDF 维护独立对象页，而是由 `ontology/entities/raw-sources/index.md` 提供统一导航。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若证据对象页尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。保留的 `sections`、`refs`、`experiments`、`analysis` 均可直接承担 `sourced_from` provenance 锚点，不依赖额外全文型 cache。
@@ -165,6 +166,11 @@ survey / framework-taxonomy 论文的 Paper 页投影补充规则：
 约束：
 - `type` 保留中文表达，使用：`基础方法` / `衍生方法` / `集成方法`
 - `parent_methods` / `child_methods` 必须与 `ontology/relations/based_on.md` 保持一致
+
+#### Method 页状态分层规则
+- `status: processed` 的 Method 页必须满足完整 serving 合同：`## 相关概念`、`## 证据来源`、`## Formal relations`、`### Outgoing`、`### Incoming`。
+- `status: partial` 的 Method 页按 semantic-stub 合同校验，至少应具有：`## Object semantics`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 最小定义/角色`、`## 待补充`、`## Formal relations`、`### Outgoing`、`### Incoming`。
+- `status: placeholder` 的 Method 页按最小占位合同校验，至少应具有：`## 当前定位`、`## 与知识库现有内容的关系`、`## 待补充`；若该页已承接 formal relation，则还必须具有 `## Formal relations`、`### Outgoing`、`### Incoming`。
 
 参考骨架：
 ```yaml
@@ -491,9 +497,15 @@ survey / framework 主线的 Scenario 补充规则：
 
 ### 5.4 Serving 迁移状态
 - serving-ready：页面已通过结构治理、本体语义治理与 serving 治理，可作为默认问答入口。
-- partial：页面已开始迁移，但 `Formal relations` 或人类区块尚未达到默认 serving 质量线。
+- partial：页面已开始迁移，或已具备最小语义骨架与 formal 邻接，但尚未达到默认 serving 质量线。
 - legacy：页面仍处于旧格式，仅可作为过渡期参考页。
 - 迁移状态可放在 frontmatter 或外部治理清单中，但必须能被治理流程识别。
+
+### 5.4.1 Semantic stub 状态规则
+- 当单篇论文已稳定提供某个邻接对象的最小对象语义，但证据仍不足以支持完整 serving-ready 页面时，可生成 semantic stub。
+- semantic stub 页至少应具有：`status: partial` 或 `status: placeholder`、`## Object semantics`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 最小定义/角色`、`## 待补充`。
+- `partial` 表示对象可被正式链接、可被 index 收录、可参与 formal graph 遍历，但不得自动提升为默认 serving 入口。
+- 仅因为对象页可通过 `Formal relations` 做受约束拓扑扩展，不足以直接提升为 `serving-ready`。
 
 ### 5.5 服务层治理校验要求
 - 除结构合法性外，还必须校验七类节点页的投影一致性、投影完备性与问答可消费性。

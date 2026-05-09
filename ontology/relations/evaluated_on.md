@@ -5,4 +5,31 @@
 - empirical / method / application 论文若存在明确 benchmark，默认应在此登记；无统一 benchmark 的 survey / framework / taxonomy 论文可按规范豁免。
 
 ## 实例边
-- 无
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/benchmarks/WebQSP.md
+  - edge_semantics: 论文在 WebQSP 上报告主性能与效率结果。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[CWQ]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/benchmarks/CWQ.md
+  - edge_semantics: 论文在 CWQ 上报告复杂多跳问答的主性能与分析结果。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind]] --evaluated_on--> [[WebQSP]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/benchmarks/WebQSP.md
+  - edge_semantics: PathMind 在 WebQSP 上评估准确率、F1、调用次数和 token 开销。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[PathMind]] --evaluated_on--> [[CWQ]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/benchmarks/CWQ.md
+  - edge_semantics: PathMind 在 CWQ 上检验复杂多跳问答中的性能、可解释性与扩展性。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md

@@ -6,4 +6,24 @@
 - 若证据对象页尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。
 
 ## 实例边
-- 无
+- [[PathMind.sections]] --sourced_from--> [[ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf|A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]
+  - source_path: ontology/entities/evidence/PathMind.sections.md
+  - target_path: ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf
+  - edge_semantics: sections 缓存直接抽取自 PathMind 原文的摘要、相关工作与方法章节。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind.refs]] --sourced_from--> [[ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf|A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]
+  - source_path: ontology/entities/evidence/PathMind.refs.md
+  - target_path: ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf
+  - edge_semantics: refs 缓存抽取自 Related Work、baseline 列表与 References 页。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind.experiments]] --sourced_from--> [[ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf|A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]
+  - source_path: ontology/entities/evidence/PathMind.experiments.md
+  - target_path: ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf
+  - edge_semantics: experiments 缓存抽取自主结果、消融、效率与案例分析章节。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md

@@ -63,7 +63,6 @@
 ### Governance and lint
 - Modify: `scripts/lint_graph.py`
   - Enforce `edge_semantics` field usage, object-page per-instance projection shape, and index `object_semantics` projection shape.
-- Modify: `scripts/test_lint_graph.py`
   - Add failing tests first for the new field names and projection requirements.
 - Modify: `.claude/skills/ontology-semantic-review/SKILL.md`
 - Modify: `.claude/skills/ontology-semantic-review/references/review-scope-rules.md`
@@ -80,8 +79,6 @@
   - Replace `reason` references with `edge_semantics` and encode the new projection contract.
 
 ### Verification surface
-- Test: `python3 -m unittest scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_in_relation_ledgers scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_and_evidence_in_object_page_projections scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_index_entries_to_use_object_semantics_projection -v`
-- Test: `python3 -m unittest scripts.test_lint_graph -v`
 - Test: `python3 scripts/lint_graph.py`
 
 ---
@@ -89,12 +86,8 @@
 ### Task 1: Lock the new semantic field names and projection contract in tests
 
 **Files:**
-- Modify: `scripts/test_lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Add a failing test that relation ledgers must use `edge_semantics` instead of `reason`**
-
-Insert this method above `test_lint_graph_requires_index_entry_target_files_to_exist` in `scripts/test_lint_graph.py`:
 
 ```python
     def test_lint_graph_requires_edge_semantics_in_relation_ledgers(self):
@@ -184,9 +177,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_in_relation_ledgers \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_and_evidence_in_object_page_projections \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_index_entries_to_use_object_semantics_projection -v
 ```
 
 Expected:
@@ -368,7 +358,6 @@ Expected:
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Test: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Update relation-ledger field-order enforcement to require `edge_semantics`**
 
@@ -471,9 +460,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_in_relation_ledgers \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_and_evidence_in_object_page_projections \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_index_entries_to_use_object_semantics_projection -v
 ```
 
 Expected:
@@ -803,7 +789,6 @@ Expected:
 ### Task 8: Final verification and focused commit
 
 **Files:**
-- Test: `scripts/test_lint_graph.py`
 - Test: `scripts/lint_graph.py`
 
 - [ ] **Step 1: Run the targeted redesign tests**
@@ -812,9 +797,6 @@ Run:
 
 ```bash
 python3 -m unittest \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_in_relation_ledgers \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_edge_semantics_and_evidence_in_object_page_projections \
-  scripts.test_lint_graph.LintGraphTests.test_lint_graph_requires_index_entries_to_use_object_semantics_projection -v
 ```
 
 Expected:
@@ -825,7 +807,6 @@ Expected:
 Run:
 
 ```bash
-python3 -m unittest scripts.test_lint_graph -v
 ```
 
 Expected:
@@ -882,7 +863,6 @@ git add \
   .claude/skills/page-projection-sync/evals/quality-checklist.md \
   .claude/skills/page-projection-sync/evals/regression-samples.json \
   scripts/lint_graph.py \
-  scripts/test_lint_graph.py
 
 git commit -m "refactor: unify relation and object semantics projections"
 ```

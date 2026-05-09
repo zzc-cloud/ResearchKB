@@ -79,7 +79,6 @@
 ### Existing files to modify
 - `.claude/skills/reset-to-empty-ontology-baseline/SKILL.md`
 - `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`
-- `scripts/test_lint_graph.py`
 
 ### Existing files likely no longer authoritative
 - `.claude/skills/reset-to-empty-ontology-baseline/baseline/ontology/relations/*.md`

@@ -18,6 +18,7 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 4. 进行 normalize → diff → reconcile
 5. 将缺失正式边写入正确的关系文件
 6. 输出结构化 reconciliation 摘要，并指出受影响对象页供 `page-projection-sync` 使用
+7. 对 semantic stub candidates 给出下游 serving 状态建议，并把受影响的 stub 页显式交给投影阶段
 
 ## 不负责
 - 不重新做 PDF 解析
@@ -106,6 +107,7 @@ relation 页固定由两部分组成：
 - `cites` → `ontology/relations/cites.md`
 - `proposes` → `ontology/relations/proposes.md`
 - `based_on` → `ontology/relations/based_on.md`
+- `references_method` → `ontology/relations/references_method.md`
 - `targets_task` → `ontology/relations/targets_task.md`
 - `uses_concept` → `ontology/relations/uses_concept.md`
 - `evaluated_on` → `ontology/relations/evaluated_on.md`
@@ -123,6 +125,11 @@ added_relations:
 exemptions: []
 needs_human_review: []
 affected_pages: []
+affected_stub_pages: []
+serving_status_recommendations:
+  - path: ontology/entities/methods/RoG.md
+    recommended_status: partial
+    reason: stable minimal semantics exist, but default serving evidence is still insufficient
 ```
 
 ## 最小 rollout 建议

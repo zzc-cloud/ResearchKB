@@ -49,6 +49,10 @@ owner: yyzz
 - 方法演化关系：`based_on`
   - 表示某方法建立在上游方法或方法路线之上，强调继承、借鉴与谱系归属，用于表达方法演化链。
   - 若论文同时表达了改进、增强或优化，这些增量语义默认写入 `reason`，而不再单独拆分为 formal relation。
+- 方法弱关联关系：`references_method`
+  - 表示方法级比较、借鉴与路线参照。
+  - 它强于纯论文引用，弱于 `based_on` 的谱系继承语义。
+  - 不驱动 `parent_methods` / `child_methods`。
 - 概念使用关系：`uses_concept`
   - 表示论文、方法或其他对象显式采用某个概念作为其定义、建模、机制设计或语义组成部分。
   - 若关系同时带有“成立前提”色彩，这类强语义默认写入 `reason`，而不再单独拆分为 formal relation。
@@ -90,6 +94,7 @@ owner: yyzz
 - cites 入口（文档：`ontology/relations/cites.md`）：[[ontology/relations/cites]]
 - proposes 入口（文档：`ontology/relations/proposes.md`）：[[ontology/relations/proposes]]
 - based_on 入口（文档：`ontology/relations/based_on.md`）：[[ontology/relations/based_on]]
+- references_method 入口（文档：`ontology/relations/references_method.md`）：[[ontology/relations/references_method]]
 - targets_task 入口（文档：`ontology/relations/targets_task.md`）：[[ontology/relations/targets_task]]
 - uses_concept 入口（文档：`ontology/relations/uses_concept.md`）：[[ontology/relations/uses_concept]]
 - evaluated_on 入口（文档：`ontology/relations/evaluated_on.md`）：[[ontology/relations/evaluated_on]]
@@ -134,12 +139,12 @@ owner: yyzz
 7. `serving-governance-review`
 
 其中：
-- `paper-ingest` 是编译入口，不代表正式入图完成
-- `relation-reconciliation` 负责补齐 formal relation ledger
-- `page-projection-sync` 负责把 formal graph truth 同步回对象页
-- `index-sync` 负责把对象页投影同步到各对象域 index，并维护仍然存在的受管导航页
-- 只有三层治理都通过后，才算可进入正式图谱
-- 如与 `ontology/graph-standard.md` 冲突，以后者为准
+- `paper-ingest` 仅表示单篇论文编译链已启动，不表示正式入图完成。
+- `relation-reconciliation` 负责将 ingest 产出的关系候选补齐为 formal relation ledger。
+- `page-projection-sync` 负责将 formal relation ledger 中的 graph truth 同步回对象页，包括 `Formal relations`、强一致 frontmatter 与模板化关系区块。
+- `index-sync` 负责将对象页投影同步到各对象域 index 与其他受管导航页，并区分 default serving surface 与非默认导航收录。
+- `python3 scripts/lint_graph.py`、`ontology-semantic-review` 与 `serving-governance-review` 共同构成正式入图前的治理关口；只有结构 lint、本体语义审查与 serving 治理全部通过后，才算可进入正式图谱。
+- 如与 `ontology/graph-standard.md` 冲突，一律以 `ontology/graph-standard.md` 为准。
 
 ### 批量处理论文
 当我说 **“批量处理 ontology/entities/raw-sources/files/ 目录下的所有论文”** 时：

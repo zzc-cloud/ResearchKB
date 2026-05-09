@@ -60,7 +60,6 @@
   - Any semantic / serving reference docs that encode old relation-ledger assumptions.
 
 ### Tests / verification
-- Modify: `scripts/test_lint_graph.py`
   - Add coverage for canonical relation-ledger validation.
 
 ---
@@ -464,7 +463,6 @@ git commit -m "docs: align page projection with canonical ledgers"
 
 **Files:**
 - Modify: `scripts/lint_graph.py`
-- Modify: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Write failing tests for canonical relation-ledger validation**
 
@@ -473,7 +471,6 @@ Add tests shaped like:
 ```python
 from pathlib import Path
 from scripts import lint_graph
-
 
 def test_extract_ledger_edge_requires_main_line_shape():
     text = """
@@ -510,10 +507,8 @@ Add helpers with signatures like:
 def extract_relation_ledger_blocks(text: str) -> tuple[str, str]:
     ...
 
-
 def parse_relation_instance_records(text: str) -> list[dict[str, str]]:
     ...
-
 
 def collect_relation_page_wikilinks(text: str) -> list[str]:
     ...
@@ -544,8 +539,6 @@ SEMI_EXPANDED_RELATION_RE    # for object/evidence page serving projections
 
 - [ ] **Step 5: Run the lint tests**
 
-Run: `python3 -m pytest scripts/test_lint_graph.py -q`
-
 Expected: PASS.
 
 - [ ] **Step 6: Run the structural lint script**
@@ -557,7 +550,6 @@ Expected: PASS once all preceding markdown and contract updates are in place.
 - [ ] **Step 7: Commit the lint upgrade**
 
 ```bash
-git add scripts/lint_graph.py scripts/test_lint_graph.py
 git commit -m "feat: enforce canonical relation ledger format"
 ```
 
@@ -659,11 +651,8 @@ git commit -m "docs: clarify serving boundary for relation ledgers"
 - Verify: `.claude/skills/ontology-semantic-review/SKILL.md`
 - Verify: `.claude/skills/serving-governance-review/SKILL.md`
 - Verify: `scripts/lint_graph.py`
-- Verify: `scripts/test_lint_graph.py`
 
 - [ ] **Step 1: Run unit-style lint tests**
-
-Run: `python3 -m pytest scripts/test_lint_graph.py -q`
 
 Expected: PASS.
 
