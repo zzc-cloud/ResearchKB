@@ -1,8 +1,8 @@
 ## 关系语义说明
-- `evaluated_on` 表示方法或论文在某个正式 benchmark 上进行了评测。
-- 合法 source：`Paper`、`Method`。
+- `evaluated_on` 表示某个正式 Method 在某个正式 benchmark 上进行了评测。
+- 合法 source：`Method`。
 - 合法 target：`Benchmark`。
-- empirical / method / application 论文若存在明确 benchmark，默认应在此登记；无统一 benchmark 的 survey / framework / taxonomy 论文可按规范豁免。
+- 该关系不再用于 `Paper -> Benchmark`；论文页中的 benchmark 讨论应保留在 prose、Evidence 与 Method 的 formal relation 投影中。
 
 ## 实例边
 - 无

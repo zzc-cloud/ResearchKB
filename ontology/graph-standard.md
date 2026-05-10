@@ -27,9 +27,9 @@
 - `proposes`：`[[Paper]] --proposes--> [[Method|Concept]]`；表示论文首次提出或正式定义某方法，或提出 framework / taxonomy 型核心概念。Survey 保持为 Paper 层节点；framework / taxonomy 等核心知识产物优先作为 Concept 节点承接。
 - `uses_concept`：`[[Paper|Method]] --uses_concept--> [[Concept]]`；表示论文或方法显式采用某概念作为定义、建模、机制设计或实现的一部分。方法与概念之间的正式关系默认优先使用该边，而不是 `based_on`。若需要表达“以前提方式依赖该概念”，默认写入 `edge_semantics`，而不额外拆分 formal relation。
 - `targets_task`：`[[Paper|Method]] --targets_task--> [[Task]]`；表示论文或方法主要面向的研究任务。
-- `evaluated_on`：`[[Paper|Method]] --evaluated_on--> [[Benchmark]]`；表示论文或方法在某基准上进行评测。
+- `evaluated_on`：`[[Method]] --evaluated_on--> [[Benchmark]]`；表示方法在某个正式 benchmark 上进行了评测。该关系不再用于 `Paper -> Benchmark`；论文页中的 benchmark 信息只保留在 prose、frontmatter、Evidence 与 Method 邻接投影中。
 - `based_on`：`[[Method]] --based_on--> [[Method]]`；表示方法建立在某个上游方法之上，只用于方法演化谱系，不指向概念、框架或场景。若需要表达改进、增强或优化等增量语义，默认写入 `edge_semantics`，而不额外拆分 formal relation。
-- `references_method`：`[[Method]] --references_method--> [[Method]]`；表示方法将另一方法作为关键比较对象、借鉴路线或方法参照。该关系用于方法级比较、借鉴、路线参照，不表示方法谱系继承，不驱动 `parent_methods` / `child_methods`；若仅存在论文级引用事实而缺少稳定方法对象语义，应保留在 `cites`，不得升格为 `references_method`。
+- `references_method`：`[[Method]] --references_method--> [[Method]]`；表示方法将另一方法作为关键比较对象、借鉴路线或方法参照。该关系与 `based_on` 一起构成方法图谱的核心邻接关系：前者表达参照，后者表达谱系；`references_method` 不驱动 `parent_methods` / `child_methods`。
 - `cites`：`[[Paper]] --cites--> [[Paper]]`；表示论文对论文的显式引用。
 - `supported_by`：`[[Method|Concept|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识对象页由 Evidence 对象页支撑。`Paper` 不再作为 `supported_by` 的 source；Evidence 与 Paper 之间也不单独建立 formal relation。
 - `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示 Evidence 对象页来源于 `ontology/entities/raw-sources/files/` 下的受管原始文件。RawSource 不再为每个 PDF 维护独立对象页，而是由 `ontology/entities/raw-sources/index.md` 提供统一导航。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若证据对象页尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。保留的 `sections`、`refs`、`experiments`、`analysis` 均可直接承担 `sourced_from` provenance 锚点，不依赖额外全文型 cache。
@@ -170,7 +170,7 @@ survey / framework-taxonomy 论文的 Paper 页投影补充规则：
 #### Method 页状态分层规则
 - `status: processed` 的 Method 页必须满足完整 serving 合同：`## 相关概念`、`## 证据来源`、`## Formal relations`、`### Outgoing`、`### Incoming`。
 - `status: partial` 的 Method 页按 semantic-stub 合同校验，至少应具有：`## Object semantics`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 最小定义/角色`、`## 待补充`、`## Formal relations`、`### Outgoing`、`### Incoming`。
-- `status: placeholder` 的 Method 页按最小占位合同校验，至少应具有：`## 当前定位`、`## 与知识库现有内容的关系`、`## 待补充`；若该页已承接 formal relation，则还必须具有 `## Formal relations`、`### Outgoing`、`### Incoming`。
+- Method 不再使用 `status: placeholder` 作为正式中间状态；只要方法身份与 formal relation 已稳定成立，就应直接 materialize 为 `status: partial` 的 Method 页。
 
 参考骨架：
 ```yaml
@@ -193,7 +193,7 @@ tags: [知识图谱, 本体推理]
 - 方法定义
 - 解决的核心问题
 - 技术原理
-- 方法演化位置
+- 方法演化与参照关系
 - 应用场景
 - 代表论文
 - 相关概念
@@ -201,6 +201,12 @@ tags: [知识图谱, 本体推理]
 - Formal relations
 - 优势与局限
 - 与其他方法的对比
+
+Method 页中的“方法演化与参照关系”用于面向人类区分两类核心方法邻接：
+- `based_on`：上游演化方法 / 严格方法谱系来源
+- `references_method`：关键参照方法 / 比较对象 / 借鉴路线
+
+其中 `parent_methods` / `child_methods` 只由 `based_on` 派生；`references_method` 不进入父子方法链。
 
 ### 3.5 Concept
 必填字段：`title`、`problem`、`industry`、`research_role`
