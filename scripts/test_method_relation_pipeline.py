@@ -139,12 +139,12 @@ status: placeholder
 
         self.assertIn('Method placeholder status is no longer allowed: ontology/entities/methods/Synthetic Method.md', result.stdout + result.stderr)
 
-    def test_lint_rejects_generated_display_text_links_on_object_pages(self):
-        result = self.run_lint()
-        self.assertIn(
-            'generated object-page link must omit display alias in ontology/entities/methods/PathMind.md: ../methods/RoG|RoG',
-            result.stdout + result.stderr,
-        )
+    def test_paper_ingest_contract_mentions_references_method_and_method_only_evaluated_on(self):
+        skill = (ROOT / '.claude/skills/paper-ingest/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('`references_method` 使用规则：', skill)
+        self.assertIn('若仅存在论文级引用事实而缺少稳定方法对象语义，不得从 `cites` 升格为 `references_method`。', skill)
+        self.assertNotIn('必须登记 `[[Paper]] --evaluated_on--> [[Benchmark]]`', skill)
+        self.assertIn('只要存在明确 benchmark，应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`', skill)
 
 
 if __name__ == '__main__':

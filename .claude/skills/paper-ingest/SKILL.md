@@ -140,6 +140,9 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - 每个正式对象页候选必须同时产出对象级语义真源 `object_semantics`，供后续 `index-sync` 投影到对象域入口项。
 - `object_semantics` 用于表达“该对象实例是什么”，不替代 relation candidate 的 `edge_semantics`。
 - 对于当前论文已经稳定提供最小对象语义、但证据仍不足以支持完整 serving-ready 页的高价值邻接对象，必须额外产出 `semantic_stub_candidates`，供后续 `relation-reconciliation`、`page-projection-sync` 与 `index-sync` 使用。
+- 对于被 `based_on`、`references_method` 或 `proposes`（target 为 Method）稳定指向、但当前库中尚不存在的上游方法对象：
+  - 若当前论文已经稳定提供其 Method 身份、正常 `object_semantics` 与至少一条正式方法关系，则必须直接产出 `status: partial` 的 Method 候选，而不是 Method placeholder。
+  - Method placeholder 不再作为正式中间状态保留；只保留 cited paper placeholder 用于 `cites` target 解析。
 
 `semantic_stub_candidates` 中每个对象至少包含：
 - `object_name`
@@ -177,6 +180,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - `supported_by`
 - `cites`
 - `based_on`
+- `references_method`
 - `sourced_from`
 
 并且必须区分三类：
@@ -204,6 +208,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - 这是基础方法、衍生方法还是集成方法？
 - 它的父方法是谁？
 - 是否应挂到某个“方法族”之下，而不是直接把若干基线都写成 `parent_methods`？
+- 当上游方法关系表达严格方法谱系、继承来源或明确建立在某方法之上时，优先产出 `based_on`；当表达关键比较对象、借鉴路线或方法参照但不构成谱系继承时，优先产出 `references_method`。
 
 ### 场景页
 区分：
@@ -221,8 +226,8 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
   - 若论文核心贡献是 framework / taxonomy 型概念，必须登记 `[[Paper]] --proposes--> [[Concept]]`
   - framework / taxonomy 型核心知识产物仍按当前本体优先落为 Concept，不改写为 Method
 - `evaluated_on`：
-  - empirical / method / application 论文只要存在明确 benchmark，必须登记 `[[Paper]] --evaluated_on--> [[Benchmark]]`
-  - 若该 benchmark 同时明确服务某个核心 Method 的正式评测，也应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`
+  - 只要存在明确 benchmark，应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`
+  - 论文页中的 benchmark 信息保留在 prose、frontmatter 与 Evidence 支撑中，不再生成 `[[Paper]] --evaluated_on--> [[Benchmark]]`
   - survey / framework / taxonomy / dataset / benchmark 类型论文若无统一 benchmark，不生成 `evaluated_on`，并在最终输出中显式写明“按规范豁免”
 - `sourced_from`：
   - 只要本次生成了 `sections.md`、`refs.md`、`experiments.md`、`analysis.md` 任一 Evidence 缓存，就必须同步登记 `[[Evidence]] --sourced_from--> [[RawSource]]`
@@ -269,6 +274,7 @@ relation_candidates:
   supported_by: []
   cites: []
   based_on: []
+  references_method: []
   sourced_from: []
 relation_exemptions:
   - relation_type: evaluated_on
