@@ -139,12 +139,12 @@ status: placeholder
 
         self.assertIn('Method placeholder status is no longer allowed: ontology/entities/methods/Synthetic Method.md', result.stdout + result.stderr)
 
-    def test_paper_ingest_contract_mentions_references_method_and_method_only_evaluated_on(self):
-        skill = (ROOT / '.claude/skills/paper-ingest/SKILL.md').read_text(encoding='utf-8')
-        self.assertIn('`references_method` 使用规则：', skill)
-        self.assertIn('若仅存在论文级引用事实而缺少稳定方法对象语义，不得从 `cites` 升格为 `references_method`。', skill)
-        self.assertNotIn('必须登记 `[[Paper]] --evaluated_on--> [[Benchmark]]`', skill)
-        self.assertIn('只要存在明确 benchmark，应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`', skill)
+    def test_relation_reconciliation_contract_mentions_partial_method_materialization_and_method_only_evaluated_on(self):
+        skill = (ROOT / '.claude/skills/relation-reconciliation/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('若缺失 target Method 页但其 Method 身份已稳定，应直接 materialize 为 `status: partial` 的 Method 页', skill)
+        self.assertIn('`evaluated_on` 只接收 `Method -> Benchmark`', skill)
+        self.assertIn('严格谱系才进 `based_on`', skill)
+        self.assertIn('比较 / 借鉴 / 路线参照进 `references_method`', skill)
 
 
 if __name__ == '__main__':

@@ -45,6 +45,7 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 - `edge_semantics`、`evidence`、`status`、`note` 仅作为该实例属性，不构成新实例。
 - `supported_by` 只允许 `Method`、`Concept`、`Task`、`Scenario`、`Benchmark` 作为 source。
 - 若候选关系试图把 `Paper` 作为 `supported_by` source，必须归入 `needs_human_review` 或直接判为非法，不得落账。
+- `evaluated_on` 只接收 `Method -> Benchmark`；若候选关系试图把 `Paper` 作为 `evaluated_on` source，必须归入 `needs_human_review` 或直接判为非法，不得落账。
 - 不得新增 Evidence 与 Paper 之间的 formal relation。
 
 ## Canonical ledger rendering
@@ -74,6 +75,8 @@ relation 页固定由两部分组成：
 - evidence-backed edges
 - current formal ledger edges
 - explicit exemptions
+
+若缺失 target Method 页但其 Method 身份已稳定，应直接 materialize 为 `status: partial` 的 Method 页；并且当前论文已提供正常 `object_semantics`、至少一条正式方法关系与至少一个有效 Evidence anchor 时，不得退回为 Method placeholder。
 
 ## Reconcile 输出分类
 - `already_present`
@@ -114,6 +117,11 @@ relation 页固定由两部分组成：
 - `supported_by` → `ontology/relations/supported_by.md`
 - `sourced_from` → `ontology/relations/sourced_from.md`
 
+方法邻接分流规则：
+- 严格谱系才进 `based_on`
+- 比较 / 借鉴 / 路线参照进 `references_method`
+- 若仅存在论文级引用事实且 Method 身份不稳定，则保留在 `cites`
+
 ## 结构化输出模板
 ```yaml
 status: success | partial | needs-human-review
@@ -126,10 +134,11 @@ exemptions: []
 needs_human_review: []
 affected_pages: []
 affected_stub_pages: []
+materialized_partial_methods: []
 serving_status_recommendations:
   - path: ontology/entities/methods/RoG.md
     recommended_status: partial
-    reason: stable minimal semantics exist, but default serving evidence is still insufficient
+    reason: stable Method identity and formal relation exist, but explanatory coverage remains incomplete
 ```
 
 ## 最小 rollout 建议
