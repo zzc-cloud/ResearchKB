@@ -6,31 +6,4 @@
 - 若引用语义同时包含路线定位、强基线角色或理论来源，应继续保留在 `edge_semantics` 中，而不是拆分新的 formal relation。
 
 ## 实例边
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning on Knowledge Graphs]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/papers/Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning on Knowledge Graphs.md
-  - edge_semantics: 论文将 RoG 作为 retrieval-augmented 路线中显式关系路径推理的关键上游。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with large language models]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/papers/Graph-constrained reasoning - Faithful reasoning on knowledge graphs with large language models.md
-  - edge_semantics: 论文将 GCR 作为可靠路径生成路线的重要比较对象。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/papers/An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering.md
-  - edge_semantics: 论文将 EPERM 作为 evidence-path 增强路线的重要 retrieval baseline。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Think-on-Graph - Deep and Responsible Reasoning of Large Language Model on Knowledge Graph]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/papers/Think-on-Graph - Deep and Responsible Reasoning of Large Language Model on Knowledge Graph.md
-  - edge_semantics: 论文将 ToG 作为 synergy-augmented 路线的代表方法进行对照。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- 无

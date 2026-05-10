@@ -7,11 +7,11 @@ description: 把 ResearchKB 的 ontology 重置到当前 live 结构下的空图
 
 ## Purpose
 把 `ontology/` 重置到当前 live 结构下的空图状态：
-- 保留当前各对象域 `index.md`
+- 保留对象域 `index.md` 文件本身，但清理其受管导航区块
 - 保留 `ontology/entities/raw-sources/index.md`
 - 保留 `ontology/entities/raw-sources/files/*.pdf`
 - 删除对象实例页
-- 将 `ontology/relations/*.md` 清空为当前格式的空账本
+- 将 `ontology/relations/*.md` 清空为当前 live 格式的空账本
 - 将 `ontology/log.md` 重写为空日志基线
 - 立即运行 `python3 scripts/lint_graph.py` 验证结果
 

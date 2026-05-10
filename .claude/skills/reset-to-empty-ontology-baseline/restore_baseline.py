@@ -25,6 +25,15 @@ RESET_ENTITY_DIRS = [
     'evidence',
 ]
 EMPTY_LOG = '# 操作日志\n\n- 系统级导航：`CLAUDE.md`\n- 图谱规范：[[graph-standard]]\n'
+INDEX_MANAGED_BLOCK_NAMES = {
+    'papers': ['navigation-entries', 'non-serving-placeholders'],
+    'methods': ['navigation-entries', 'non-serving-placeholders'],
+    'concepts': ['navigation-entries', 'non-serving-placeholders'],
+    'tasks': ['navigation-entries', 'non-serving-placeholders'],
+    'scenarios': ['navigation-entries', 'non-serving-placeholders'],
+    'benchmarks': ['navigation-entries', 'non-serving-placeholders'],
+    'evidence': ['navigation-entries', 'non-serving-placeholders'],
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -69,6 +78,25 @@ def clear_relation_ledgers(relations_dir: Path) -> None:
         path.write_text(cleared, encoding='utf-8')
 
 
+def clear_managed_block(text: str, block_name: str) -> str:
+    begin = f'<!-- BEGIN MANAGED BLOCK:{block_name} -->'
+    end = f'<!-- END MANAGED BLOCK:{block_name} -->'
+    if begin not in text or end not in text:
+        raise ValueError(f'missing managed block markers for {block_name}')
+    before, remainder = text.split(begin, 1)
+    _middle, after = remainder.split(end, 1)
+    return f'{before}{begin}\n{end}{after}'
+
+
+def clear_index_managed_blocks(entities_dir: Path) -> None:
+    for dirname, block_names in INDEX_MANAGED_BLOCK_NAMES.items():
+        index_path = entities_dir / dirname / 'index.md'
+        text = index_path.read_text(encoding='utf-8')
+        for block_name in block_names:
+            text = clear_managed_block(text, block_name)
+        index_path.write_text(text, encoding='utf-8')
+
+
 def clear_entity_instance_pages(entities_dir: Path) -> None:
     for dirname in RESET_ENTITY_DIRS:
         entity_dir = entities_dir / dirname
@@ -100,6 +128,7 @@ def reset_live_ontology() -> None:
     clear_entity_instance_pages(ENTITIES)
     clear_relation_ledgers(RELATIONS)
     write_empty_log(LOG_FILE)
+    clear_index_managed_blocks(ENTITIES)
 
 
 def main() -> int:

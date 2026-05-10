@@ -8,12 +8,6 @@
 
 ## 2. 导航入口
 <!-- BEGIN MANAGED BLOCK:navigation-entries -->
-- 路径优先化 入口（文档：`ontology/entities/concepts/路径优先化.md`）：[[ontology/entities/concepts/路径优先化]]
-  - object_semantics: PathMind 提出的路径筛选概念，用于在查询子图中识别更关键的推理路径。
-  - status: serving-ready
-- 重要推理路径 入口（文档：`ontology/entities/concepts/重要推理路径.md`）：[[ontology/entities/concepts/重要推理路径]]
-  - object_semantics: PathMind 中最值得暴露给 LLM 的高价值推理路径概念。
-  - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 
 ## 3. 其他实例（不可导航）
