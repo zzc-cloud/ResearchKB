@@ -146,6 +146,15 @@ status: placeholder
         self.assertIn('严格谱系才进 `based_on`', skill)
         self.assertIn('比较 / 借鉴 / 路线参照进 `references_method`', skill)
 
+    def test_projection_and_index_contracts_cover_dual_method_sections_and_partial_navigation(self):
+        projection = (ROOT / '.claude/skills/page-projection-sync/SKILL.md').read_text(encoding='utf-8')
+        index_sync = (ROOT / '.claude/skills/index-sync/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('## 方法演化与参照关系', projection)
+        self.assertIn('上游演化方法', projection)
+        self.assertIn('关键参照方法', projection)
+        self.assertIn('默认生成 `[[../x]]` 而不是 `[[../x|Name]]`', projection)
+        self.assertIn('`partial`：Method 页可进入默认导航入口', index_sync)
+
 
 if __name__ == '__main__':
     unittest.main()
