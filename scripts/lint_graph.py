@@ -72,7 +72,7 @@ INDEX_SYNC_NEEDLES = [
     'skipped_pages',
     'manual_followups',
     '`placeholder`：只进入 non-serving block',
-    '`partial`：可被 index 收录，但不得进入默认 entry',
+    '`partial`：Method 页可进入默认导航入口；其他类型仍可被 index 收录但不自动等同 serving-ready',
     '`serving-ready`：进入默认导航入口',
 ]
 

@@ -6,4 +6,31 @@
 - 若需要表达“以前提方式依赖该概念”，默认写入 `edge_semantics`，而不额外拆分 formal relation。
 
 ## 实例边
-- 无
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[路径优先化]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/concepts/路径优先化.md
+  - edge_semantics: 论文将路径优先化作为核心机制，用于识别高价值推理路径。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --uses_concept--> [[重要推理路径]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/concepts/重要推理路径.md
+  - edge_semantics: 论文以重要推理路径作为结构化推理与解释的关键对象。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind]] --uses_concept--> [[路径优先化]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/concepts/路径优先化.md
+  - edge_semantics: 方法使用路径优先化机制评估候选路径的重要性。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind]] --uses_concept--> [[重要推理路径]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/concepts/重要推理路径.md
+  - edge_semantics: 方法围绕重要推理路径进行路径选择与答案生成。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md

@@ -6,4 +6,45 @@
 - 若引用语义同时包含路线定位、强基线角色或理论来源，应继续保留在 `edge_semantics` 中，而不是拆分新的 formal relation。
 
 ## 实例边
-- 无
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning.md
+  - edge_semantics: 作为 retrieval-augmented 路线中的显式推理路径代表工作被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models.md
+  - edge_semantics: 作为 grounded reasoning path 代表方法被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering.md
+  - edge_semantics: 作为 evidence path 增强的代表工作被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs.md
+  - edge_semantics: 作为图检索增强代表方法被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation.md
+  - edge_semantics: 作为 synergy-augmented 路线代表方法被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --cites--> [[KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs]]
+  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
+  - target_path: ontology/entities/papers/KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs.md
+  - edge_semantics: 作为 LLM 生成推理路径方向的近期工作被引用。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md

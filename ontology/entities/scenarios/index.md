@@ -8,6 +8,9 @@
 
 ## 2. 导航入口
 <!-- BEGIN MANAGED BLOCK:navigation-entries -->
+- 知识图谱推理问答 入口（文档：`ontology/entities/scenarios/知识图谱推理问答.md`）：[[ontology/entities/scenarios/知识图谱推理问答]]
+  - object_semantics: 以知识图谱为结构化知识基础，通过多跳路径检索、筛选与推理来回答复杂问题的研究场景。
+  - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 
 ## 3. 其他实例（不可导航）
