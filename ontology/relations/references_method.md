@@ -7,4 +7,31 @@
 - 若仅存在论文级引用事实而缺少稳定方法对象语义，应保留在 `cites`，不得升格为 `references_method`。
 
 ## 实例边
-- 无
+- [[PathMind]] --references_method--> [[GCR]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/methods/GCR.md
+  - edge_semantics: PathMind 将 GCR 作为 grounded reasoning path 代表方法进行路线参照。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind]] --references_method--> [[EPERM]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/methods/EPERM.md
+  - edge_semantics: PathMind 将 EPERM 作为 evidence path 增强代表方法进行参照与比较。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind]] --references_method--> [[ToG]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/methods/ToG.md
+  - edge_semantics: PathMind 将 ToG 作为 synergy-augmented 代表方法进行路线比较。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind]] --references_method--> [[KnowPath]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/methods/KnowPath.md
+  - edge_semantics: PathMind 将 KnowPath 作为 LLM 生成推理路径方向代表方法进行参照。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md

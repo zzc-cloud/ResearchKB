@@ -155,6 +155,24 @@ status: placeholder
         self.assertIn('默认生成 `[[../x]]` 而不是 `[[../x|Name]]`', projection)
         self.assertIn('`partial`：Method 页可进入默认导航入口', index_sync)
 
+    def test_pathmind_regression_uses_method_only_benchmarks_and_partial_upstream_methods(self):
+        pathmind_paper = (ROOT / 'ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md').read_text(encoding='utf-8')
+        pathmind_method = (ROOT / 'ontology/entities/methods/PathMind.md').read_text(encoding='utf-8')
+        evaluated_on = (ROOT / 'ontology/relations/evaluated_on.md').read_text(encoding='utf-8')
+        references_method = (ROOT / 'ontology/relations/references_method.md').read_text(encoding='utf-8')
+
+        self.assertNotIn('`evaluated_on`：WebQSP', pathmind_paper)
+        self.assertIn('## 方法演化与参照关系', pathmind_method)
+        self.assertIn('关键参照方法', pathmind_method)
+        self.assertIn('[[PathMind]] --references_method--> [[GCR]]', references_method)
+        self.assertIn('[[PathMind]] --evaluated_on--> [[WebQSP]]', evaluated_on)
+        self.assertNotIn('[[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --evaluated_on--> [[WebQSP]]', evaluated_on)
+        for name in ['RoG', 'GCR', 'EPERM', 'ToG', 'KnowPath']:
+            text = (ROOT / 'ontology/entities/methods' / f'{name}.md').read_text(encoding='utf-8')
+            self.assertIn('status: partial', text)
+            self.assertIn('## Object semantics', text)
+            self.assertIn('## Formal relations', text)
+
 
 if __name__ == '__main__':
     unittest.main()
