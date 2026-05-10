@@ -39,6 +39,113 @@ class MethodRelationPipelineTests(unittest.TestCase):
         self.assertNotIn('合法 source：`Paper`、`Method`。', evaluated_on)
         self.assertIn('`status: processed` 与 `status: partial` 的 Method 均可进入“导航入口”', methods_index)
 
+    def test_lint_rejects_paper_evaluated_on_edges(self):
+        evaluated_on_path = ROOT / 'ontology/relations/evaluated_on.md'
+        paper_path = ROOT / 'ontology/entities/papers/Synthetic Paper.md'
+        original = evaluated_on_path.read_text(encoding='utf-8')
+        original_paper_exists = paper_path.exists()
+        original_paper = paper_path.read_text(encoding='utf-8') if original_paper_exists else None
+
+        paper_path.write_text(
+            """---
+title: Synthetic Paper
+authors: []
+year: unknown
+venue: unknown
+problem: [reasoning]
+industry: [general]
+research_role: [foundational]
+status: placeholder
+---
+
+# Synthetic Paper
+
+## 当前定位
+- 当前作为 [[Synthetic Benchmark]] 的测试论文。
+
+## 与知识库现有内容的关系
+- 无。
+
+## 待补充
+- 无。
+""",
+            encoding='utf-8',
+        )
+
+        evaluated_on_path.write_text(
+            original
+            + "\n- [[Synthetic Paper]] --evaluated_on--> [[Synthetic Benchmark]]\n"
+            + "  - source_path: ontology/entities/papers/Synthetic Paper.md\n"
+            + "  - target_path: ontology/entities/benchmarks/Synthetic Benchmark.md\n"
+            + "  - edge_semantics: test fixture\n"
+            + "  - evidence: SyntheticEvidence\n"
+            + "  - evidence_link: [[SyntheticEvidence]]\n"
+            + "  - evidence_path: ontology/entities/evidence/SyntheticEvidence.md\n",
+            encoding='utf-8',
+        )
+
+        try:
+            result = self.run_lint()
+        finally:
+            evaluated_on_path.write_text(original, encoding='utf-8')
+            if original_paper_exists and original_paper is not None:
+                paper_path.write_text(original_paper, encoding='utf-8')
+            else:
+                paper_path.unlink()
+
+        self.assertIn('Paper may not appear as evaluated_on source: Synthetic Paper', result.stdout + result.stderr)
+
+    def test_lint_rejects_method_placeholder_status(self):
+        method_path = ROOT / 'ontology/entities/methods/Synthetic Method.md'
+        original_exists = method_path.exists()
+        original = method_path.read_text(encoding='utf-8') if original_exists else None
+
+        method_path.write_text(
+            """---
+title: Synthetic Method
+type: 基础方法
+parent_methods: []
+child_methods: []
+problem: [reasoning]
+method_family: [hybrid]
+scenario: [enterprise-qa]
+research_task: []
+industry: [general]
+research_role: [foundational]
+status: placeholder
+---
+
+# Synthetic Method
+
+## 当前定位
+- 仅用于测试，参照 [[PathMind]]。
+
+## 与知识库现有内容的关系
+- 无。
+
+## 待补充
+- 无。
+""",
+            encoding='utf-8',
+        )
+
+        try:
+            result = self.run_lint()
+        finally:
+            if original_exists and original is not None:
+                method_path.write_text(original, encoding='utf-8')
+            else:
+                method_path.unlink()
+
+        self.assertIn('Method placeholder status is no longer allowed: ontology/entities/methods/Synthetic Method.md', result.stdout + result.stderr)
+
+    def test_lint_rejects_generated_display_text_links_on_object_pages(self):
+        result = self.run_lint()
+        self.assertIn(
+            'generated object-page link must omit display alias in ontology/entities/methods/PathMind.md: ../methods/RoG|RoG',
+            result.stdout + result.stderr,
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

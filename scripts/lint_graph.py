@@ -215,6 +215,7 @@ ROLE_SENTENCE_BY_HEADING = {
     ],
 }
 SUPPORTED_BY_ALLOWED_SOURCES = {'Method', 'Concept', 'Task', 'Scenario', 'Benchmark'}
+EVALUATED_ON_ALLOWED_SOURCES = {'Method'}
 ENTITY_TITLE_TO_TYPE = {
     'PathMind': 'Method',
     '路径优先化': 'Concept',
@@ -505,22 +506,21 @@ def validate_serving_structure(rel: str, text: str, page_type: str) -> list[str]
     frontmatter, _body = split_frontmatter(text)
     if page_type == 'method':
         status = frontmatter.get('status')
+        if status == 'placeholder':
+            page_errors = [f'Method placeholder status is no longer allowed: {rel}']
+            status = 'partial'
+        else:
+            page_errors = []
         if status == 'partial':
             rules = SERVING_TYPE_RULES['method_partial']
-        elif status == 'placeholder':
-            rules = SERVING_TYPE_RULES['method_placeholder']
         else:
             rules = SERVING_TYPE_RULES['method_processed']
     else:
         rules = SERVING_TYPE_RULES[page_type]
-    page_errors: list[str] = []
+        page_errors = []
     for heading in rules['required_headings']:
         if heading not in text:
             page_errors.append(f'missing serving heading {heading} in {rel}')
-    if page_type == 'method' and frontmatter.get('status') == 'placeholder' and 'references_method' in text:
-        for heading in ['## Formal relations', '### Outgoing', '### Incoming']:
-            if heading not in text:
-                page_errors.append(f'missing serving heading {heading} in {rel}')
     return page_errors
 
 
@@ -542,6 +542,19 @@ def extract_non_formal_relations_text(text: str) -> str:
     if next_heading == -1:
         return before
     return before + after[next_heading + 1:]
+
+
+def validate_no_generated_display_aliases(rel: str, text: str) -> list[str]:
+    page_errors: list[str] = []
+    if not rel.startswith('ontology/entities/'):
+        return page_errors
+    for match in BODY_WIKILINK_RE.finditer(text):
+        link = match.group('link')
+        if not link.startswith('../'):
+            continue
+        if '|' in link:
+            page_errors.append(f'generated object-page link must omit display alias in {rel}: {link}')
+    return page_errors
 
 
 def parse_projected_relation_items(text: str) -> list[dict[str, object]]:
@@ -650,6 +663,28 @@ def validate_supported_by_contract(errors: list[str]) -> None:
             errors.append(f'unsupported supported_by source type for {source_name}: {source_type}')
 
 
+def validate_evaluated_on_contract(errors: list[str]) -> None:
+    text = read_text('ontology/relations/evaluated_on.md')
+    for src, rel, _dst in extract_ledger_edges(text):
+        if rel != 'evaluated_on':
+            continue
+        source_name = src.split('|', 1)[0]
+        source_type = infer_entity_type_from_name(source_name)
+        if source_type == 'Paper':
+            errors.append(f'Paper may not appear as evaluated_on source: {source_name}')
+        elif source_type is None:
+            errors.append(f'unknown evaluated_on source type for {source_name}')
+        elif source_type not in EVALUATED_ON_ALLOWED_SOURCES:
+            errors.append(f'unsupported evaluated_on source type for {source_name}: {source_type}')
+
+
+def validate_method_status_contract(errors: list[str]) -> None:
+    for path in (ROOT / 'ontology/entities/methods').glob('*.md'):
+        frontmatter, _body = split_frontmatter(path.read_text(encoding='utf-8', errors='ignore'))
+        if frontmatter.get('status') == 'placeholder':
+            errors.append(f'Method placeholder status is no longer allowed: {path.relative_to(ROOT)}')
+
+
 def validate_cited_paper_targets(errors: list[str]) -> None:
     cites_text = read_text('ontology/relations/cites.md')
     for _src, rel, dst in extract_ledger_edges(cites_text):
@@ -745,6 +780,8 @@ check_forbidden_full_references(errors)
 validate_index_pages(errors)
 validate_cited_paper_targets(errors)
 validate_supported_by_contract(errors)
+validate_evaluated_on_contract(errors)
+validate_method_status_contract(errors)
 
 for path in (ROOT / 'ontology').rglob('*.md'):
     rel = str(path.relative_to(ROOT))
@@ -755,6 +792,7 @@ for path in (ROOT / 'ontology').rglob('*.md'):
     if '## Formal relations' in text:
         errors.extend(validate_serving_structure(rel, text, page_type))
         errors.extend(validate_projection_contract(rel, text))
+    errors.extend(validate_no_generated_display_aliases(rel, text))
 
 for path in (ROOT / 'ontology/entities/evidence').rglob('*.md'):
     rel = str(path.relative_to(ROOT))
@@ -765,6 +803,7 @@ for path in (ROOT / 'ontology/entities/evidence').rglob('*.md'):
     if '## Formal relations' in text:
         errors.extend(validate_serving_structure(rel, text, page_type))
         errors.extend(validate_projection_contract(rel, text))
+    errors.extend(validate_no_generated_display_aliases(rel, text))
 
 for rel in RELATION_LEDGER_FILES:
     text = read_text(rel)

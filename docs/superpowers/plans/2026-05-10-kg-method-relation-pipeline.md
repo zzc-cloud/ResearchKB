@@ -253,10 +253,39 @@ Append this test method to `scripts/test_method_relation_pipeline.py`:
 ```python
     def test_lint_rejects_paper_evaluated_on_edges(self):
         evaluated_on_path = ROOT / 'ontology/relations/evaluated_on.md'
-        original = evaluated_on_path.read_text(encoding='utf-8')
+        paper_path = ROOT / 'ontology/entities/papers/Synthetic Paper.md'
+        original_evaluated_on = evaluated_on_path.read_text(encoding='utf-8')
+        original_paper_exists = paper_path.exists()
+        original_paper = paper_path.read_text(encoding='utf-8') if original_paper_exists else None
+
+        paper_path.write_text(
+            """---
+ title: Synthetic Paper
+ authors: []
+ year: unknown
+ venue: unknown
+ problem: [reasoning]
+ industry: [general]
+ research_role: [foundational]
+ status: placeholder
+ ---
+ 
+ # Synthetic Paper
+ 
+ ## 当前定位
+ - 测试页，关联 [[Synthetic Benchmark]]。
+ 
+ ## 与知识库现有内容的关系
+ - 无。
+ 
+ ## 待补充
+ - 无。
+ """,
+            encoding='utf-8',
+        )
 
         evaluated_on_path.write_text(
-            original
+            original_evaluated_on
             + "\n- [[Synthetic Paper]] --evaluated_on--> [[Synthetic Benchmark]]\n"
             + "  - source_path: ontology/entities/papers/Synthetic Paper.md\n"
             + "  - target_path: ontology/entities/benchmarks/Synthetic Benchmark.md\n"
@@ -270,7 +299,11 @@ Append this test method to `scripts/test_method_relation_pipeline.py`:
         try:
             result = self.run_lint()
         finally:
-            evaluated_on_path.write_text(original, encoding='utf-8')
+            evaluated_on_path.write_text(original_evaluated_on, encoding='utf-8')
+            if original_paper_exists and original_paper is not None:
+                paper_path.write_text(original_paper, encoding='utf-8')
+            else:
+                paper_path.unlink()
 
         self.assertIn('Paper may not appear as evaluated_on source: Synthetic Paper', result.stdout + result.stderr)
 ```
@@ -287,30 +320,30 @@ Append this test method below the prior one:
 
         method_path.write_text(
             """---
-title: Synthetic Method
-type: 基础方法
-parent_methods: []
-child_methods: []
-problem: [reasoning]
-method_family: [hybrid]
-scenario: [enterprise-qa]
-research_task: []
-industry: [general]
-research_role: [foundational]
-status: placeholder
----
-
-# Synthetic Method
-
-## 当前定位
-- 仅用于测试。
-
-## 与知识库现有内容的关系
-- 无。
-
-## 待补充
-- 无。
-""",
+ title: Synthetic Method
+ type: 基础方法
+ parent_methods: []
+ child_methods: []
+ problem: [reasoning]
+ method_family: [hybrid]
+ scenario: [enterprise-qa]
+ research_task: []
+ industry: [general]
+ research_role: [foundational]
+ status: placeholder
+ ---
+ 
+ # Synthetic Method
+ 
+ ## 当前定位
+ - 仅用于测试，参照 [[PathMind]]。
+ 
+ ## 与知识库现有内容的关系
+ - 无。
+ 
+ ## 待补充
+ - 无。
+ """,
             encoding='utf-8',
         )
 
@@ -346,7 +379,7 @@ In `scripts/lint_graph.py`, directly below `SUPPORTED_BY_ALLOWED_SOURCES`, add:
 EVALUATED_ON_ALLOWED_SOURCES = {'Method'}
 ```
 
-Then add this helper below `validate_supported_by_contract`:
+Then add these two helpers below `validate_supported_by_contract`:
 
 ```python
 def validate_evaluated_on_contract(errors: list[str]) -> None:
@@ -362,27 +395,31 @@ def validate_evaluated_on_contract(errors: list[str]) -> None:
             errors.append(f'unknown evaluated_on source type for {source_name}')
         elif source_type not in EVALUATED_ON_ALLOWED_SOURCES:
             errors.append(f'unsupported evaluated_on source type for {source_name}: {source_type}')
+
+
+def validate_method_status_contract(errors: list[str]) -> None:
+    for path in (ROOT / 'ontology/entities/methods').glob('*.md'):
+        frontmatter, _body = split_frontmatter(path.read_text(encoding='utf-8', errors='ignore'))
+        if frontmatter.get('status') == 'placeholder':
+            errors.append(f'Method placeholder status is no longer allowed: {path.relative_to(ROOT)}')
 ```
 
-- [ ] **Step 5: Remove Method placeholder runtime branches and add direct rejection**
+- [ ] **Step 5: Remove Method placeholder runtime branches and keep Method serving rules simple**
 
-Make these exact edits in `scripts/lint_graph.py`:
+Make this exact edit in `scripts/lint_graph.py`:
 
-1. Replace the `method` branch inside `validate_serving_structure` with:
+Replace the `method` branch inside `validate_serving_structure` with:
 
 ```python
     if page_type == 'method':
         status = frontmatter.get('status')
-        if status == 'placeholder':
-            page_errors.append(f'Method placeholder status is no longer allowed: {rel}')
-            status = 'partial'
         if status == 'partial':
             rules = SERVING_TYPE_RULES['method_partial']
         else:
             rules = SERVING_TYPE_RULES['method_processed']
 ```
 
-2. Delete this old block entirely:
+Then delete this old block entirely:
 
 ```python
     if page_type == 'method' and frontmatter.get('status') == 'placeholder' and 'references_method' in text:
@@ -390,6 +427,8 @@ Make these exact edits in `scripts/lint_graph.py`:
             if heading not in text:
                 page_errors.append(f'missing serving heading {heading} in {rel}')
 ```
+
+Method placeholder rejection is now handled by `validate_method_status_contract` instead of the serving-structure path.
 
 - [ ] **Step 6: Enforce simplified generated links on object pages**
 
@@ -411,12 +450,13 @@ def validate_no_generated_display_aliases(rel: str, text: str) -> list[str]:
 
 Then call it in both serving-page loops right after `validate_projection_contract(rel, text)`.
 
-- [ ] **Step 7: Wire the new `evaluated_on` validator into the main error pipeline**
+- [ ] **Step 7: Wire the new validators into the main error pipeline**
 
 In the main execution block of `scripts/lint_graph.py`, immediately after `validate_supported_by_contract(errors)`, add:
 
 ```python
 validate_evaluated_on_contract(errors)
+validate_method_status_contract(errors)
 ```
 
 - [ ] **Step 8: Run the tests to verify they fail before the lint implementation is complete, then rerun after edits**
@@ -424,8 +464,11 @@ validate_evaluated_on_contract(errors)
 Run first: `python3 scripts/test_method_relation_pipeline.py -v`
 Expected before finishing the lint edits: at least one FAIL showing the new behavior is not yet enforced.
 
-Run again after all edits: `python3 scripts/test_method_relation_pipeline.py -v && python3 scripts/lint_graph.py`
-Expected after finishing: unittest PASS; lint may still fail only because pipeline skills/live pages are not yet aligned.
+Run again after all edits: `python3 scripts/test_method_relation_pipeline.py -v`
+Expected after finishing: unittest PASS.
+
+Run separately after that: `python3 scripts/lint_graph.py`
+Expected after finishing Task 2: lint may still FAIL because live pages and skill contracts are not yet aligned, but it must now report the new alias / Method-only / no-Method-placeholder rules.
 
 - [ ] **Step 9: Commit the lint-rule update**
 
