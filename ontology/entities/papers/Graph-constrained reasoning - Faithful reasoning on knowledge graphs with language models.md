@@ -1,8 +1,8 @@
 ---
 title: Graph-constrained reasoning - Faithful reasoning on knowledge graphs with language models
 authors: []
-year: unknown
-venue: unknown
+year: 2025
+venue: ICLR
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]

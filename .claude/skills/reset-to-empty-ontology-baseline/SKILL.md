@@ -7,7 +7,9 @@ description: 把 ResearchKB 的 ontology 重置到当前 live 结构下的空图
 
 ## Purpose
 把 `ontology/` 重置到当前 live 结构下的空图状态：
-- 保留对象域 `index.md` 文件本身，但清理其受管导航区块
+- 从当前存在的 `ontology/entities/*/index.md` 动态识别可重置对象域，并排除 `raw-sources`
+- 保留各对象域 `index.md` 文件本身，但清理其受管导航区块
+- 若存在没有 `index.md` 的历史残留目录，仅报告为 warning，不阻断 reset
 - 保留 `ontology/entities/raw-sources/index.md`
 - 保留 `ontology/entities/raw-sources/files/*.pdf`
 - 删除对象实例页
@@ -22,8 +24,9 @@ description: 把 ResearchKB 的 ontology 重置到当前 live 结构下的空图
 
 ## Execution
 1. 运行 `.claude/skills/reset-to-empty-ontology-baseline/restore_baseline.py`
-2. 如用户已确认覆盖当前 ontology，则附加 `--force`
-3. 成功后回报 lint 结果与保留项（indexes / raw PDFs）
+2. 如用户只想检查当前 live reset 面而不实际覆盖，可先运行 `--check-only`
+3. 如用户已确认覆盖当前 ontology，则附加 `--force`
+4. 成功后回报 lint 结果，以及脚本输出的 detected entity domains / orphan dirs / retained raw PDFs 摘要
 
 ## Output
 ```yaml

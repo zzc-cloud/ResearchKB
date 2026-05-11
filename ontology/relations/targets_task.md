@@ -16,14 +16,14 @@
 - [[PathMind]] --targets_task--> [[kgqa]]
   - source_path: ontology/entities/methods/PathMind.md
   - target_path: ontology/entities/tasks/kgqa.md
-  - edge_semantics: 方法在知识图谱问答任务中被验证。
+  - edge_semantics: 方法在知识图谱问答 benchmark 上被验证。
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
 - [[PathMind]] --targets_task--> [[multi-hop-qa]]
   - source_path: ontology/entities/methods/PathMind.md
   - target_path: ontology/entities/tasks/multi-hop-qa.md
-  - edge_semantics: 方法重点处理复杂多跳问答中的路径筛选与推理。
+  - edge_semantics: 方法重点处理复杂多跳问答中的重要路径筛选与推理。
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md

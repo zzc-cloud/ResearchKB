@@ -2,7 +2,7 @@
 title: CWQ
 problem: [query-answering]
 method_family: [hybrid, llm, gnn]
-scenario: [enterprise-qa]
+scenario: []
 research_task: [kgqa, multi-hop-qa]
 industry: [general]
 research_role: [benchmark]
@@ -16,7 +16,7 @@ status: processed
 - 面向复杂多跳知识图谱问答的标准 benchmark，用于评测方法在组合推理场景中的命中率与 F1 表现。
 
 ## benchmark 定义
-- CWQ 是 PathMind 用于评测复杂多跳推理能力的两个主要基准之一。
+- CWQ 是论文用于评测 PathMind 复杂多跳推理能力的主要 benchmark 之一。
 
 ## 评测目标
 - 评估方法在复杂问答与多跳推理场景中的性能与稳健性。
@@ -30,7 +30,7 @@ status: processed
 - PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models
 
 ## 相关场景
-- 企业知识图谱问答
+- 该 benchmark 用于复杂多跳知识图谱问答评估；当前论文未给出足以单独 materialize 的正式 Scenario 邻接。
 
 ## 证据来源
 - [[../evidence/PathMind.experiments]]
@@ -39,11 +39,11 @@ status: processed
 ### Outgoing
 当前对象作为 source；以下列出当前对象指向的 relation 实例。
 - `supported_by`：PathMind.experiments（文档：`ontology/entities/evidence/PathMind.experiments.md`）：[[../evidence/PathMind.experiments]]
-  - edge_semantics: 实验证据页支撑 CWQ 作为 PathMind 主要多跳评测基准。
+  - edge_semantics: 实验证据页支撑 CWQ 作为论文中的主要复杂多跳评测 benchmark。
   - evidence: [[../evidence/PathMind.experiments]]
 
 ### Incoming
 当前对象作为 target；以下列出指向当前对象的 relation 实例。
 - `evaluated_on`：PathMind（文档：`ontology/entities/methods/PathMind.md`）：[[../methods/PathMind]]
-  - edge_semantics: PathMind 在 CWQ 上取得最优结果。
+  - edge_semantics: 方法在 CWQ 上取得 0.707 Hits@1 与 0.614 F1。
   - evidence: [[../evidence/PathMind.experiments]]

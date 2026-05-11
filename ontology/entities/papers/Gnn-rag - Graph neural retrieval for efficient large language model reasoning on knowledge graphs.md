@@ -1,8 +1,8 @@
 ---
 title: Gnn-rag - Graph neural retrieval for efficient large language model reasoning on knowledge graphs
 authors: []
-year: unknown
-venue: unknown
+year: 2025
+venue: ACL
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]

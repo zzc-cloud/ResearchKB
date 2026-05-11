@@ -144,6 +144,7 @@ owner: yyzz
 - `page-projection-sync` 负责将 formal relation ledger 中的 graph truth 同步回对象页，包括 `Formal relations`、强一致 frontmatter 与模板化关系区块。
 - `index-sync` 负责将对象页投影同步到各对象域 index 与其他受管导航页，并区分 default serving surface 与非默认导航收录。
 - `python3 scripts/lint_graph.py`、`ontology-semantic-review` 与 `serving-governance-review` 共同构成正式入图前的治理关口；只有结构 lint、本体语义审查与 serving 治理全部通过后，才算可进入正式图谱。
+- `serving-governance-review` 应尊重 `ontology/graph-standard.md` 与 `index-sync` 已确认的 phase-1 合法中间态；若 `partial` / `placeholder` 邻接本身是规范允许、索引状态正确且 formal/evidence 遍历完整的稳态，不得自动将其视为 serving 失败。
 - 如与 `ontology/graph-standard.md` 冲突，一律以 `ontology/graph-standard.md` 为准。
 
 ### 批量处理论文

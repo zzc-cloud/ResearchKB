@@ -1,16 +1,16 @@
 ---
-title: Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+title: Flexkbqa - A flexible llm-powered framework for few-shot knowledge base question answering
 authors: []
 year: 2024
-venue: ICLR
-problem: [reasoning]
+venue: AAAI
+problem: [query-answering]
 industry: [general]
 research_role: [foundational]
 status: placeholder
 tags: [placeholder, cited-work]
 ---
 
-# Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+# Flexkbqa - A flexible llm-powered framework for few-shot knowledge base question answering
 
 ## 当前定位
 - 当前作为 [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 的关键上游工作或对比对象。

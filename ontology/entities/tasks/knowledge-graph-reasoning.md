@@ -2,7 +2,7 @@
 title: knowledge-graph-reasoning
 problem: [reasoning]
 method_family: [hybrid, llm, gnn]
-scenario: [enterprise-qa]
+scenario: []
 research_task: [knowledge-graph-reasoning]
 industry: [general]
 research_role: [foundational]
@@ -25,18 +25,18 @@ status: processed
 - [[../methods/PathMind]]
 
 ## 相关机制
+- 重要推理路径筛选
 - 路径优先排序
-- 高价值推理路径筛选
 
 ## 相关场景
-- 企业知识图谱问答
+- 可见于知识图谱问答等应用语境，但当前论文未提供足以单独 formalize 的稳定 Scenario 对象。
 
 ## 相关 benchmark
 - WebQSP
 - CWQ
 
 ## 相关论文
-- [[../papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
+- PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models
 
 ## 证据来源 / 关系索引
 - [[../evidence/PathMind.sections]]
@@ -45,14 +45,11 @@ status: processed
 ### Outgoing
 当前对象作为 source；以下列出当前对象指向的 relation 实例。
 - `supported_by`：PathMind.sections（文档：`ontology/entities/evidence/PathMind.sections.md`）：[[../evidence/PathMind.sections]]
-  - edge_semantics: 本任务页由章节级证据页支撑其问题建模与研究目标。
+  - edge_semantics: 章节级证据页支撑该任务在论文中的问题建模与研究目标。
   - evidence: [[../evidence/PathMind.sections]]
 
 ### Incoming
 当前对象作为 target；以下列出指向当前对象的 relation 实例。
 - `targets_task`：PathMind（文档：`ontology/entities/methods/PathMind.md`）：[[../methods/PathMind]]
-  - edge_semantics: PathMind 以知识图谱推理为总体任务定位。
-  - evidence: [[../evidence/PathMind.sections]]
-- `targets_task`：PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models（文档：`ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md`）：[[../papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
-  - edge_semantics: 论文将知识图谱推理作为核心任务定位。
+  - edge_semantics: 方法以知识图谱推理为总体任务定位。
   - evidence: [[../evidence/PathMind.sections]]

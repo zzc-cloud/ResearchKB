@@ -1,8 +1,8 @@
 ---
 title: An Evidence Path Enhanced Reasoning Model for Knowledge Graph Question Answering
 authors: []
-year: unknown
-venue: unknown
+year: 2025
+venue: AAAI
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]

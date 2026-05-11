@@ -9,70 +9,77 @@
 - [[PathMind]] --supported_by--> [[PathMind.sections]]
   - source_path: ontology/entities/methods/PathMind.md
   - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑方法定义与机制结构。
+  - edge_semantics: 章节级证据页支撑 PathMind 的问题设定、三阶段结构与核心机制。
   - evidence: PathMind.sections
   - evidence_link: [[PathMind.sections]]
   - evidence_path: ontology/entities/evidence/PathMind.sections.md
-- [[PathMind]] --supported_by--> [[PathMind.experiments]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑方法性能、消融与效率结论。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
 - [[PathMind]] --supported_by--> [[PathMind.refs]]
   - source_path: ontology/entities/methods/PathMind.md
   - target_path: ontology/entities/evidence/PathMind.refs.md
-  - edge_semantics: 引用证据页支撑方法的上游路线定位与代表基线对比。
+  - edge_semantics: 引用证据页支撑 PathMind 的方法路线定位与关键比较对象。
   - evidence: PathMind.refs
   - evidence_link: [[PathMind.refs]]
   - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: 实验证据页支撑 PathMind 的性能、消融、可扩展性与效率结论。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
 - [[knowledge-graph-reasoning]] --supported_by--> [[PathMind.sections]]
   - source_path: ontology/entities/tasks/knowledge-graph-reasoning.md
   - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑知识图谱推理任务的问题建模与研究目标。
+  - edge_semantics: 章节级证据页支撑该任务在论文中的问题建模与研究目标。
   - evidence: PathMind.sections
   - evidence_link: [[PathMind.sections]]
   - evidence_path: ontology/entities/evidence/PathMind.sections.md
 - [[kgqa]] --supported_by--> [[PathMind.experiments]]
   - source_path: ontology/entities/tasks/kgqa.md
   - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑知识图谱问答任务上的性能与任务适配性。
+  - edge_semantics: 实验证据页支撑该任务上的 benchmark 表现。
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
 - [[multi-hop-qa]] --supported_by--> [[PathMind.experiments]]
   - source_path: ontology/entities/tasks/multi-hop-qa.md
   - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑复杂多跳问答上的性能与案例解释。
+  - edge_semantics: 实验证据页支撑复杂多跳问答上的性能与案例分析。
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
-- [[企业知识图谱问答]] --supported_by--> [[PathMind.sections]]
-  - source_path: ontology/entities/scenarios/企业知识图谱问答.md
-  - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑该场景中的问题建模与方法使用背景。
-  - evidence: PathMind.sections
-  - evidence_link: [[PathMind.sections]]
-  - evidence_path: ontology/entities/evidence/PathMind.sections.md
-- [[企业知识图谱问答]] --supported_by--> [[PathMind.experiments]]
-  - source_path: ontology/entities/scenarios/企业知识图谱问答.md
-  - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑该场景中的性能、案例与效率比较。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
-- [[WebQSP]] --supported_by--> [[PathMind.experiments]]
-  - source_path: ontology/entities/benchmarks/WebQSP.md
-  - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑 WebQSP 作为 PathMind 评测基准之一。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
-- [[CWQ]] --supported_by--> [[PathMind.experiments]]
-  - source_path: ontology/entities/benchmarks/CWQ.md
-  - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑 CWQ 作为 PathMind 主要多跳评测基准。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[RoG]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/RoG.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: 引用证据页支撑 RoG 作为显式 relational path reasoning 的代表方法语义。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[GNN-RAG]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/GNN-RAG.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: 引用证据页支撑 GNN-RAG 作为 retrieval-augmented 图检索代表方法的最小语义。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[GCR]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/GCR.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: 引用证据页支撑 GCR 作为 grounded reasoning path 代表方法的最小语义。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[EPERM]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/EPERM.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: 引用证据页支撑 EPERM 作为 evidence-path enhanced 代表方法的最小语义。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[ToG]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/ToG.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: 引用证据页支撑 ToG 作为 synergy-augmented 代表方法的最小语义。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md

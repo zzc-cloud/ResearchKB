@@ -1,8 +1,8 @@
 ---
-title: Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+title: LightPROF - A Lightweight Reasoning Framework for Large Language Model on Knowledge Graph
 authors: []
-year: 2024
-venue: ICLR
+year: 2025
+venue: AAAI
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]
@@ -10,7 +10,7 @@ status: placeholder
 tags: [placeholder, cited-work]
 ---
 
-# Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+# LightPROF - A Lightweight Reasoning Framework for Large Language Model on Knowledge Graph
 
 ## 当前定位
 - 当前作为 [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 的关键上游工作或对比对象。

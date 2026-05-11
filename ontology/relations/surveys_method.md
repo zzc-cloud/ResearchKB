@@ -7,4 +7,4 @@
 - 证据应优先来自 `analysis.md` 或 survey-oriented `sections.md` 中的结构化 coverage 内容，而不是默认从 `refs.md` 升格。
 
 ## 实例边
-- 暂无
+- 无

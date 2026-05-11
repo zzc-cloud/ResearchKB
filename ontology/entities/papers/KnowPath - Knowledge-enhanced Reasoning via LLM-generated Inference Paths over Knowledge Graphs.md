@@ -1,8 +1,8 @@
 ---
 title: KnowPath - Knowledge-enhanced Reasoning via LLM-generated Inference Paths over Knowledge Graphs
 authors: []
-year: unknown
-venue: unknown
+year: 2025
+venue: arXiv preprint
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]

@@ -1,7 +1,7 @@
 ---
-title: Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+title: Simple is effective - The roles of graphs and large language models in knowledge-graph-based retrieval-augmented generation
 authors: []
-year: 2024
+year: 2025
 venue: ICLR
 problem: [reasoning]
 industry: [general]
@@ -10,7 +10,7 @@ status: placeholder
 tags: [placeholder, cited-work]
 ---
 
-# Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+# Simple is effective - The roles of graphs and large language models in knowledge-graph-based retrieval-augmented generation
 
 ## 当前定位
 - 当前作为 [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 的关键上游工作或对比对象。

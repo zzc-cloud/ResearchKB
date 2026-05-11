@@ -91,10 +91,13 @@ GRAPH_STANDARD_NEEDLES = [
     'semantic stub',
     '## 最小定义/角色',
     '`partial` 表示对象可被正式链接',
+    '不构成 serving 治理失败依据',
 ]
 SERVING_GOVERNANCE_NEEDLES = [
     'domain index pages',
     'default navigation/QA entry surfaces',
+    'phase-1 合法稳态',
+    '而不是自动降为 `needs_fixes`',
 ]
 DOMAIN_INDEX_FILES = [
     'ontology/entities/papers/index.md',

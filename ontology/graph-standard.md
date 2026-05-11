@@ -484,6 +484,7 @@ survey / framework 主线的 Scenario 补充规则：
 - 当单篇论文已稳定提供某个邻接对象的最小对象语义，但证据仍不足以支持完整 serving-ready 页面时，可生成 semantic stub。
 - semantic stub 页至少应具有：`status: partial` 或 `status: placeholder`、`## Object semantics`、`## 当前定位`、`## 与知识库现有内容的关系`、`## 最小定义/角色`、`## 待补充`。
 - `partial` 表示对象可被正式链接、可被 index 收录、可参与 formal graph 遍历，但不得自动提升为默认 serving 入口。
+- 若 `partial` / `placeholder` 邻接本身属于 phase-1 允许的、结构完备且 index 状态正确的稳态，则它们本身不构成 serving 治理失败依据；只有在被误分类、误提升或破坏 formal/evidence 遍历契约时，才应在 serving-governance 中降级。
 - 仅因为对象页可通过 `Formal relations` 做受约束拓扑扩展，不足以直接提升为 `serving-ready`。
 
 ### 5.5 服务层治理校验要求

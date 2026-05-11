@@ -16,7 +16,7 @@
 - [[PathMind.refs]] --sourced_from--> [[ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf]]
   - source_path: ontology/entities/evidence/PathMind.refs.md
   - target_path: ontology/entities/raw-sources/files/A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.pdf
-  - edge_semantics: 引用与上游路线证据缓存直接编译自 PathMind 原始论文 PDF。
+  - edge_semantics: 引用与路线证据缓存直接编译自 PathMind 原始论文 PDF。
   - evidence: PathMind.refs
   - evidence_link: [[PathMind.refs]]
   - evidence_path: ontology/entities/evidence/PathMind.refs.md

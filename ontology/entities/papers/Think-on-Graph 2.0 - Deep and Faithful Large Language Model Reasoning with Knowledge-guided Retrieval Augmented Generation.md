@@ -1,8 +1,8 @@
 ---
 title: Think-on-Graph 2.0 - Deep and Faithful Large Language Model Reasoning with Knowledge-guided Retrieval Augmented Generation
 authors: []
-year: unknown
-venue: unknown
+year: 2025
+venue: ICLR
 problem: [reasoning]
 industry: [general]
 research_role: [foundational]

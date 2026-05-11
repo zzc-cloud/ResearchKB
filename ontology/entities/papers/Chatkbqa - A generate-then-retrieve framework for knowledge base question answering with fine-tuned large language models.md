@@ -1,16 +1,16 @@
 ---
-title: Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+title: Chatkbqa - A generate-then-retrieve framework for knowledge base question answering with fine-tuned large language models
 authors: []
-year: 2024
-venue: ICLR
-problem: [reasoning]
+year: 2023
+venue: arXiv preprint
+problem: [query-answering]
 industry: [general]
 research_role: [foundational]
 status: placeholder
 tags: [placeholder, cited-work]
 ---
 
-# Reasoning on Graphs - Faithful and Interpretable Large Language Model Reasoning
+# Chatkbqa - A generate-then-retrieve framework for knowledge base question answering with fine-tuned large language models
 
 ## 当前定位
 - 当前作为 [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 的关键上游工作或对比对象。
