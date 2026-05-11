@@ -10,7 +10,6 @@ REQUIRED_DIRECTORIES = [
     'ontology/entities/benchmarks',
     'ontology/entities/papers',
     'ontology/entities/methods',
-    'ontology/entities/concepts',
     'ontology/entities/scenarios',
     'ontology/relations',
     'ontology/entities/evidence',
@@ -27,7 +26,6 @@ REQUIRED_FILES = [
     'ontology/relations/based_on.md',
     'ontology/relations/references_method.md',
     'ontology/relations/targets_task.md',
-    'ontology/relations/uses_concept.md',
     'ontology/relations/evaluated_on.md',
     'ontology/relations/supported_by.md',
     'ontology/relations/sourced_from.md',
@@ -100,7 +98,6 @@ SERVING_GOVERNANCE_NEEDLES = [
 DOMAIN_INDEX_FILES = [
     'ontology/entities/papers/index.md',
     'ontology/entities/methods/index.md',
-    'ontology/entities/concepts/index.md',
     'ontology/entities/tasks/index.md',
     'ontology/entities/scenarios/index.md',
     'ontology/entities/benchmarks/index.md',
@@ -111,7 +108,6 @@ DOMAIN_INDEX_FILES = [
 INDEX_MANAGED_BLOCKS = {
     'ontology/entities/papers/index.md': ['navigation-entries', 'non-serving-placeholders'],
     'ontology/entities/methods/index.md': ['navigation-entries', 'non-serving-placeholders'],
-    'ontology/entities/concepts/index.md': ['navigation-entries', 'non-serving-placeholders'],
     'ontology/entities/tasks/index.md': ['navigation-entries', 'non-serving-placeholders'],
     'ontology/entities/scenarios/index.md': ['navigation-entries', 'non-serving-placeholders'],
     'ontology/entities/benchmarks/index.md': ['navigation-entries', 'non-serving-placeholders'],
@@ -128,7 +124,7 @@ SERVING_TYPE_RULES = {
         'strong_frontmatter_fields': {},
     },
     'method_processed': {
-        'required_headings': ['## 相关概念', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
         'strong_frontmatter_fields': {'parent_methods', 'child_methods'},
     },
     'method_partial': {
@@ -137,10 +133,6 @@ SERVING_TYPE_RULES = {
     },
     'method_placeholder': {
         'required_headings': ['## 当前定位', '## 与知识库现有内容的关系', '## 待补充'],
-        'strong_frontmatter_fields': set(),
-    },
-    'concept': {
-        'required_headings': ['## 相关任务 / 场景', '## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
         'strong_frontmatter_fields': set(),
     },
     'task': {
@@ -199,7 +191,7 @@ RELATION_LEDGER_FILES = [
     'ontology/relations/based_on.md',
     'ontology/relations/references_method.md',
     'ontology/relations/targets_task.md',
-    'ontology/relations/uses_concept.md',
+    'ontology/relations/applied_in.md',
     'ontology/relations/evaluated_on.md',
     'ontology/relations/supported_by.md',
     'ontology/relations/sourced_from.md',
@@ -214,16 +206,14 @@ ROLE_SENTENCE_BY_HEADING = {
         '当前对象作为 target；以下列出指向当前对象的 relation 实例。',
     ],
 }
-SUPPORTED_BY_ALLOWED_SOURCES = {'Method', 'Concept', 'Task', 'Scenario', 'Benchmark'}
+SUPPORTED_BY_ALLOWED_SOURCES = {'Method', 'Task', 'Scenario', 'Benchmark'}
 EVALUATED_ON_ALLOWED_SOURCES = {'Method'}
 ENTITY_TITLE_TO_TYPE = {
     'PathMind': 'Method',
-    '路径优先化': 'Concept',
-    '重要推理路径': 'Concept',
     'knowledge-graph-reasoning': 'Task',
     'kgqa': 'Task',
     'multi-hop-qa': 'Task',
-    '知识图谱推理问答': 'Scenario',
+    '企业知识图谱问答': 'Scenario',
     'WebQSP': 'Benchmark',
     'CWQ': 'Benchmark',
     'PathMind.sections': 'Evidence',
@@ -234,7 +224,6 @@ ENTITY_TITLE_TO_TYPE = {
 ENTITY_DIRS_BY_TYPE = {
     'Paper': ROOT / 'ontology' / 'entities' / 'papers',
     'Method': ROOT / 'ontology' / 'entities' / 'methods',
-    'Concept': ROOT / 'ontology' / 'entities' / 'concepts',
     'Task': ROOT / 'ontology' / 'entities' / 'tasks',
     'Scenario': ROOT / 'ontology' / 'entities' / 'scenarios',
     'Benchmark': ROOT / 'ontology' / 'entities' / 'benchmarks',
@@ -489,8 +478,6 @@ def classify_serving_page(rel: str) -> str | None:
         return 'paper'
     if rel.startswith('ontology/entities/methods/'):
         return 'method'
-    if rel.startswith('ontology/entities/concepts/'):
-        return 'concept'
     if rel.startswith('ontology/entities/tasks/'):
         return 'task'
     if rel.startswith('ontology/entities/scenarios/'):

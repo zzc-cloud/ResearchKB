@@ -1,5 +1,5 @@
 {
-  "collapse-filter": true,
+  "collapse-filter": false,
   "search": "-path:docs  -file:index.md -file:claude.md -path:ontology/relations -file:graph-standard",
   "showTags": false,
   "showAttachments": false,
@@ -12,6 +12,13 @@
       "color": {
         "a": 1,
         "rgb": 14048348
+      }
+    },
+    {
+      "query": "path:ontology/entities/methods  ",
+      "color": {
+        "a": 1,
+        "rgb": 14069084
       }
     }
   ],

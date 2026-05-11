@@ -10,7 +10,7 @@
 ## 2. 导航入口
 <!-- BEGIN MANAGED BLOCK:navigation-entries -->
 - PathMind 入口（文档：`ontology/entities/methods/PathMind.md`）：[[ontology/entities/methods/PathMind]]
-  - object_semantics: 一种面向知识图谱推理的 retrieve-prioritize-reason 集成方法，通过路径优先化与路径偏好对齐引导 LLM 使用高价值推理路径。
+  - object_semantics: 一种面向知识图谱推理的 retrieve-prioritize-reason 集成方法，通过路径优先排序与路径偏好对齐引导 LLM 使用高价值推理路径。
   - status: serving-ready
 - RoG 入口（文档：`ontology/entities/methods/RoG.md`）：[[ontology/entities/methods/RoG]]
   - object_semantics: 一种显式推理路径导向的知识图谱推理方法，代表 retrieval-augmented 路线中的关系路径推理方案。

@@ -8,8 +8,8 @@
 
 ## 2. 导航入口
 <!-- BEGIN MANAGED BLOCK:navigation-entries -->
-- 知识图谱推理问答 入口（文档：`ontology/entities/scenarios/知识图谱推理问答.md`）：[[ontology/entities/scenarios/知识图谱推理问答]]
-  - object_semantics: 以知识图谱为结构化知识基础，通过多跳路径检索、筛选与推理来回答复杂问题的研究场景。
+- 企业知识图谱问答 入口（文档：`ontology/entities/scenarios/企业知识图谱问答.md`）：[[ontology/entities/scenarios/企业知识图谱问答]]
+  - object_semantics: 一种面向企业知识服务与决策支持的应用场景，使用知识图谱上的结构化检索、路径筛选与多跳推理来回答复杂问题。
   - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 

@@ -16,7 +16,7 @@ status: processed
 # PathMind
 
 ## Object semantics
-- 一种面向知识图谱推理的 retrieve-prioritize-reason 集成方法，通过路径优先化与路径偏好对齐引导 LLM 使用高价值推理路径。
+- 一种面向知识图谱推理的 retrieve-prioritize-reason 集成方法，通过路径优先排序与路径偏好对齐引导 LLM 使用高价值推理路径。
 
 ## 方法定义
 - [[../papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] 提出的三阶段知识图谱推理方法。
@@ -25,12 +25,12 @@ status: processed
 - 在保留图结构推理能力的同时，减少无差别路径检索带来的噪声，以及多轮交互带来的推理开销。
 
 ## 技术原理
-- 方法由子图检索、路径优先化和知识推理三部分组成。
-- 它通过 [[../concepts/路径优先化]] 识别 [[../concepts/重要推理路径]]，再用这些路径引导 LLM 完成回答。
+- 方法由子图检索、路径优先排序和知识推理三部分组成。
+- 它通过路径优先排序识别高价值推理路径，再用这些路径引导 LLM 完成回答。
 
 ## 方法演化与参照关系
 ### 上游演化方法
-- [[../methods/RoG]]：PathMind 延续显式推理路径路线，并在其上加入路径优先化与偏好对齐机制。
+- [[../methods/RoG]]：PathMind 延续显式推理路径路线，并在其上加入路径优先排序与偏好对齐机制。
 
 ### 关键参照方法
 - [[../methods/GCR]]：作为 grounded reasoning path 代表方法，用于对照 PathMind 的路径选择设计。
@@ -39,14 +39,14 @@ status: processed
 - [[../methods/KnowPath]]：作为生成推理路径方向代表方法，用于对照 LLM 生成式路径方案。
 
 ## 应用场景
-- 主要用于知识图谱推理问答。
+- 主要用于企业知识图谱问答。
 
 ## 代表论文
 - [[../papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]]
 
-## 相关概念
-- [[../concepts/路径优先化]]
-- [[../concepts/重要推理路径]]
+## 相关机制
+- 路径优先排序
+- 高价值推理路径筛选
 
 ## 证据来源
 - [[../evidence/PathMind.sections]]
@@ -63,7 +63,7 @@ status: processed
 ### Outgoing
 当前对象作为 source；以下列出当前对象指向的 relation 实例。
 - `based_on`：RoG（文档：`ontology/entities/methods/RoG.md`）：[[../methods/RoG]]
-  - edge_semantics: PathMind 延续显式推理路径路线，并在其上加入路径优先化与偏好对齐机制。
+  - edge_semantics: PathMind 延续显式推理路径路线，并在其上加入路径优先排序与偏好对齐机制。
   - evidence: [[../evidence/PathMind.refs]]
 - `references_method`：GCR（文档：`ontology/entities/methods/GCR.md`）：[[../methods/GCR]]
   - edge_semantics: PathMind 将 GCR 作为 grounded reasoning path 代表方法进行路线参照。
@@ -86,12 +86,9 @@ status: processed
 - `targets_task`：multi-hop-qa（文档：`ontology/entities/tasks/multi-hop-qa.md`）：[[../tasks/multi-hop-qa]]
   - edge_semantics: 方法重点处理复杂多跳问答中的路径筛选与推理。
   - evidence: [[../evidence/PathMind.experiments]]
-- `uses_concept`：路径优先化（文档：`ontology/entities/concepts/路径优先化.md`）：[[../concepts/路径优先化]]
-  - edge_semantics: 方法使用路径优先化机制评估候选路径的重要性。
-  - evidence: [[../evidence/PathMind.sections]]
-- `uses_concept`：重要推理路径（文档：`ontology/entities/concepts/重要推理路径.md`）：[[../concepts/重要推理路径]]
-  - edge_semantics: 方法围绕重要推理路径进行路径选择与答案生成。
-  - evidence: [[../evidence/PathMind.sections]]
+- `applied_in`：企业知识图谱问答（文档：`ontology/entities/scenarios/企业知识图谱问答.md`）：[[../scenarios/企业知识图谱问答]]
+  - edge_semantics: 方法在企业知识图谱问答场景中结合路径优先排序与结构化推理完成复杂问答。
+  - evidence: [[../evidence/PathMind.experiments]]
 - `evaluated_on`：WebQSP（文档：`ontology/entities/benchmarks/WebQSP.md`）：[[../benchmarks/WebQSP]]
   - edge_semantics: 方法在 WebQSP 上取得最优结果。
   - evidence: [[../evidence/PathMind.experiments]]

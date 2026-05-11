@@ -1,6 +1,6 @@
 ## 关系语义说明
 - `supported_by` 表示正式知识对象页由 Evidence 对象页支撑。
-- 合法 source：`Method`、`Concept`、`Task`、`Scenario`、`Benchmark`。
+- 合法 source：`Method`、`Task`、`Scenario`、`Benchmark`。
 - 合法 target：`Evidence`。
 - `Paper` 不再作为 `supported_by` 的 source；Evidence 与 Paper 之间也不单独建立 formal relation。
 - 若同一正式知识对象由多个证据缓存支撑，应拆为多条独立实例边。
@@ -27,20 +27,6 @@
   - evidence: PathMind.refs
   - evidence_link: [[PathMind.refs]]
   - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[路径优先化]] --supported_by--> [[PathMind.sections]]
-  - source_path: ontology/entities/concepts/路径优先化.md
-  - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑路径优先化的定义与优先函数。
-  - evidence: PathMind.sections
-  - evidence_link: [[PathMind.sections]]
-  - evidence_path: ontology/entities/evidence/PathMind.sections.md
-- [[重要推理路径]] --supported_by--> [[PathMind.sections]]
-  - source_path: ontology/entities/concepts/重要推理路径.md
-  - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑重要推理路径的定义与其在结构化推理中的作用。
-  - evidence: PathMind.sections
-  - evidence_link: [[PathMind.sections]]
-  - evidence_path: ontology/entities/evidence/PathMind.sections.md
 - [[knowledge-graph-reasoning]] --supported_by--> [[PathMind.sections]]
   - source_path: ontology/entities/tasks/knowledge-graph-reasoning.md
   - target_path: ontology/entities/evidence/PathMind.sections.md
@@ -62,17 +48,17 @@
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
-- [[知识图谱推理问答]] --supported_by--> [[PathMind.sections]]
-  - source_path: ontology/entities/scenarios/知识图谱推理问答.md
+- [[企业知识图谱问答]] --supported_by--> [[PathMind.sections]]
+  - source_path: ontology/entities/scenarios/企业知识图谱问答.md
   - target_path: ontology/entities/evidence/PathMind.sections.md
-  - edge_semantics: 章节级证据页支撑该场景的问题建模与方法使用背景。
+  - edge_semantics: 章节级证据页支撑该场景中的问题建模与方法使用背景。
   - evidence: PathMind.sections
   - evidence_link: [[PathMind.sections]]
   - evidence_path: ontology/entities/evidence/PathMind.sections.md
-- [[知识图谱推理问答]] --supported_by--> [[PathMind.experiments]]
-  - source_path: ontology/entities/scenarios/知识图谱推理问答.md
+- [[企业知识图谱问答]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/scenarios/企业知识图谱问答.md
   - target_path: ontology/entities/evidence/PathMind.experiments.md
-  - edge_semantics: 实验证据页支撑该场景下的性能、案例与效率比较。
+  - edge_semantics: 实验证据页支撑该场景中的性能、案例与效率比较。
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md

@@ -48,8 +48,8 @@ venue: AAAI-26
 - `supported_by`：multi-hop-qa（文档：`ontology/entities/tasks/multi-hop-qa.md`）：[[../tasks/multi-hop-qa]]
   - edge_semantics: 本页支撑该方法在复杂多跳问答上的性能表现。
   - evidence: [[PathMind.experiments|PathMind.experiments]]
-- `supported_by`：知识图谱推理问答（文档：`ontology/entities/scenarios/知识图谱推理问答.md`）：[[../scenarios/知识图谱推理问答]]
-  - edge_semantics: 本页支撑该研究场景下的性能、可解释案例与效率比较。
+- `supported_by`：企业知识图谱问答（文档：`ontology/entities/scenarios/企业知识图谱问答.md`）：[[../scenarios/企业知识图谱问答]]
+  - edge_semantics: 本页支撑该应用场景下的性能、可解释案例与效率比较。
   - evidence: [[PathMind.experiments|PathMind.experiments]]
 - `supported_by`：WebQSP（文档：`ontology/entities/benchmarks/WebQSP.md`）：[[../benchmarks/WebQSP]]
   - edge_semantics: 本页支撑 WebQSP 作为 PathMind 主要评测基准之一。

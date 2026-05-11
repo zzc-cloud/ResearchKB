@@ -1,31 +1,11 @@
 ## 关系语义说明
-- `targets_task` 表示方法或论文明确面向某个研究任务。
-- 合法 source：`Paper`、`Method`。
+- `targets_task` 表示方法明确面向某个研究任务。
+- 合法 source：`Method`。
 - 合法 target：`Task`。
-- 与应用场景相关的落地语义默认写入对象页 `scenario`、正文或 `edge_semantics`，而不再单独拆分 formal relation。
+- Paper 页中的任务定位保留在 prose、frontmatter 与 Evidence 支撑中，不单独生成 `Paper -> Task` formal edge。
+- 与应用场景相关的落地语义，若已稳定到方法层则应使用 `applied_in`；否则可写入对象页 `scenario`、正文或 `edge_semantics`。
 
 ## 实例边
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[knowledge-graph-reasoning]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/tasks/knowledge-graph-reasoning.md
-  - edge_semantics: 论文将知识图谱推理作为核心任务定位。
-  - evidence: PathMind.sections
-  - evidence_link: [[PathMind.sections]]
-  - evidence_path: ontology/entities/evidence/PathMind.sections.md
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[kgqa]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/tasks/kgqa.md
-  - edge_semantics: 论文在知识图谱问答场景中验证方法有效性。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
-- [[PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models]] --targets_task--> [[multi-hop-qa]]
-  - source_path: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md
-  - target_path: ontology/entities/tasks/multi-hop-qa.md
-  - edge_semantics: 论文强调复杂多跳问答中的重要路径选择。
-  - evidence: PathMind.experiments
-  - evidence_link: [[PathMind.experiments]]
-  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
 - [[PathMind]] --targets_task--> [[knowledge-graph-reasoning]]
   - source_path: ontology/entities/methods/PathMind.md
   - target_path: ontology/entities/tasks/knowledge-graph-reasoning.md

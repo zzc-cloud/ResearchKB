@@ -43,7 +43,7 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 补充约束：
 - 正式 relation 实例唯一按 `relation_type + source + target` 识别。
 - `edge_semantics`、`evidence`、`status`、`note` 仅作为该实例属性，不构成新实例。
-- `supported_by` 只允许 `Method`、`Concept`、`Task`、`Scenario`、`Benchmark` 作为 source。
+- `supported_by` 只允许 `Method`、`Task`、`Scenario`、`Benchmark` 作为 source。
 - 若候选关系试图把 `Paper` 作为 `supported_by` source，必须归入 `needs_human_review` 或直接判为非法，不得落账。
 - `evaluated_on` 只接收 `Method -> Benchmark`；若候选关系试图把 `Paper` 作为 `evaluated_on` source，必须归入 `needs_human_review` 或直接判为非法，不得落账。
 - 不得新增 Evidence 与 Paper 之间的 formal relation。
@@ -87,9 +87,8 @@ relation 页固定由两部分组成：
 ## 强语义表述复核
 除显式 `relation_candidates` 外，还必须复核已更新对象页中的强语义表述，重点包括：
 - 方法页中的“主要场景”
-- 论文页中的“核心概念”
+- 论文页中的“核心机制”
 - 论文页中的“核心任务 / 相关任务”
-- framework 型 Concept 页中的“场景 / 面向”
 
 若这些表述满足：
 1. ontology 存在合法 relation type
@@ -112,7 +111,7 @@ relation 页固定由两部分组成：
 - `based_on` → `ontology/relations/based_on.md`
 - `references_method` → `ontology/relations/references_method.md`
 - `targets_task` → `ontology/relations/targets_task.md`
-- `uses_concept` → `ontology/relations/uses_concept.md`
+- `applied_in` → `ontology/relations/applied_in.md`
 - `evaluated_on` → `ontology/relations/evaluated_on.md`
 - `supported_by` → `ontology/relations/supported_by.md`
 - `sourced_from` → `ontology/relations/sourced_from.md`
@@ -128,8 +127,11 @@ status: success | partial | needs-human-review
 already_present: []
 added_relations:
   - file: ontology/relations/targets_task.md
-    edge: "[[Paper]] --targets_task--> [[Task]]"
+    edge: "[[Method]] --targets_task--> [[Task]]"
     evidence: "[[ontology/entities/evidence/foo.sections|foo.sections]] §x"
+  - file: ontology/relations/applied_in.md
+    edge: "[[Method]] --applied_in--> [[Scenario]]"
+    evidence: "[[ontology/entities/evidence/foo.experiments|foo.experiments]] §x"
 exemptions: []
 needs_human_review: []
 affected_pages: []

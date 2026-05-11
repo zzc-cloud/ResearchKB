@@ -19,7 +19,6 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - `ontology/relations/based_on.md`
 - `ontology/relations/references_method.md`
 - `ontology/relations/targets_task.md`
-- `ontology/relations/uses_concept.md`
 - `ontology/relations/evaluated_on.md`
 - `ontology/relations/supported_by.md`
 - `ontology/relations/sourced_from.md`
@@ -42,6 +41,9 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - 是否存在重复 / 冲突 / 伪关系
 - 是否存在关系方向错误或粒度不匹配
 - `supported_by` 是否被错误用于 `Paper`
+- `targets_task` 是否被错误用于 `Paper`
+- `applied_in` 是否被错误用于 `Paper`，或是否应由 `Method -> Scenario` 承接
+- `Task` 与 `Scenario` 是否被混淆为同一语义层级
 - Evidence 是否通过正文或 formal relation 直接连接回 Paper
 - 对象页 / Evidence 页正文中的 wikilink 是否超出 formal relation 已投影邻接
 - relation 页的“关系语义说明区”是否与 `ontology/graph-standard.md` 一致

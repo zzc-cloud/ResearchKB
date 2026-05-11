@@ -30,7 +30,7 @@ status: processed
 - PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models
 
 ## 相关场景
-- 知识图谱推理问答
+- 企业知识图谱问答
 
 ## 证据来源
 - [[../evidence/PathMind.experiments]]

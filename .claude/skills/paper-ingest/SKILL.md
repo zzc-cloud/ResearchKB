@@ -102,9 +102,9 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 
 1. 论文页：`ontology/entities/papers/[论文名].md`
 2. 方法页：若是方法论文，为核心方法创建或更新 `ontology/entities/methods/`
-3. 概念页：为核心概念创建或更新 `ontology/entities/concepts/`
-4. 场景页：为核心场景创建或更新 `ontology/entities/scenarios/`
-5. 对于 survey / framework / taxonomy 论文：优先把核心知识落到 concept / framework / scenario / synthesis，而不是强行抽取单一方法页
+3. 场景页：为核心场景创建或更新 `ontology/entities/scenarios/`
+4. 任务页：为论文核心研究任务创建或更新 `ontology/entities/tasks/`
+5. 对于 survey / framework / taxonomy 论文：优先把核心知识落到 method / scenario / evidence / relations，而不是强行抽取单一方法页或独立概念实体。
 6. 关联关系：在落库完成前，逐类判断是否存在应正式落账的关系；只要存在就写入对应账本，而不是留在正文 prose 中。
    - 在写入 `cites` 前，必须先对所有 `cites` target 做存在性检查；若对应 paper 页不存在，先调用同目录下的 `materialize_cited_paper_placeholders.py` 生成最小 placeholder paper 页，再写入 `ontology/relations/cites.md`。
    - `materialize_cited_paper_placeholders.py` 的职责仅限于：为缺失 cited papers 生成可解析的最小 Paper placeholder，不替代正式 ingest。
@@ -114,8 +114,8 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
    - `ontology/relations/proposes.md`
    - `ontology/relations/based_on.md`
    - `ontology/relations/targets_task.md`
-   - `ontology/relations/uses_concept.md`
    - `ontology/relations/evaluated_on.md`
+   - `ontology/relations/applied_in.md`
    - `ontology/relations/supported_by.md`
    - `ontology/relations/sourced_from.md`
 7. 更新：
@@ -167,7 +167,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - 这些 relation 页表示层决策由 `relation-reconciliation` 负责。
 
 补充约束：
-- `supported_by` 候选只允许从 `Method`、`Concept`、`Task`、`Scenario`、`Benchmark` 指向 `Evidence`。
+- `supported_by` 候选只允许从 `Method`、`Task`、`Scenario`、`Benchmark` 指向 `Evidence`。
 - 不生成 `Paper --supported_by--> Evidence`。
 - Evidence 页保留 `source_file` provenance 锚点，但不通过正文或单独 formal relation 直接链接回 Paper。
 - 对象页与 Evidence 页正文中的所有 wikilink，必须已经在各自的 `Formal relations` 中出现。
@@ -176,7 +176,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - `proposes`
 - `targets_task`
 - `evaluated_on`
-- `uses_concept`
+- `applied_in`
 - `supported_by`
 - `cites`
 - `based_on`
@@ -214,6 +214,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 区分：
 - `scenario`：行业/落地场景
 - `research_task`：研究任务型场景（例如 KGQA、多跳问答、benchmark）
+- 若一个候选项同时像 Task 又像 Scenario，优先判断其是否命名研究目标；若仍有歧义，默认先判 `Task`。
 
 ### 关系文件
 - 对重要上游论文，即使知识库中尚未有完整页，也可先在 citation graph 中预登记。
@@ -223,8 +224,14 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - 对高频上游方法，优先建立最小 stub 页，而不是只留下空链接。
 - `proposes`：
   - 方法论文若提出核心方法，必须登记 `[[Paper]] --proposes--> [[Method]]`
-  - 若论文核心贡献是 framework / taxonomy 型概念，必须登记 `[[Paper]] --proposes--> [[Concept]]`
-  - framework / taxonomy 型核心知识产物仍按当前本体优先落为 Concept，不改写为 Method
+  - 若论文核心贡献是可复用方法框架、面向任务的可复用解决方案，也必须登记 `[[Paper]] --proposes--> [[Method]]`
+  - 若论文只提供 taxonomy、术语组织或解释框架而不形成可复用方法，phase 1 保留在 Paper / Method / Evidence prose 中，不单独实体化
+- `targets_task`：
+  - 只从稳定 `Method` 身份出发生成 `[[Method]] --targets_task--> [[Task]]`
+  - 不生成 `[[Paper]] --targets_task--> [[Task]]` formal candidate
+- `applied_in`：
+  - 若论文明确给出方法应用语境，且 Method 身份稳定，可生成 `[[Method]] --applied_in--> [[Scenario]]`
+  - 不生成 `[[Paper]] --applied_in--> [[Scenario]]` formal candidate
 - `evaluated_on`：
   - 只要存在明确 benchmark，应登记 `[[Method]] --evaluated_on--> [[Benchmark]]`
   - 论文页中的 benchmark 信息保留在 prose、frontmatter 与 Evidence 支撑中，不再生成 `[[Paper]] --evaluated_on--> [[Benchmark]]`
@@ -263,14 +270,13 @@ generated_caches:
 updated_pages:
   - ontology/entities/papers/...
   - ontology/entities/methods/...
-  - ontology/entities/concepts/...
   - ontology/entities/scenarios/...
   - ontology/relations/...
 relation_candidates:
   proposes: []
   targets_task: []
   evaluated_on: []
-  uses_concept: []
+  applied_in: []
   supported_by: []
   cites: []
   based_on: []

@@ -11,9 +11,10 @@
 ## 特别检查项
 - 如果 survey 被表示成 task，必须指出。
 - 如果 framework 被表示成 method，必须指出。
-- 如果 `uses_concept.md` 中出现“概念 → 论文支撑”关系，必须指出，并建议迁移到概念页证据区或 `supported_by.md`。
+- 如果 `targets_task.md` 中出现 `Paper` 作为 source，必须指出，并建议迁移到对应 Method formal edge 或 Paper prose。
 - 如果 `based_on.md` 中出现文献支撑关系而不是实际技术谱系，必须指出。
-- 如果改进、前提依赖、场景适配或概念性支撑语义被单独升格为 formal relation，必须指出，并建议下沉到 `edge_semantics`、frontmatter 或对象页正文。
+- 如果新增了场景 formal relation，检查其是否为 `[[Method]] --applied_in--> [[Scenario]]`，而不是 `Paper -> Scenario` 或 `Scenario -> Task`。
+- 如果改进、前提依赖、场景适配或解释性支撑语义被单独升格为 formal relation，必须指出，并建议下沉到 `edge_semantics`、frontmatter 或对象页正文。
 
 ## Projection-format review prompts
 - 若 diff 修改了对象页 `Formal relations`，检查是否仍在使用完整边字符串而不是半展开格式。

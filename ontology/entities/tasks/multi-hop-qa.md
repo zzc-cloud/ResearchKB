@@ -24,11 +24,11 @@ status: processed
 ## 相关方法
 - [[../methods/PathMind]]
 
-## 相关概念
-- 重要推理路径
+## 相关机制
+- 高价值推理路径筛选
 
 ## 相关场景
-- 知识图谱推理问答
+- 企业知识图谱问答
 
 ## 相关 benchmark
 - CWQ

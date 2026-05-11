@@ -14,7 +14,7 @@ venue: AAAI-26
 - PathMind 论文的章节级结构化证据页，承载问题定义、三模块方法设计与主要实验主张的最小可审计摘要。
 
 ## 对应正式知识节点
-- 该证据页主要支撑 PathMind 方法、PathMind 论文、路径优先化、重要推理路径，以及知识图谱推理相关任务与场景页的最小正式语义。
+- 该证据页主要支撑 PathMind 方法、PathMind 论文，以及知识图谱推理相关任务与场景页的最小正式语义，并保留关键机制说明。
 
 ## 本节支撑什么
 - 论文将知识图谱推理建模为 retrieve-prioritize-reason 三阶段流程。
@@ -40,17 +40,11 @@ venue: AAAI-26
 ### Incoming
 当前对象作为 target；以下列出指向当前对象的 relation 实例。
 - `supported_by`：PathMind 方法（文档：`ontology/entities/methods/PathMind.md`）：[[../methods/PathMind]]
-  - edge_semantics: 本页支撑 PathMind 的问题设定、三模块结构与路径优先化机制。
-  - evidence: [[PathMind.sections|PathMind.sections]]
-- `supported_by`：路径优先化（文档：`ontology/entities/concepts/路径优先化.md`）：[[../concepts/路径优先化]]
-  - edge_semantics: 本页支撑路径优先化的定义、优先函数与其在方法中的角色。
-  - evidence: [[PathMind.sections|PathMind.sections]]
-- `supported_by`：重要推理路径（文档：`ontology/entities/concepts/重要推理路径.md`）：[[../concepts/重要推理路径]]
-  - edge_semantics: 本页支撑重要推理路径作为高价值推理证据链的定义与作用。
+  - edge_semantics: 本页支撑 PathMind 的问题设定、三模块结构与路径优先排序机制。
   - evidence: [[PathMind.sections|PathMind.sections]]
 - `supported_by`：knowledge-graph-reasoning（文档：`ontology/entities/tasks/knowledge-graph-reasoning.md`）：[[../tasks/knowledge-graph-reasoning]]
   - edge_semantics: 本页支撑该论文对知识图谱推理任务的问题建模与总体目标。
   - evidence: [[PathMind.sections|PathMind.sections]]
-- `supported_by`：知识图谱推理问答（文档：`ontology/entities/scenarios/知识图谱推理问答.md`）：[[../scenarios/知识图谱推理问答]]
-  - edge_semantics: 本页支撑知识图谱推理问答作为该方法的主要使用场景。
+- `supported_by`：企业知识图谱问答（文档：`ontology/entities/scenarios/企业知识图谱问答.md`）：[[../scenarios/企业知识图谱问答]]
+  - edge_semantics: 本页支撑企业知识图谱问答作为该方法的主要使用场景。
   - evidence: [[PathMind.sections|PathMind.sections]]
