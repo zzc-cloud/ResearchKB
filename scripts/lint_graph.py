@@ -181,9 +181,19 @@ SEMI_EXPANDED_RELATION_RE = re.compile(
     r"- `(?P<rel>[^`]+)`：(?P<label>[^（]+)（文档：`(?P<doc>[^`]+)`）：\[\[(?P<link_target>[^\]|]+)(?:\|(?P<link_label>[^\]]+))?\]\]"
 )
 BODY_WIKILINK_RE = re.compile(r"\[\[(?P<link>[^\]]+)\]\]")
-RELATION_CHILD_FIELD_ORDER = [
+BASE_RELATION_CHILD_FIELD_ORDER = [
     'source_path',
     'target_path',
+    'edge_semantics',
+    'evidence',
+    'evidence_link',
+    'evidence_path',
+]
+REFERENCES_METHOD_CHILD_FIELD_ORDER = [
+    'source_path',
+    'target_path',
+    'source_paper_path',
+    'target_paper_path',
     'edge_semantics',
     'evidence',
     'evidence_link',
@@ -291,6 +301,35 @@ def extract_projected_links(text: str) -> dict[str, set[str]]:
     return result
 
 
+def extract_projected_relation_keys(text: str) -> set[tuple[str, str, str]]:
+    keys: set[tuple[str, str, str]] = set()
+    for item in parse_projected_relation_items(text):
+        main_line = item['main_line']
+        match = SEMI_EXPANDED_RELATION_RE.match(main_line)
+        if not match:
+            continue
+        heading = item['heading']
+        relation_type = match.group('rel').strip()
+        document_path = match.group('doc').strip()
+        keys.add((heading, relation_type, document_path))
+    return keys
+
+
+def is_object_page_relpath(rel_path: str) -> bool:
+    return (
+        rel_path.startswith('ontology/entities/papers/')
+        or rel_path.startswith('ontology/entities/methods/')
+        or rel_path.startswith('ontology/entities/tasks/')
+        or rel_path.startswith('ontology/entities/scenarios/')
+        or rel_path.startswith('ontology/entities/benchmarks/')
+        or rel_path.startswith('ontology/entities/evidence/')
+    )
+
+
+def is_rawsource_relpath(rel_path: str) -> bool:
+    return rel_path.startswith('ontology/entities/raw-sources/files/')
+
+
 def extract_formal_relations(text: str) -> list[tuple[str, str, str]]:
     if '## Formal relations' not in text:
         return []
@@ -360,6 +399,32 @@ def parse_relation_instance_records(text: str) -> list[dict[str, object]]:
     return records
 
 
+def extract_relation_records(text: str) -> list[dict[str, str]]:
+    records: list[dict[str, str]] = []
+    current: dict[str, str] | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip()
+        if match := FORMAL_RELATION_RE.match(line.strip()):
+            current = {
+                'source': match.group('src').strip(),
+                'relation_type': match.group('rel').strip(),
+                'target': match.group('dst').strip(),
+            }
+            records.append(current)
+            continue
+        if current and line.startswith('  - '):
+            key, _, value = line[4:].partition(':')
+            if _:
+                current[key.strip()] = value.strip()
+        elif line.strip() and not line.startswith('  - '):
+            current = None
+    return records
+
+
+def load_relation_records(rel_path: str) -> list[dict[str, str]]:
+    return extract_relation_records(read_text(rel_path))
+
+
 def collect_relation_page_wikilinks(text: str) -> list[str]:
     return [match.group('link') for match in BODY_WIKILINK_RE.finditer(text)]
 
@@ -381,15 +446,39 @@ def validate_relation_ledger(rel: str, text: str) -> list[str]:
     for record in records:
         field_pairs = record['fields']
         field_names = [key for key, _value in field_pairs]
-        if field_names != RELATION_CHILD_FIELD_ORDER:
+        expected_field_order = (
+            REFERENCES_METHOD_CHILD_FIELD_ORDER
+            if record['rel'] == 'references_method'
+            else BASE_RELATION_CHILD_FIELD_ORDER
+        )
+        if field_names != expected_field_order:
             errors.append(f'invalid relation child-field order in {rel}')
             continue
         field_map = dict(field_pairs)
-        for forbidden_field in ['source_path', 'target_path', 'edge_semantics', 'evidence', 'evidence_path']:
+        forbidden_fields = ['source_path', 'target_path', 'edge_semantics', 'evidence', 'evidence_path']
+        if record['rel'] == 'references_method':
+            forbidden_fields = [
+                'source_path',
+                'target_path',
+                'source_paper_path',
+                'target_paper_path',
+                'edge_semantics',
+                'evidence',
+                'evidence_path',
+            ]
+        for forbidden_field in forbidden_fields:
             if WIKILINK_RE.search(field_map[forbidden_field]):
                 errors.append(
                     f'forbidden relation-page wikilink outside allowed positions in {rel}: {field_map[forbidden_field]}'
                 )
+        if record['rel'] == 'references_method':
+            for paper_field in ['source_paper_path', 'target_paper_path']:
+                value = field_map[paper_field]
+                if not value.startswith('ontology/entities/papers/') or not value.endswith('.md'):
+                    errors.append(f'invalid references_method paper path in {rel}: {value}')
+                    continue
+                if not (ROOT / value).exists():
+                    errors.append(f'missing references_method paper path target in {rel}: {value}')
     return errors
 
 
@@ -677,6 +766,51 @@ def validate_method_status_contract(errors: list[str]) -> None:
             errors.append(f'Method placeholder status is no longer allowed: {path.relative_to(ROOT)}')
 
 
+def check_references_method_cites_backing(errors: list[str]) -> None:
+    cites_records = load_relation_records('ontology/relations/cites.md')
+    cites_pairs = {
+        (record.get('source_path', ''), record.get('target_path', ''))
+        for record in cites_records
+        if record.get('relation_type') == 'cites'
+    }
+    for record in load_relation_records('ontology/relations/references_method.md'):
+        source_paper_path = record.get('source_paper_path', '')
+        target_paper_path = record.get('target_paper_path', '')
+        if not source_paper_path or not target_paper_path:
+            continue
+        if (source_paper_path, target_paper_path) not in cites_pairs:
+            errors.append(
+                'references_method paper provenance must be backed by cites: '
+                f'{source_paper_path} -> {target_paper_path}'
+            )
+
+
+def check_method_paper_anchors(errors: list[str]) -> None:
+    anchor_map: dict[str, set[str]] = {}
+
+    for record in load_relation_records('ontology/relations/proposes.md'):
+        target_path = record.get('target_path', '')
+        source_path = record.get('source_path', '')
+        if target_path.startswith('ontology/entities/methods/') and source_path.startswith('ontology/entities/papers/'):
+            anchor_map.setdefault(target_path, set()).add(source_path)
+
+    for record in load_relation_records('ontology/relations/references_method.md'):
+        for method_key, paper_key in (('source_path', 'source_paper_path'), ('target_path', 'target_paper_path')):
+            method_path = record.get(method_key, '')
+            paper_path = record.get(paper_key, '')
+            if method_path.startswith('ontology/entities/methods/') and paper_path.startswith('ontology/entities/papers/'):
+                anchor_map.setdefault(method_path, set()).add(paper_path)
+
+    for method_path in sorted((ROOT / 'ontology/entities/methods').glob('*.md')):
+        rel_path = str(method_path.relative_to(ROOT))
+        frontmatter, _ = split_frontmatter(method_path.read_text(encoding='utf-8', errors='ignore'))
+        status = frontmatter.get('status')
+        if status not in {'partial', 'processed'}:
+            continue
+        if not anchor_map.get(rel_path):
+            errors.append(f'formal/partial Method must resolve to at least one paper anchor: {rel_path}')
+
+
 def validate_cited_paper_targets(errors: list[str]) -> None:
     cites_text = read_text('ontology/relations/cites.md')
     for _src, rel, dst in extract_ledger_edges(cites_text):
@@ -694,6 +828,49 @@ def validate_cited_paper_targets(errors: list[str]) -> None:
             for needle in ['## 当前定位', '## 与知识库现有内容的关系', '## 待补充']:
                 if needle not in target_text:
                     errors.append(f'missing {needle} in cited placeholder paper: {target_name}')
+
+
+def validate_ledger_projection_coverage(errors: list[str]) -> None:
+    for rel_file in RELATION_LEDGER_FILES:
+        text = read_text(rel_file)
+        for record in parse_relation_instance_records(text):
+            field_map = dict(record['fields'])
+            source_path = field_map['source_path']
+            target_path = field_map['target_path']
+            relation_type = record['rel']
+            edge_label = f'{source_path} --{relation_type}--> {target_path}'
+
+            if is_object_page_relpath(source_path):
+                source_file = ROOT / source_path
+                if source_file.exists():
+                    source_text = source_file.read_text(encoding='utf-8', errors='ignore')
+                    source_frontmatter, _ = split_frontmatter(source_text)
+                    if '## Formal relations' not in source_text:
+                        errors.append(f'missing Formal relations on source page for ledger edge: {edge_label}')
+                    else:
+                        source_keys = extract_projected_relation_keys(source_text)
+                        expected_source_key = ('Outgoing', relation_type, target_path)
+                        if expected_source_key not in source_keys:
+                            errors.append(f'missing outgoing projection for ledger edge: {edge_label}')
+                    if source_frontmatter.get('status') == 'placeholder' and '## Formal relations' not in source_text:
+                        errors.append(f'formal-bearing placeholder page missing formal relations contract: {source_path}')
+
+            if is_object_page_relpath(target_path):
+                target_file = ROOT / target_path
+                if target_file.exists():
+                    target_text = target_file.read_text(encoding='utf-8', errors='ignore')
+                    target_frontmatter, _ = split_frontmatter(target_text)
+                    if '## Formal relations' not in target_text:
+                        errors.append(f'missing Formal relations on target page for ledger edge: {edge_label}')
+                    else:
+                        target_keys = extract_projected_relation_keys(target_text)
+                        expected_target_key = ('Incoming', relation_type, source_path)
+                        if expected_target_key not in target_keys:
+                            errors.append(f'missing incoming projection for ledger edge: {edge_label}')
+                    if target_frontmatter.get('status') == 'placeholder' and '## Formal relations' not in target_text:
+                        errors.append(f'formal-bearing placeholder page missing formal relations contract: {target_path}')
+            elif is_rawsource_relpath(target_path):
+                continue
 
 def validate_sample_projection(rel: str, rules: dict[str, object]) -> list[str]:
     text = read_text(rel)
@@ -774,6 +951,9 @@ validate_cited_paper_targets(errors)
 validate_supported_by_contract(errors)
 validate_evaluated_on_contract(errors)
 validate_method_status_contract(errors)
+check_references_method_cites_backing(errors)
+check_method_paper_anchors(errors)
+validate_ledger_projection_coverage(errors)
 
 for path in (ROOT / 'ontology').rglob('*.md'):
     rel = str(path.relative_to(ROOT))

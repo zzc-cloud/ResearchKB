@@ -166,6 +166,7 @@ status: placeholder
         self.assertIn('source_paper_path', projection_checklist)
         self.assertIn('target_paper_path', projection_checklist)
         self.assertIn('摘要覆盖', projection_checklist)
+        self.assertIn('`placeholder` Paper 只进入 non-serving block，并作为 `Paper Stub / Anchor` 理解', index_sync)
 
     def test_pathmind_regression_uses_method_only_benchmarks_and_partial_upstream_methods(self):
         pathmind_paper = (ROOT / 'ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md').read_text(encoding='utf-8')
@@ -229,8 +230,12 @@ status: placeholder
         self.assertIn('RawSource targets are exempt from object-page incoming projection', projection_checklist)
         self.assertIn('source_paper_path', projection_checklist)
         self.assertIn('target_paper_path', projection_checklist)
-        self.assertIn('must include both source and target object pages in affected_pages when both page files exist', reconciliation_samples)
+        self.assertIn('`references_method` 若存在 `source_paper_path` / `target_paper_path`，对象页投影必须保留 path metadata，但不得把它们升级为新的 paper 邻接。', projection_checklist)
+        self.assertIn('Paper Stub / Anchor pages may bear formal relations without becoming Formal Paper entries', projection_checklist)
+        self.assertIn('must preserve placeholder cited papers as Paper Stub / Anchor targets', reconciliation_samples)
+        self.assertIn('must reject references_method provenance when the matching cites edge is missing', reconciliation_samples)
         self.assertIn('cited-placeholder-target-sync', projection_samples)
+        self.assertIn('must keep placeholder cited-paper targets non-serving paper stubs', projection_samples)
         self.assertIn('rawsource-target-exemption', projection_samples)
 
     def test_paper_stub_and_method_anchor_contract_is_documented(self):
@@ -248,8 +253,8 @@ status: placeholder
         self.assertIn('若一条 `references_method` 实例边同时声明 `source_paper_path` 与 `target_paper_path`，则 formal ledger 中必须存在对应 `cites`', graph_standard)
         self.assertIn('placeholder cited paper target 应保留为 Paper Stub / Anchor，而不是自动升级为 Formal Paper', reconciliation)
         self.assertIn('不得把 `source_paper_path` / `target_paper_path` 投影成新的 paper 邻接', projection)
-        self.assertIn('`placeholder` Paper 只进入 non-serving block，并作为 Paper Stub / Anchor 理解', index_sync)
-        self.assertIn('Paper Stub / Anchor 属于可合法遍历但非 default paper serving surface 的 phase-1 中间态', serving)
+        self.assertIn('`placeholder` Paper 只进入 non-serving block，并作为 `Paper Stub / Anchor` 理解', index_sync)
+        self.assertIn('Paper Stub / Anchor 属于可合法遍历但非 default paper serving surface 的 phase-1 中间态', serving.replace('`', ''))
         self.assertIn('must preserve placeholder cited papers as Paper Stub / Anchor targets', reconciliation_samples)
         self.assertIn('must reject references_method provenance when the matching cites edge is missing', reconciliation_samples)
         self.assertIn('must keep placeholder cited-paper targets non-serving paper stubs', projection_samples)
@@ -421,6 +426,99 @@ status: placeholder
         self.assertIn(
             'missing Formal relations on target page for ledger edge: ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md --cites--> ontology/entities/papers/Synthetic Placeholder Target.md',
             combined_output,
+        )
+
+    def test_lint_rejects_references_method_without_matching_cites_edge(self):
+        references_method_path = ROOT / 'ontology/relations/references_method.md'
+        cites_path = ROOT / 'ontology/relations/cites.md'
+        original_references = references_method_path.read_text(encoding='utf-8')
+        original_cites = cites_path.read_text(encoding='utf-8')
+
+        references_method_path.write_text(
+            original_references
+            + "\n- [[Synthetic Source Method]] --references_method--> [[Synthetic Target Method]]\n"
+            + "  - source_path: ontology/entities/methods/Synthetic Source Method.md\n"
+            + "  - target_path: ontology/entities/methods/Synthetic Target Method.md\n"
+            + "  - source_paper_path: ontology/entities/papers/Synthetic Source Paper.md\n"
+            + "  - target_paper_path: ontology/entities/papers/Synthetic Target Paper.md\n"
+            + "  - edge_semantics: synthetic missing cites backing.\n"
+            + "  - evidence: PathMind.refs\n"
+            + "  - evidence_link: [[PathMind.refs]]\n"
+            + "  - evidence_path: ontology/entities/evidence/PathMind.refs.md\n",
+            encoding='utf-8',
+        )
+
+        try:
+            result = self.run_lint()
+        finally:
+            references_method_path.write_text(original_references, encoding='utf-8')
+            cites_path.write_text(original_cites, encoding='utf-8')
+
+        self.assertIn(
+            'references_method paper provenance must be backed by cites: ontology/entities/papers/Synthetic Source Paper.md -> ontology/entities/papers/Synthetic Target Paper.md',
+            result.stdout + result.stderr,
+        )
+
+    def test_lint_rejects_partial_method_without_any_paper_anchor(self):
+        method_path = ROOT / 'ontology/entities/methods/Synthetic Anchorless Method.md'
+        original_exists = method_path.exists()
+        original_text = method_path.read_text(encoding='utf-8') if original_exists else None
+
+        method_path.write_text(
+            """---
+title: Synthetic Anchorless Method
+type: 基础方法
+parent_methods: []
+child_methods: []
+problem: [reasoning]
+method_family: [hybrid]
+scenario: []
+research_task: [knowledge-graph-reasoning]
+industry: [general]
+research_role: [foundational]
+status: partial
+---
+
+# Synthetic Anchorless Method
+
+## Object semantics
+- 一个故意缺少 paper anchor 的测试方法。
+
+## 当前定位
+- 测试 partial Method 锚点校验。
+
+## 与知识库现有内容的关系
+- 无。
+
+## 最小定义/角色
+- 无。
+
+## 待补充
+- 无。
+
+## Formal relations
+### Outgoing
+当前对象作为 source；以下列出当前对象指向的 relation 实例。
+- 无
+
+### Incoming
+当前对象作为 target；以下列出指向当前对象的 relation 实例。
+- 无
+""",
+            encoding='utf-8',
+        )
+
+        try:
+            result = self.run_lint()
+        finally:
+            if original_exists and original_text is not None:
+                method_path.write_text(original_text, encoding='utf-8')
+            else:
+                method_path.unlink()
+
+        self.assertIn(
+            'formal/partial Method must resolve to at least one paper anchor: ontology/entities/methods/Synthetic Anchorless Method.md',
+            result.stdout + result.stderr,
         )
 
     def test_lint_exempts_rawsource_targets_from_incoming_projection_requirement(self):
