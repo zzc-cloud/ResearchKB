@@ -61,10 +61,13 @@ relation 页固定由两部分组成：
 - 每条实例边子项必须固定按以下顺序输出：
   - `source_path: ...`
   - `target_path: ...`
+  - `source_paper_path: ...`（仅 `references_method` 必填）
+  - `target_paper_path: ...`（仅 `references_method` 必填）
   - `edge_semantics: ...`
   - `evidence: ...`
   - `evidence_link: [[...]]`
   - `evidence_path: ...`
+- `references_method` 之外的 relation types 仍使用不含 paper-path 字段的基础 child-field 集合；不得把这两个 paper path 字段泛化为所有 relation ledger 的全局要求。
 - `source`、`target`、`evidence_link` 默认使用短 wikilink；若 basename 在 vault 中不唯一，则必须退化为带路径的 wikilink并保留原显示名。
 - relation 页除主行 `source` / `target` 与 `evidence_link` 外，不得出现其他 wikilink。
 
@@ -126,6 +129,11 @@ relation 页固定由两部分组成：
 - 严格谱系才进 `based_on`
 - 比较 / 借鉴 / 路线参照进 `references_method`
 - 若仅存在论文级引用事实且 Method 身份不稳定，则保留在 `cites`
+- 对于 `references_method`：若实例边声明了 `source_paper_path` 与 `target_paper_path`，则必须同时验证 `ontology/relations/cites.md` 中存在对应 `Paper --cites--> Paper` 实例；否则归入 `needs_human_review`，不得直接落为 fully valid formal edge。
+- `references_method` 的 target paper 若当前仅由 citation / provenance 需要支撑，应保留或创建为 `Paper Stub / Anchor`，而不是自动升级为 Formal Paper。
+- placeholder cited paper target 应保留为 Paper Stub / Anchor，而不是自动升级为 Formal Paper。
+- partial `Method` 可以依赖 target paper stub 作为弱锚点；不得因为 target paper 尚未成为 Formal Paper 就回退已稳定的方法 identity。
+- 仅有普通 related-work mention 时，可保留在 `cites` 并按需创建 paper stub，但不得自动 materialize 为 partial `Method`。
 
 ## 结构化输出模板
 ```yaml
@@ -153,6 +161,9 @@ serving_status_recommendations:
 - 先在标准 empirical 方法论文上试跑（如 PathMind 类论文）。
 - 再扩到 survey / framework 论文。
 - 每次 reconciliation 完成后，都应将 `affected_pages` 交给 `page-projection-sync`，而不是停留在 ledger 已更新但页面未同步的状态。
+- `affected_pages` must include both source and target object pages for every reconciled formal relation instance whose corresponding page file exists.
+- 若某对象页已承接 formal relation 且同时出现在 `affected_stub_pages` 中，它仍必须同时出现在 `affected_pages` 中；`affected_stub_pages` 只做辅助分类，不替代对象页同步清单。
+- 对于 `cites` 指向的 placeholder paper target，创建占位页后不得停在“仅可解析”状态，必须继续进入 `page-projection-sync`。
 
 ## 完成后的默认后继阶段
 当本 skill 完成 formal relation ledger 的补齐与对齐后：

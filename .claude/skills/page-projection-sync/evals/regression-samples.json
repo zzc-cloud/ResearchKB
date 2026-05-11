@@ -16,5 +16,30 @@
       "must keep interpretive prose untouched",
       "must report manual followups if prose still needs human review"
     ]
+  },
+  {
+    "name": "cited-placeholder-target-sync",
+    "input_assumption": "relation-reconciliation has confirmed a Paper --cites--> Placeholder Paper edge and both page files exist",
+    "must_sync": [
+      "source outgoing cites projection",
+      "target incoming cites projection",
+      "placeholder target Formal relations block"
+    ],
+    "quality_checks": [
+      "must keep placeholder cited-paper targets non-serving paper stubs",
+      "must include Outgoing and Incoming headings on the placeholder target page",
+      "must keep body wikilinks inside the projected neighbor set"
+    ]
+  },
+  {
+    "name": "rawsource-target-exemption",
+    "input_assumption": "relation-reconciliation has confirmed an Evidence --sourced_from--> RawSource PDF edge",
+    "must_sync": [
+      "source outgoing sourced_from projection"
+    ],
+    "quality_checks": [
+      "must not require a RawSource file target to gain object-page Incoming projection",
+      "must preserve the RawSource provenance path in the relation ledger and source Evidence page"
+    ]
   }
 ]

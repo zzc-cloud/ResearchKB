@@ -41,6 +41,8 @@ description: 在 `page-projection-sync` 完成后，把对象页与 index 层之
 ## 收录规则
 - 页面可被 index 收录，不等于页面可作为默认 serving 入口
 - `placeholder`：只进入 non-serving block
+- `placeholder` Paper 只进入 non-serving block，并作为 `Paper Stub / Anchor` 理解；它承担 relation / provenance 锚点职责，但不自动进入默认 paper serving 入口。
+- cited-work placeholder paper 被后续正式 ingest 之前，应保持原路径并原地升级，而不是新建第二个 Formal Paper 页面。
 - `partial`：Method 页可进入默认导航入口；其他类型仍可被 index 收录但不自动等同 serving-ready
 - `serving-ready`：进入默认导航入口
 - 对于 Method 类型，`status: partial` 一旦被 index 收录，即视为可导航对象页，不再额外降级到 placeholder 区块。
