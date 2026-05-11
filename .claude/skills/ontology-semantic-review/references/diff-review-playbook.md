@@ -14,6 +14,11 @@
 - 如果 `targets_task.md` 中出现 `Paper` 作为 source，必须指出，并建议迁移到对应 Method formal edge 或 Paper prose。
 - 如果 `based_on.md` 中出现文献支撑关系而不是实际技术谱系，必须指出。
 - 如果新增了场景 formal relation，检查其是否为 `[[Method]] --applied_in--> [[Scenario]]`，而不是 `Paper -> Scenario` 或 `Scenario -> Task`。
+- 如果 survey 论文对方法的系统梳理只落在 `cites` 而未形成 formal coverage，必须指出，并评估是否应补为 `surveys_method`。
+- 如果 `surveys_method` 被错误用于非综述论文，必须指出。
+- 如果 `surveys_method` 实际表达的是首次提出方法，必须指出，并迁回 `proposes`。
+- 如果由 `surveys_method` 稳定覆盖的方法拥有清晰的任务/场景 coverage，却没有补齐 `targets_task` 或 `applied_in`，必须指出。
+- 如果 diff 试图新增 `Task -> Scenario` 或 `Scenario -> Task` formal relation，必须指出，并建议改为通过共享 Method 邻接表达。
 - 如果改进、前提依赖、场景适配或解释性支撑语义被单独升格为 formal relation，必须指出，并建议下沉到 `edge_semantics`、frontmatter 或对象页正文。
 
 ## Projection-format review prompts

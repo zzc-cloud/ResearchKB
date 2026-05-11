@@ -1,6 +1,6 @@
 {
-  "collapse-filter": false,
-  "search": "-path:docs  -file:index.md -file:claude.md -path:ontology/relations -file:graph-standard",
+  "collapse-filter": true,
+  "search": "-path:docs -path:ontology/relations -path:ontology/entities/evidence -file:index.md -file:claude.md   -file:graph-standard",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -11,23 +11,44 @@
       "query": "path:ontology/entities/papers  ",
       "color": {
         "a": 1,
-        "rgb": 14048348
+        "rgb": 16711680
       }
     },
     {
       "query": "path:ontology/entities/methods  ",
       "color": {
         "a": 1,
-        "rgb": 14069084
+        "rgb": 16755200
+      }
+    },
+    {
+      "query": "path:ontology/entities/scenarios  ",
+      "color": {
+        "a": 1,
+        "rgb": 10547200
+      }
+    },
+    {
+      "query": "path:ontology/entities/tasks  ",
+      "color": {
+        "a": 1,
+        "rgb": 2288
+      }
+    },
+    {
+      "query": "path:ontology/entities/benchmarks  ",
+      "color": {
+        "a": 1,
+        "rgb": 16442624
       }
     }
   ],
-  "collapse-display": false,
+  "collapse-display": true,
   "showArrow": false,
   "textFadeMultiplier": 0,
   "nodeSizeMultiplier": 0.986848958333333,
   "lineSizeMultiplier": 2.97704861111111,
-  "collapse-forces": false,
+  "collapse-forces": true,
   "centerStrength": 0.682682291666667,
   "repelStrength": 11.9331597222222,
   "linkStrength": 1,

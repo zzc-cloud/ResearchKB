@@ -20,6 +20,7 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - `ontology/relations/references_method.md`
 - `ontology/relations/targets_task.md`
 - `ontology/relations/evaluated_on.md`
+- `ontology/relations/surveys_method.md`
 - `ontology/relations/supported_by.md`
 - `ontology/relations/sourced_from.md`
 - `.claude/skills/ontology-semantic-review/references/review-output-template.md`
@@ -43,6 +44,7 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - `supported_by` 是否被错误用于 `Paper`
 - `targets_task` 是否被错误用于 `Paper`
 - `applied_in` 是否被错误用于 `Paper`，或是否应由 `Method -> Scenario` 承接
+- `surveys_method` 是否被正确用于综述论文对方法的系统覆盖，而不是误用 `proposes` 或退化为普通 `cites`
 - `Task` 与 `Scenario` 是否被混淆为同一语义层级
 - Evidence 是否通过正文或 formal relation 直接连接回 Paper
 - 对象页 / Evidence 页正文中的 wikilink 是否超出 formal relation 已投影邻接

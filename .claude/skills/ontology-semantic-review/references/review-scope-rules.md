@@ -27,6 +27,12 @@
 - 如果一条语义只是说明改进、前提依赖、场景适配或解释性支撑，优先下沉到 `edge_semantics`、frontmatter 或对象页正文，而不是新增 formal relation。
 - `targets_task` 只允许 `Method` 作为 source；若论文描述任务定位，应落到 Method formal edge 或保留在 Paper prose / Evidence。
 - `applied_in` 只允许 `Method -> Scenario`；`Paper -> Scenario` 不合法。
+- `surveys_method` 只允许 `Paper -> Method`，且 source 应承担综述 / landscape / taxonomy 的 survey-role。
+- 如果论文只是引用某方法来源论文，而没有形成结构化 coverage，不应生成 `surveys_method`。
+- 如果论文首次提出或正式定义某方法，应使用 `proposes`，而不是 `surveys_method`。
+- Method 一旦身份稳定，其可拥有的 formal relations 与来源论文类型无关；通过 `surveys_method` 进入图谱的方法，仍可继续拥有 `targets_task` 与 `applied_in`。
+- survey-derived `targets_task` / `applied_in` 必须有结构化、可审计的 coverage 证据；不能仅凭背景 mention 或泛化推断生成。
+- phase 1 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。
 
 ## Formal projection and Evidence serving rules
 - `supported_by` 只允许 `Method`、`Task`、`Scenario`、`Benchmark` 作为 source；`Paper` 不得作为 source。

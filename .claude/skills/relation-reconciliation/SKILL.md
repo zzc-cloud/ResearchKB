@@ -89,6 +89,7 @@ relation 页固定由两部分组成：
 - 方法页中的“主要场景”
 - 论文页中的“核心机制”
 - 论文页中的“核心任务 / 相关任务”
+- survey 论文中的方法 coverage
 
 若这些表述满足：
 1. ontology 存在合法 relation type
@@ -100,6 +101,10 @@ relation 页固定由两部分组成：
 ### 复核后的判定规则
 - 若 relation type 清晰、evidence 明确，则归入 `add_now`
 - 若 relation type 合法但粒度或方向仍存在歧义，则归入 `needs_human_review`
+- survey 论文中的方法 coverage 若属于系统梳理、分类、比较或 landscape 结构，应优先判断是否补为 `surveys_method`，而不是停留在 `cites`。
+- `surveys_method` 不得用于首次提出方法；若论文对方法的关系是“首次提出/正式定义”，应落为 `proposes`。
+- 若某方法通过 `surveys_method` 已稳定进入图谱，而当前论文又以结构化 coverage 明确给出其任务或场景归属，则应继续判断是否补为 `targets_task` 或 `applied_in`；不得因为该方法来自 survey paper 就默认降级为 context-only。
+- 若候选关系试图直接把 `Task` 与 `Scenario` 相连，则默认归入 `needs_human_review` 或直接视为 phase-1 非法关系，而不是直接落账。
 - 不得因为该关系最初未出现在 `relation_candidates` 中就直接忽略
 
 ## Context-only 护栏
@@ -108,6 +113,7 @@ relation 页固定由两部分组成：
 ## Ledger routing
 - `cites` → `ontology/relations/cites.md`
 - `proposes` → `ontology/relations/proposes.md`
+- `surveys_method` → `ontology/relations/surveys_method.md`
 - `based_on` → `ontology/relations/based_on.md`
 - `references_method` → `ontology/relations/references_method.md`
 - `targets_task` → `ontology/relations/targets_task.md`

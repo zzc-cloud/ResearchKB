@@ -24,6 +24,7 @@
 
 ### 2.3 关系类型
 - `proposes`：`[[Paper]] --proposes--> [[Method]]`；表示论文首次提出或正式定义某方法、可执行方法框架，或面向任务的可复用解决方案。Survey 保持为 Paper 层节点；phase 1 不再为 framework / taxonomy / terminology 单独生成实体。
+- `surveys_method`：`[[Paper]] --surveys_method--> [[Method]]`；表示综述论文、landscape 论文、taxonomy 论文或其他 survey-role 论文将某方法纳入其系统梳理、分类、比较或 coverage 范围。该关系只允许 `Paper` 作为 source、`Method` 作为 target；它不表示方法被首次提出，也不等同于普通论文引用事实。
 - `targets_task`：`[[Method]] --targets_task--> [[Task]]`；表示方法主要面向的研究任务。若论文描述了任务定位，应通过 Method 层 formal relation 承接；Paper 页中的任务信息保留在 prose、frontmatter 与 Evidence 支撑中，不单独生成 `Paper -> Task` formal edge。
 - `evaluated_on`：`[[Method]] --evaluated_on--> [[Benchmark]]`；表示方法在某个正式 benchmark 上进行了评测。该关系不再用于 `Paper -> Benchmark`；论文页中的 benchmark 信息只保留在 prose、frontmatter、Evidence 与 Method 邻接投影中。
 - `applied_in`：`[[Method]] --applied_in--> [[Scenario]]`；表示方法被明确应用、部署、验证或定位在某个应用场景中。该关系只允许 Method 作为 source、Scenario 作为 target；Paper 页中的场景信息保留在 prose、frontmatter 与 Evidence 支撑中，不单独生成 `Paper -> Scenario` formal edge。
@@ -32,6 +33,11 @@
 - `cites`：`[[Paper]] --cites--> [[Paper]]`；表示论文对论文的显式引用。
 - `supported_by`：`[[Method|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识对象页由 Evidence 对象页支撑。`Paper` 不再作为 `supported_by` 的 source；Evidence 与 Paper 之间也不单独建立 formal relation。
 - `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示 Evidence 对象页来源于 `ontology/entities/raw-sources/files/` 下的受管原始文件。RawSource 不再为每个 PDF 维护独立对象页，而是由 `ontology/entities/raw-sources/index.md` 提供统一导航。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若证据对象页尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。保留的 `sections`、`refs`、`experiments`、`analysis` 均可直接承担 `sourced_from` provenance 锚点，不依赖额外全文型 cache。
+- `surveys_method` 只在论文对方法形成结构化综述覆盖时成立；仅有背景提及、普通 related work 引用或零散 mention，不足以生成该 formal relation。
+- 对于通过 `surveys_method` 稳定覆盖并 materialize 的 `Method`，只要当前论文对其任务定位或应用场景提供结构化、可审计的归属证据，仍可继续生成 `[[Method]] --targets_task--> [[Task]]` 与 `[[Method]] --applied_in--> [[Scenario]]`；其合法性不因 source paper 属于 survey 而降低。
+- survey-derived `targets_task` 只在论文将该方法明确纳入任务分组、任务 taxonomy、任务比较表或任务 coverage 结构时成立；仅有零散任务 mention，不足以生成 formal edge。
+- survey-derived `applied_in` 只在论文将该方法明确纳入场景分组、场景 taxonomy、场景比较表或应用 coverage 结构时成立；仅有背景领域描述、benchmark 域属性或泛化应用前景，不足以生成 formal edge。
+- phase 1 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。Task 与 Scenario 的联系默认通过共享的 Method 邻接表达，而不是压缩为静态直接边。
 - Formal relation 只保留对 ingest 稳定、治理边界清晰、且对检索 / 问答有明显增益的关系类型；应用场景语义若已稳定到方法层，可通过 `applied_in` 表达；尚不足以形成正式方法-场景边时，仍可下沉到 frontmatter `scenario`、对象页正文与索引导航表达；改进强度与前提依赖等语义默认继续下沉到 `edge_semantics` 与对象页正文。
 
 ## 3. 对象页契约
@@ -157,8 +163,9 @@ status: processed
 
 survey / framework-taxonomy 论文的 Paper 页投影补充规则：
 - 当 `research_role: survey` 或论文核心贡献是 framework / taxonomy / landscape 组织时，Paper 页的人类区块应优先突出：核心框架、相关任务、应用场景、关键结论、综述证据来源。
-- 这类 Paper 的 `Formal relations` 重点为：`proposes`、`cites`。
+- 这类 Paper 的 `Formal relations` 重点为：`proposes`、`surveys_method`、`cites`。
 - 与任务、场景相关的论文级信息优先保留在人类区块、frontmatter 与 Evidence 支撑中；若需要 formal relation，应由对应 Method 层的 `targets_task`、`applied_in` 承接。
+- survey 论文若稳定覆盖某方法，可通过 `surveys_method` 把方法纳入正式图谱；该方法后续仍可继续投影到 `targets_task` 与 `applied_in`，但 Task 与 Scenario 之间仍不直接升格为 formal relation。
 - 若无统一 benchmark，必须显式以 `relation_exemptions` 说明 `evaluated_on` 按规范豁免，而不是伪造 benchmark formal edge。
 
 ### 3.4 Method
