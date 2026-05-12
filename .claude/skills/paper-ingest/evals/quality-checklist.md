@@ -31,7 +31,7 @@
 ## Relation autowrite checks
 - [ ] 如果论文提出核心方法，输出与落库结果必须包含 `proposes` 正式关系，而不是只在正文里写“提出了某方法”。
 - [ ] 如果论文核心贡献是可复用方法框架或面向任务的可复用解决方案，输出与落库结果必须包含 `Paper -> Method` 的 `proposes` 关系。
-- [ ] 若论文只提供 taxonomy、术语组织或解释框架而不形成可复用方法，不得在 phase 1 强行创建独立实体。
+- [ ] 若论文只提供 taxonomy、术语组织或解释框架而不形成可复用方法，不得在当前 formal graph 建模边界内强行创建独立实体。
 - [ ] 如果论文是 survey / landscape / taxonomy 角色，并且系统梳理了既有方法，则输出与落库结果必须包含 `surveys_method`，而不是只保留 `cites`。
 - [ ] `surveys_method` 不得替代 `proposes`；只有首次提出或正式定义的方法才使用 `proposes`。
 - [ ] 普通相关工作提及或单条引用事实，不得被误升格为 `surveys_method`。

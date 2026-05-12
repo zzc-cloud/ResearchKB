@@ -226,7 +226,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - `proposes`：
   - 方法论文若提出核心方法，必须登记 `[[Paper]] --proposes--> [[Method]]`
   - 若论文核心贡献是可复用方法框架、面向任务的可复用解决方案，也必须登记 `[[Paper]] --proposes--> [[Method]]`
-  - 若论文只提供 taxonomy、术语组织或解释框架而不形成可复用方法，phase 1 保留在 Paper / Method / Evidence prose 中，不单独实体化
+  - 若论文只提供 taxonomy、术语组织或解释框架而不形成可复用方法，应在当前 formal graph 建模边界内保留在 Paper / Method / Evidence prose 中，不单独实体化
 - `targets_task`：
   - 只从稳定 `Method` 身份出发生成 `[[Method]] --targets_task--> [[Task]]`
   - 不生成 `[[Paper]] --targets_task--> [[Task]]` formal candidate
@@ -239,7 +239,7 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
   - survey / framework / taxonomy / dataset / benchmark 类型论文若无统一 benchmark，不生成 `evaluated_on`，并在最终输出中显式写明“按规范豁免”
 - 若某方法通过 `surveys_method` 被稳定纳入图谱，且 survey / landscape / taxonomy 论文对其任务归属提供结构化 coverage（如任务分组、taxonomy、比较表、coverage 列表），仍可继续生成 `[[Method]] --targets_task--> [[Task]]`。
 - 若某方法通过 `surveys_method` 被稳定纳入图谱，且 survey / landscape / taxonomy 论文对其场景归属提供结构化 coverage（如场景分组、taxonomy、比较表、coverage 列表），仍可继续生成 `[[Method]] --applied_in--> [[Scenario]]`。
-- 不生成 `[[Task]] -> [[Scenario]]` 或 `[[Scenario]] -> [[Task]]` formal candidate；Task 与 Scenario 的联系在 phase 1 默认通过共享的 Method 邻接表达。
+- 不生成 `[[Task]] -> [[Scenario]]` 或 `[[Scenario]] -> [[Task]]` formal candidate；Task 与 Scenario 的联系在当前 formal graph 中默认通过共享的 Method 邻接表达。
 - 若 survey 论文只是顺带提到某任务或场景，而没有把方法明确纳入对应的结构化分组、coverage 或比较框架，则不得为该方法生成 `targets_task` 或 `applied_in`。
 - `sourced_from`：
   - 只要本次生成了 `sections.md`、`refs.md`、`experiments.md`、`analysis.md` 任一 Evidence 缓存，就必须同步登记 `[[Evidence]] --sourced_from--> [[RawSource]]`

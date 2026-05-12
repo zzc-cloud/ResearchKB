@@ -21,7 +21,7 @@
 
 ## 判断启发式
 - 如果一个节点主要描述的是研究产出形式（survey / benchmark / dataset paper），优先放在 `research_role` 或论文类型里，而不是 `Task`。
-- 如果一个节点主要用于组织多个层级、角色或阶段，且不形成可复用技术流程，则 phase 1 保留在 prose / Evidence 中，而不是单独实体化。
+- 如果一个节点主要用于组织多个层级、角色或阶段，且不形成可复用技术流程，则应在当前 formal graph 建模边界内保留在 prose / Evidence 中，而不是单独实体化。
 - 如果一个候选项同时像 Task 又像 Scenario，优先判断其是否命名研究目标；若仍有歧义，默认先判 `Task`。
 - 如果一条关系表达的是文献借鉴或引用支撑，而不是严格的技术演化谱系，优先放在 `cites.md`，而不是 `based_on.md`。
 - 如果一条语义只是说明改进、前提依赖、场景适配或解释性支撑，优先下沉到 `edge_semantics`、frontmatter 或对象页正文，而不是新增 formal relation。
@@ -32,7 +32,7 @@
 - 如果论文首次提出或正式定义某方法，应使用 `proposes`，而不是 `surveys_method`。
 - Method 一旦身份稳定，其可拥有的 formal relations 与来源论文类型无关；通过 `surveys_method` 进入图谱的方法，仍可继续拥有 `targets_task` 与 `applied_in`。
 - survey-derived `targets_task` / `applied_in` 必须有结构化、可审计的 coverage 证据；不能仅凭背景 mention 或泛化推断生成。
-- phase 1 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。
+- 当前 formal graph 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。
 
 ## Formal projection and Evidence serving rules
 - `supported_by` 只允许 `Method`、`Task`、`Scenario`、`Benchmark` 作为 source；`Paper` 不得作为 source。

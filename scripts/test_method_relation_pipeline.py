@@ -254,7 +254,7 @@ status: placeholder
         self.assertIn('placeholder cited paper target 应保留为 Paper Stub / Anchor，而不是自动升级为 Formal Paper', reconciliation)
         self.assertIn('不得把 `source_paper_path` / `target_paper_path` 投影成新的 paper 邻接', projection)
         self.assertIn('`placeholder` Paper 只进入 non-serving block，并作为 `Paper Stub / Anchor` 理解', index_sync)
-        self.assertIn('Paper Stub / Anchor 属于可合法遍历但非 default paper serving surface 的 phase-1 中间态', serving.replace('`', ''))
+        self.assertIn('Paper Stub / Anchor 属于可合法遍历但非 default paper serving surface 的规范允许中间态', serving.replace('`', ''))
         self.assertIn('must preserve placeholder cited papers as Paper Stub / Anchor targets', reconciliation_samples)
         self.assertIn('must reject references_method provenance when the matching cites edge is missing', reconciliation_samples)
         self.assertIn('must keep placeholder cited-paper targets non-serving paper stubs', projection_samples)

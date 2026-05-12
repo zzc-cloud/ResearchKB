@@ -19,11 +19,11 @@
 ### 2.2 survey / framework 建模公理
 - Survey 是 Paper 层节点：它表示可引用、可追溯的论文研究产物，不下沉为 Task。
 - Framework / taxonomy 若主要承担可执行方法流程、明确实验对比、方法演化语义，或本身就是面向任务的可复用解决方案，则应按 Method 处理。
-- Framework / taxonomy 若主要承担知识组织、分类、分层或解释框架语义，但不构成可复用方法，则 phase 1 保留在 Paper、Method 或 Evidence prose 中，不单独实体化。
+- Framework / taxonomy 若主要承担知识组织、分类、分层或解释框架语义，但不构成可复用方法，则在当前 formal graph 建模边界内保留在 Paper、Method 或 Evidence prose 中，不单独实体化。
 - 当论文的核心贡献是可复用技术流程、方法框架或面向任务的可复用解决方案时，应登记 `[[Paper]] --proposes--> [[Method]]`。
 
 ### 2.3 关系类型
-- `proposes`：`[[Paper]] --proposes--> [[Method]]`；表示论文首次提出或正式定义某方法、可执行方法框架，或面向任务的可复用解决方案。Survey 保持为 Paper 层节点；phase 1 不再为 framework / taxonomy / terminology 单独生成实体。
+- `proposes`：`[[Paper]] --proposes--> [[Method]]`；表示论文首次提出或正式定义某方法、可执行方法框架，或面向任务的可复用解决方案。Survey 保持为 Paper 层节点；当前规范不再为 framework / taxonomy / terminology 单独生成实体。
 - `surveys_method`：`[[Paper]] --surveys_method--> [[Method]]`；表示综述论文、landscape 论文、taxonomy 论文或其他 survey-role 论文将某方法纳入其系统梳理、分类、比较或 coverage 范围。该关系只允许 `Paper` 作为 source、`Method` 作为 target；它不表示方法被首次提出，也不等同于普通论文引用事实。
 - `targets_task`：`[[Method]] --targets_task--> [[Task]]`；表示方法主要面向的研究任务。若论文描述了任务定位，应通过 Method 层 formal relation 承接；Paper 页中的任务信息保留在 prose、frontmatter 与 Evidence 支撑中，不单独生成 `Paper -> Task` formal edge。
 - `evaluated_on`：`[[Method]] --evaluated_on--> [[Benchmark]]`；表示方法在某个正式 benchmark 上进行了评测。该关系不再用于 `Paper -> Benchmark`；论文页中的 benchmark 信息只保留在 prose、frontmatter、Evidence 与 Method 邻接投影中。
@@ -38,7 +38,7 @@
 - 对于通过 `surveys_method` 稳定覆盖并 materialize 的 `Method`，只要当前论文对其任务定位或应用场景提供结构化、可审计的归属证据，仍可继续生成 `[[Method]] --targets_task--> [[Task]]` 与 `[[Method]] --applied_in--> [[Scenario]]`；其合法性不因 source paper 属于 survey 而降低。
 - survey-derived `targets_task` 只在论文将该方法明确纳入任务分组、任务 taxonomy、任务比较表或任务 coverage 结构时成立；仅有零散任务 mention，不足以生成 formal edge。
 - survey-derived `applied_in` 只在论文将该方法明确纳入场景分组、场景 taxonomy、场景比较表或应用 coverage 结构时成立；仅有背景领域描述、benchmark 域属性或泛化应用前景，不足以生成 formal edge。
-- phase 1 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。Task 与 Scenario 的联系默认通过共享的 Method 邻接表达，而不是压缩为静态直接边。
+- 当前 formal graph 不直接维护 `Task -> Scenario` 或 `Scenario -> Task` formal relation。Task 与 Scenario 的联系默认通过共享的 Method 邻接表达，而不是压缩为静态直接边。
 - Formal relation 只保留对 ingest 稳定、治理边界清晰、且对检索 / 问答有明显增益的关系类型；应用场景语义若已稳定到方法层，可通过 `applied_in` 表达；尚不足以形成正式方法-场景边时，仍可下沉到 frontmatter `scenario`、对象页正文与索引导航表达；改进强度与前提依赖等语义默认继续下沉到 `edge_semantics` 与对象页正文。
 
 ## 3. 对象页契约
@@ -444,7 +444,7 @@ survey / framework 主线的 Scenario 补充规则：
 ### 4.4 下沉语义处理原则
 - 改进、增强、优化等方法增量语义默认写入 `based_on` 的 `edge_semantics`，不再单独拆分 formal relation。
 - 应用场景语义若已稳定到方法层，可通过 `applied_in` 表达；若仅为弱上下文描述，仍可下沉到 frontmatter `scenario`、对象页正文与索引导航表达。
-- 机制术语、taxonomy 标签与解释性框架在 phase 1 默认保留在对象页正文与 Evidence 说明中，不单独实体化为 formal relation。
+- 机制术语、taxonomy 标签与解释性框架在当前 formal graph 建模边界内默认保留在对象页正文与 Evidence 说明中，不单独实体化为 formal relation。
 
 ### 4.5 实例边维护规则
 - 去重规则：同一三元组（Source、relation_type、Target）只保留一条主记录，新增证据以补充字段追加。
@@ -502,7 +502,7 @@ survey / framework 主线的 Scenario 补充规则：
 - `status: placeholder` 仅表示对象尚非 default serving-ready entry；若该页已经承接 formal relation instance，则必须具备 formal projection 合同。
 - formal projection 合同至少包括：`## Formal relations`、`### Outgoing`、`### Incoming`，且空侧显式写 `- 无`。
 - formal relation 投影义务由“页面是否存在 + 是否承接 formal relation”决定，而不是由页面状态决定。
-- 若 `partial` / `placeholder` 邻接本身属于 phase-1 允许的、结构完备且 index 状态正确的稳态，则它们本身不构成 serving 治理失败依据；只有在被误分类、误提升或破坏 formal/evidence 遍历契约时，才应在 serving-governance 中降级。
+- 若 `partial` / `placeholder` 邻接本身属于当前规范允许的中间稳态、结构完备且 index 状态正确，则它们本身不构成 serving 治理失败依据；只有在被误分类、误提升或破坏 formal/evidence 遍历契约时，才应在 serving-governance 中降级。
 - 仅因为对象页可通过 `Formal relations` 做受约束拓扑扩展，不足以直接提升为 `serving-ready`。
 - RawSource 文件是 provenance target，不进入普通对象页双侧 projection 合同；但 source Evidence 页仍必须维护 outgoing `sourced_from`。
 

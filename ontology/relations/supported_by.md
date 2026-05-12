@@ -6,4 +6,101 @@
 - 若同一正式知识对象由多个证据缓存支撑，应拆为多条独立实例边。
 
 ## 实例边
-- 无
+- [[PathMind]] --supported_by--> [[PathMind.sections]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/evidence/PathMind.sections.md
+  - edge_semantics: PathMind 的方法定义、三段式框架与路径优先级机制由 sections 缓存直接支撑。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[PathMind]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: PathMind 的方法参照对象与 related-work 路线定位由 refs 缓存直接支撑。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[PathMind]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/methods/PathMind.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: PathMind 的性能、效率与消融结论由 experiments 缓存直接支撑。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[RoG]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/RoG.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: RoG 作为 PathMind 论文中的关键 retrieval-augmented 参照方法，由 refs 缓存中的 related-work 与 citation 证据支撑。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[GCR]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/GCR.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: GCR 作为 PathMind 论文中的关键 retrieval-augmented 参照方法，由 refs 缓存中的 related-work 与 citation 证据支撑。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[EPERM]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/EPERM.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: EPERM 作为 PathMind 论文中的关键 evidence-path 参照方法，由 refs 缓存中的 related-work 与 citation 证据支撑。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[GNN-RAG]] --supported_by--> [[PathMind.refs]]
+  - source_path: ontology/entities/methods/GNN-RAG.md
+  - target_path: ontology/entities/evidence/PathMind.refs.md
+  - edge_semantics: GNN-RAG 作为 PathMind 论文中的关键 graph-neural retrieval 参照方法，由 refs 缓存中的 related-work 与 citation 证据支撑。
+  - evidence: PathMind.refs
+  - evidence_link: [[PathMind.refs]]
+  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- [[knowledge-graph-reasoning]] --supported_by--> [[PathMind.sections]]
+  - source_path: ontology/entities/tasks/knowledge-graph-reasoning.md
+  - target_path: ontology/entities/evidence/PathMind.sections.md
+  - edge_semantics: PathMind 明确把其任务定位为知识图谱推理，本任务页由 sections 缓存支撑。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[kgqa]] --supported_by--> [[PathMind.sections]]
+  - source_path: ontology/entities/tasks/kgqa.md
+  - target_path: ontology/entities/evidence/PathMind.sections.md
+  - edge_semantics: PathMind 在知识图谱问答任务框架中提出并评估，本任务页由 sections 缓存支撑。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[kgqa]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/tasks/kgqa.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: PathMind.experiments 记录了 KGQA 语境下的主要 benchmark 表现与推理质量结果。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[multi-hop-qa]] --supported_by--> [[PathMind.sections]]
+  - source_path: ontology/entities/tasks/multi-hop-qa.md
+  - target_path: ontology/entities/evidence/PathMind.sections.md
+  - edge_semantics: PathMind 在方法定义层面明确覆盖复杂多跳问答任务，本任务页由 sections 缓存支撑。
+  - evidence: PathMind.sections
+  - evidence_link: [[PathMind.sections]]
+  - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[multi-hop-qa]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/tasks/multi-hop-qa.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: PathMind 在复杂多跳问答 benchmark 上的表现为 multi-hop-qa 任务定位提供实验支撑。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[WebQSP]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/benchmarks/WebQSP.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: PathMind.experiments 记录了 WebQSP 上的主要实验结果与效率分析。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[CWQ]] --supported_by--> [[PathMind.experiments]]
+  - source_path: ontology/entities/benchmarks/CWQ.md
+  - target_path: ontology/entities/evidence/PathMind.experiments.md
+  - edge_semantics: PathMind.experiments 记录了 CWQ 上的主要实验结果、案例分析与扩展性结论。
+  - evidence: PathMind.experiments
+  - evidence_link: [[PathMind.experiments]]
+  - evidence_path: ontology/entities/evidence/PathMind.experiments.md

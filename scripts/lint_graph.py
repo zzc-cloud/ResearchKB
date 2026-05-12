@@ -96,7 +96,7 @@ GRAPH_STANDARD_NEEDLES = [
 SERVING_GOVERNANCE_NEEDLES = [
     'domain index pages',
     'default navigation/QA entry surfaces',
-    'phase-1 合法稳态',
+    '当前规范允许的合法稳态',
     '而不是自动降为 `needs_fixes`',
 ]
 DOMAIN_INDEX_FILES = [
