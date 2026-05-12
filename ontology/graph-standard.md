@@ -127,7 +127,7 @@ research_role:
 ### 3.3 Paper
 
 #### Paper 分层规则
-- Paper 分成两种层级：`Formal Paper` 与 `Paper Stub / Anchor`。
+- Paper 分成两种层级：Formal Paper 与 Paper Stub / Anchor。
 - `Formal Paper` 只有在该 paper 自身产出至少一种稳定 ontology payload 时才成立；仅有 citation target 身份不足以进入正式 Paper 对象层。
 - `Paper Stub / Anchor` 仅承担 relation target、paper-level provenance 与 future ingest 升级落点职责；它不进入默认 paper serving surface。
 - cited-work placeholder paper 在未完成独立稳定产出前，默认按 `Paper Stub / Anchor` 理解，而不是按正式 Paper 对象层处理。
@@ -402,7 +402,7 @@ survey / framework 主线的 Scenario 补充规则：
 
 - 对象页与 Evidence 页中的 `## Formal relations` 不复用 relation ledger 的完整 child-field 形态作为默认 serving projection；对象页投影必须改写成对象页友好的半展开格式，同时覆盖 formal relation instance 的全部 serving-necessary attributes。
 - serving-necessary attributes 至少包括：`relation_type`、邻接对象身份（对象名称 + document path + 可点击 wikilink）、`edge_semantics`、`evidence`；若某 relation type 存在仅靠这些基础字段无法稳定恢复、且对默认 serving 有独立语义贡献的 relation-specific 属性，则对象页必须继续投影该属性。
-- relation-specific 必要属性允许以对象页友好别名投影，而不是原样暴露 ledger child-field 名称；例如 `references_method` ledger 中的 `target_paper_path` 在对象页投影为 `target_paper`。
+- relation-specific 必要属性允许以对象页友好别名投影，而不是原样暴露 ledger child-field 名称；例如 `references_method` ledger 中的 `source_paper_path` / `target_paper_path` 在对象页投影为同名 path metadata，而不是升级成新的可点击 paper 邻接。
 
 ```markdown
 ### Outgoing

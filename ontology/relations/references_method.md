@@ -5,40 +5,7 @@
 - 该关系与 `based_on` 一起构成方法图谱的核心邻接关系：`based_on` 表达严格谱系，`references_method` 表达参照与比较。
 - `references_method` 不表示方法谱系继承，因此不驱动 `parent_methods` / `child_methods`。
 - 若仅存在论文级引用事实而缺少稳定方法对象语义，应保留在 `cites`，不得升格为 `references_method`。
+- `references_method` 实例边除 `source_path` / `target_path` 外，还必须记录 `source_paper_path` 与 `target_paper_path`，用于标记该方法参照关系从哪篇论文抽取，以及 target method 对应的代表 / 参考论文。
 
 ## 实例边
-- [[PathMind]] --references_method--> [[RoG]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/methods/RoG.md
-  - edge_semantics: PathMind 将 RoG 作为显式 relational path reasoning 的上游代表方法进行路线参照。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind]] --references_method--> [[GNN-RAG]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/methods/GNN-RAG.md
-  - edge_semantics: PathMind 将 GNN-RAG 作为 retrieval-augmented 图检索代表方法进行比较。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind]] --references_method--> [[GCR]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/methods/GCR.md
-  - edge_semantics: PathMind 将 GCR 作为 grounded reasoning path 代表方法进行比较。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind]] --references_method--> [[EPERM]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/methods/EPERM.md
-  - edge_semantics: PathMind 将 EPERM 作为 evidence-path enhanced 代表方法进行比较。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
-- [[PathMind]] --references_method--> [[ToG]]
-  - source_path: ontology/entities/methods/PathMind.md
-  - target_path: ontology/entities/methods/ToG.md
-  - edge_semantics: PathMind 将 ToG 作为 synergy-augmented 代表方法进行路线比较。
-  - evidence: PathMind.refs
-  - evidence_link: [[PathMind.refs]]
-  - evidence_path: ontology/entities/evidence/PathMind.refs.md
+- 无
