@@ -35,6 +35,10 @@
 - `supported_by`：`[[Method|Task|Scenario|Benchmark]] --supported_by--> [[Evidence]]`；表示正式知识对象页由 Evidence 对象页支撑。`Paper` 不再作为 `supported_by` 的 source；Evidence 与 Paper 之间也不单独建立 formal relation。
 - `sourced_from`：`[[Evidence]] --sourced_from--> [[RawSource]]`；表示 Evidence 对象页来源于 `ontology/entities/raw-sources/files/` 下的受管原始文件。RawSource 不再为每个 PDF 维护独立对象页，而是由 `ontology/entities/raw-sources/index.md` 提供统一导航。该关系默认主要落在 provenance 层，不要求正式知识页直接连接原始来源；若证据对象页尚未生成而必须临时登记来源，可例外使用 `status: placeholder` 暂存。保留的 `sections`、`refs`、`experiments`、`analysis` 均可直接承担 `sourced_from` provenance 锚点，不依赖额外全文型 cache。
 - `surveys_method` 只在论文对方法形成结构化综述覆盖时成立；仅有背景提及、普通 related work 引用或零散 mention，不足以生成该 formal relation。
+- survey 论文不天然产生 `surveys_method`；只有当论文对方法形成结构化 coverage 时，才允许默认直接生成该 formal relation。
+- 结构化 coverage 的典型证据包括：方法分组表、taxonomy / grouping section、comparison matrix、coverage list、role-based method table。
+- 当 survey 论文只提供 related-work 背景、趋势总结、高体量 citation list 或零散方法 mention 时，不得直接默认生成 `surveys_method` formal relation。
+- 当前单篇 survey 编译默认采用三档 coverage 判定：Tier A（direct admission）、Tier B（reconciliation review required）、Tier C（needs-human-review only）。宽松检测不等于宽松落账。
 - 对于通过 `surveys_method` 稳定覆盖并 materialize 的 `Method`，只要当前论文对其任务定位或应用场景提供结构化、可审计的归属证据，仍可继续生成 `[[Method]] --targets_task--> [[Task]]` 与 `[[Method]] --applied_in--> [[Scenario]]`；其合法性不因 source paper 属于 survey 而降低。
 - survey-derived `targets_task` 只在论文将该方法明确纳入任务分组、任务 taxonomy、任务比较表或任务 coverage 结构时成立；仅有零散任务 mention，不足以生成 formal edge。
 - survey-derived `applied_in` 只在论文将该方法明确纳入场景分组、场景 taxonomy、场景比较表或应用 coverage 结构时成立；仅有背景领域描述、benchmark 域属性或泛化应用前景，不足以生成 formal edge。
@@ -131,6 +135,9 @@ research_role:
 - `Formal Paper` 只有在该 paper 自身产出至少一种稳定 ontology payload 时才成立；仅有 citation target 身份不足以进入正式 Paper 对象层。
 - `Paper Stub / Anchor` 仅承担 relation target、paper-level provenance 与 future ingest 升级落点职责；它不进入默认 paper serving surface。
 - cited-work placeholder paper 在未完成独立稳定产出前，默认按 `Paper Stub / Anchor` 理解，而不是按正式 Paper 对象层处理。
+- 当 survey-derived partial `Method` 具备稳定 representative paper 时，可默认生成对应 `Paper Stub / Anchor`，并允许 source survey paper 同步生成指向该 stub 的 `cites`。
+- 该 `cites` 用于补齐 survey-derived method admission 的 paper-level provenance 闭环，不表示该 representative paper 已升级为 Formal Paper。
+- representative paper stub 默认只进入 papers index 的 non-serving block，不得自动提升为默认 paper serving 入口。
 
 必填字段：`title`、`authors`、`year`、`venue`、`problem`、`industry`、`research_role`、`status`
 
@@ -168,6 +175,13 @@ status: processed
 - 证据来源
 - Formal relations
 - 我的批注
+
+Paper 页的人类友好正文增强合同：
+- processed `Paper` 页除 `Formal relations` 外，还应形成稳定的人类阅读入口。
+- 这些区块的目标不是复述全文，而是帮助人快速判断：论文解决什么问题、主要贡献是什么、最值得记住什么、与知识库现有内容如何相连、当前抽取边界在哪里。
+- 推荐以以下区块承载：`## 核心问题`、`## 主要贡献`、`## 关键结论`、`## 与知识库其他内容的关联`、`## 我的批注`。
+- 当论文页属于 survey / framework / taxonomy 主线时，可保留 `## 核心方法`、`## 相关任务`、`## 应用场景`、`## 相关基准` 作为 Paper 级人类解释层，但不得把这些 prose 升格为新的 formal relation truth。
+- 这些区块可以总结 Evidence 与 formal relation 的主语义面，但不得复制大段 Evidence cache，也不得绕过 `Formal relations` 暴露未受控对象邻接。
 
 survey / framework-taxonomy 论文的 Paper 页投影补充规则：
 - 当 `research_role: survey` 或论文核心贡献是 framework / taxonomy / landscape 组织时，Paper 页的人类区块应优先突出：核心框架、相关任务、应用场景、关键结论、综述证据来源。
@@ -220,12 +234,28 @@ tags: [知识图谱, 本体推理]
 - 优势与局限
 - 与其他方法的对比
 
+Method 页的人类友好正文增强合同：
+- `status: processed` 的 Method 页除最小 serving 合同外，还应形成稳定的方法身份解释层。
+- 这些区块的目标是帮助人快速判断：该方法是什么、解决什么核心问题、核心机制是什么、与相邻方法如何区分、当前优势与局限是什么。
+- 推荐以以下区块承载：`## 方法定义`、`## 解决的核心问题`、`## 技术原理`、`## 方法演化与参照关系`、`## 应用场景`、`## 代表论文`、`## 相关机制`、`## 优势与局限`、`## 与其他方法的对比`。
+- `status: partial` 的 Method 页仍以 semantic-stub 合同为主，不要求立即具备完整 processed Method 正文；只有在后续证据成熟并升级为 processed 后，才强制满足完整方法解释层。
+- partial Method 页仍以 semantic-stub 合同为主。
+- Method 页的人类友好正文用于解释方法身份，不替代 `based_on`、`references_method`、`targets_task`、`applied_in`、`evaluated_on` 等 formal relation truth。
+
 Method 页中的“方法演化与参照关系”用于面向人类区分两类核心方法邻接：
 - `based_on`：上游演化方法 / 严格方法谱系来源
 - `references_method`：关键参照方法 / 比较对象 / 借鉴路线
 
 其中 `parent_methods` / `child_methods` 只由 `based_on` 派生；`references_method` 不进入父子方法链。
 - 每个 formal / partial `Method` 都必须至少能回挂到一个 paper anchor；允许的锚点包括 incoming `proposes`、`references_method` 中的 `source_paper_path` / `target_paper_path`，以及其他稳定 coverage provenance。
+- 对于通过 `surveys_method` 稳定覆盖并 materialize 的 `Method`，允许以 `status: partial` 进入正式图谱。
+- 这类 survey-derived partial `Method` 必须同时具备：formal survey paper anchor（例如 incoming `surveys_method`）、人类可读 `## 代表论文` 锚点，以及最小 `Formal relations` 合同。
+- 若 representative paper 身份稳定可识别，则应优先为其生成 `Paper Stub / Anchor` 作为 future ingest 升级落点；该 stub 不自动升级为 Formal Paper。
+- survey-derived partial `Method` 的“1 篇代表论文”最小链接义务，可先由 `## 代表论文` prose anchor 加 representative paper stub / anchor 共同满足，而不要求立即生成 Formal Paper。
+
+Rollout 顺序说明：
+- 若新的正文增强合同尚未一次性覆盖所有对象类型，应优先保证 Paper 页先满足 richer human-friendly prose 合同，再扩展到 processed Method 页，采用 Paper-first / Method-following rollout。
+- partial Method、Task、Scenario、Benchmark、Evidence 不因本轮 Paper-first rollout 而自动获得新的长篇解释性正文义务。
 
 ### 3.5 Task
 必填字段：`title`、`problem`、`industry`、`research_role`
@@ -534,6 +564,7 @@ survey / framework 主线的 Scenario 补充规则：
 ### 6.3 最小链接义务
 - 论文页通常至少链接：1 个方法、1 个任务或场景、2 个相关论文或方法、1 个证据缓存；若知识库仍处于早期阶段，可先满足核心一跳关系并在后续 ingest 中补齐。
 - 方法页通常至少链接：1 篇代表论文、1 个父方法或上游方法、1 个子方法或对比方法、1 个任务或场景；若上下游节点尚未正式落库，可先保留明确占位说明。
+- 对于通过 `surveys_method` admitted 的 partial Method，“1 篇代表论文”最小链接义务可先由 `## 代表论文` prose anchor 满足；若 representative paper 身份稳定，则应进一步补齐对应的 `Paper Stub / Anchor` 作为 paper-level provenance 落点。
 - 场景页至少链接：1 个任务、2 个方法节点、1 篇论文。
 - Task / Benchmark 页至少链接：2 个论文或方法节点、1 个场景；若当前只有单条主线，可先围绕主线节点建立最小可视网络。
 - Evidence 缓存页必须回链正式论文页，并链接关键方法、任务与基准；对于 survey / taxonomy 论文，或以方法框架为主要落点的论文，可用“统计 / 分层 / 综述证据”替代统一 benchmark 结果。

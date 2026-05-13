@@ -104,3 +104,80 @@
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[LLM-KG collaboration framework for advanced complex product design]] --supported_by--> [[LLM-KG-CPD.sections]]
+  - source_path: ontology/entities/methods/LLM-KG collaboration framework for advanced complex product design.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.sections.md
+  - edge_semantics: 该方法的四层总体框架、设计阶段映射与 LLM/KG 角色分工由 sections 缓存直接支撑。
+  - evidence: LLM-KG-CPD.sections
+  - evidence_link: [[LLM-KG-CPD.sections]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.sections.md
+- [[LLM-KG collaboration framework for advanced complex product design]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/LLM-KG collaboration framework for advanced complex product design.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: 该方法的工业软件缺口分析、角色分类、局限与未来方向由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+- [[LLM-KG collaboration framework for advanced complex product design]] --supported_by--> [[LLM-KG-CPD.refs]]
+  - source_path: ontology/entities/methods/LLM-KG collaboration framework for advanced complex product design.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+  - edge_semantics: 该方法的文献 grounding、先行工作脉络与代表性角色来源由 refs 缓存直接支撑。
+  - evidence: LLM-KG-CPD.refs
+  - evidence_link: [[LLM-KG-CPD.refs]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+- [[BEAR]] --supported_by--> [[LLM-KG-CPD.refs]]
+  - source_path: ontology/entities/methods/BEAR.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+  - edge_semantics: BEAR 在该 survey 中被纳入 LLM 增强 KG construction 的结构化方法 coverage，当前由 refs 缓存中的文献 grounding 直接支撑。
+  - evidence: LLM-KG-CPD.refs
+  - evidence_link: [[LLM-KG-CPD.refs]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+- [[AutoKG]] --supported_by--> [[LLM-KG-CPD.refs]]
+  - source_path: ontology/entities/methods/AutoKG.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+  - edge_semantics: AutoKG 在该 survey 中被纳入 LLM 增强 KG construction 的结构化方法 coverage，当前由 refs 缓存中的文献 grounding 直接支撑。
+  - evidence: LLM-KG-CPD.refs
+  - evidence_link: [[LLM-KG-CPD.refs]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+- [[ASKG]] --supported_by--> [[LLM-KG-CPD.refs]]
+  - source_path: ontology/entities/methods/ASKG.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+  - edge_semantics: ASKG 在该 survey 中被纳入 knowledge extraction / graph enrichment 的结构化方法 coverage，当前由 refs 缓存中的文献 grounding 直接支撑。
+  - evidence: LLM-KG-CPD.refs
+  - evidence_link: [[LLM-KG-CPD.refs]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+- [[OLaLa]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/OLaLa.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: OLaLa 在该 survey 的结构化 role-based coverage 中被纳入 knowledge fusion / ontology matching 路线，当前由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+- [[KG-CGT]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/KG-CGT.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: KG-CGT 在该 survey 的结构化 role-based coverage 中被纳入 KG-guided generation 路线，当前由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+- [[RelMKG]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/RelMKG.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: RelMKG 在该 survey 的结构化 role-based coverage 中被纳入 knowledge reasoning 路线，当前由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+- [[StructGPT]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/StructGPT.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: StructGPT 在该 survey 的结构化 role-based coverage 中被纳入结构化数据 reasoning 路线，当前由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+- [[CausalKGPT]] --supported_by--> [[LLM-KG-CPD.analysis]]
+  - source_path: ontology/entities/methods/CausalKGPT.md
+  - target_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - edge_semantics: CausalKGPT 在该 survey 的结构化 role-based coverage 中被纳入 manufacturing-oriented knowledge reasoning 路线，当前由 analysis 缓存直接支撑。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md

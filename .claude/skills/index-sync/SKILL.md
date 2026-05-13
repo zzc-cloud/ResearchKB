@@ -46,6 +46,9 @@ description: 在 `page-projection-sync` 完成后，把对象页与 index 层之
 - `partial`：Method 页可进入默认导航入口；其他类型仍可被 index 收录但不自动等同 serving-ready
 - `serving-ready`：进入默认导航入口
 - 对于 Method 类型，`status: partial` 一旦被 index 收录，即视为可导航对象页，不再额外降级到 placeholder 区块。
+- survey-derived `status: partial` Method 默认进入 Methods index 的默认导航入口。
+- survey-derived representative paper stubs 默认进入 Papers index 的 non-serving block。
+- 仅因其承担 survey-derived method provenance 而创建的 paper stub，不得自动提升为 papers index 默认入口。
 - non-default-serving 收录块与 `partial` 导航入口并不天然代表“有问题的页面”；它们也可能是当前规范允许的合法服务层中间状态，供 serving-governance 在后续阶段按上下文判断，而不是自动视为待修复信号。
 - 若页面缺少安全收录所需结构，应跳过并记录 followup
 - 不得通过猜测补齐分组或伪造入口状态

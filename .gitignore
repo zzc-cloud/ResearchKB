@@ -3,3 +3,4 @@
 .smart-env/multi/
 .obsidian/workspace.json
 .smart-env/event_logs/event_logs.ajson
+__pycache__/

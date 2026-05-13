@@ -105,6 +105,10 @@ relation 页固定由两部分组成：
 - 若 relation type 清晰、evidence 明确，则归入 `add_now`
 - 若 relation type 合法但粒度或方向仍存在歧义，则归入 `needs_human_review`
 - survey 论文中的方法 coverage 若属于系统梳理、分类、比较或 landscape 结构，应优先判断是否补为 `surveys_method`，而不是停留在 `cites`。
+- 若 survey 论文在 ingest 输出中已声明 Tier A survey-covered method candidates，则 `relation-reconciliation` 不得接受“空的 `surveys_method` ledger”直接过关。
+- 对于 Tier A candidates，必须默认补齐：`surveys_method`、必要的 `supported_by`、representative paper stub / anchor，以及与 representative paper 对应的 `cites`。
+- 对于 Tier B candidates，必须显式判定 `add_now` 或 `needs-human-review`；不得因 ingest 未直接 formalize 而静默跳过。
+- 对于 Tier C candidates，允许停留在 review 输出，不自动 materialize。
 - `surveys_method` 不得用于首次提出方法；若论文对方法的关系是“首次提出/正式定义”，应落为 `proposes`。
 - 若某方法通过 `surveys_method` 已稳定进入图谱，而当前论文又以结构化 coverage 明确给出其任务或场景归属，则应继续判断是否补为 `targets_task` 或 `applied_in`；不得因为该方法来自 survey paper 就默认降级为 context-only。
 - 若候选关系试图直接把 `Task` 与 `Scenario` 相连，则默认归入 `needs_human_review` 或直接视为当前规范下的非法关系，而不是直接落账。
@@ -130,6 +134,8 @@ relation 页固定由两部分组成：
 - 比较 / 借鉴 / 路线参照进 `references_method`
 - 若仅存在论文级引用事实且 Method 身份不稳定，则保留在 `cites`
 - 对于 `references_method`：若实例边声明了 `source_paper_path` 与 `target_paper_path`，则必须同时验证 `ontology/relations/cites.md` 中存在对应 `Paper --cites--> Paper` 实例；否则归入 `needs_human_review`，不得直接落为 fully valid formal edge。
+- 当 survey-derived partial `Method` 默认生成 representative paper stub / anchor 时，source survey Paper 应同步生成指向该 representative paper 的 `cites`。
+- 若 Tier A survey-derived `Method` 已落为 formal partial Method，但 representative paper stub 已生成且 `cites` 缺失，则该 provenance 闭环不完整，至少应进入 `needs-human-review`。
 - `references_method` 的 target paper 若当前仅由 citation / provenance 需要支撑，应保留或创建为 `Paper Stub / Anchor`，而不是自动升级为 Formal Paper。
 - placeholder cited paper target 应保留为 Paper Stub / Anchor，而不是自动升级为 Formal Paper。
 - partial `Method` 可以依赖 target paper stub 作为弱锚点；不得因为 target paper 尚未成为 Formal Paper 就回退已稳定的方法 identity。
@@ -151,6 +157,8 @@ needs_human_review: []
 affected_pages: []
 affected_stub_pages: []
 materialized_partial_methods: []
+materialized_paper_stubs: []
+deferred_survey_candidates: []
 serving_status_recommendations:
   - path: ontology/entities/methods/RoG.md
     recommended_status: partial

@@ -27,3 +27,24 @@
   - evidence: PathMind.experiments
   - evidence_link: [[PathMind.experiments]]
   - evidence_path: ontology/entities/evidence/PathMind.experiments.md
+- [[LLM-KG-CPD.sections]] --sourced_from--> [[ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf|A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf]]
+  - source_path: ontology/entities/evidence/LLM-KG-CPD.sections.md
+  - target_path: ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf
+  - edge_semantics: LLM-KG-CPD.sections 直接来源于该 survey 论文的摘要、问题设定、总体框架与分层结构抽取。
+  - evidence: LLM-KG-CPD.sections
+  - evidence_link: [[LLM-KG-CPD.sections]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.sections.md
+- [[LLM-KG-CPD.refs]] --sourced_from--> [[ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf|A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf]]
+  - source_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+  - target_path: ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf
+  - edge_semantics: LLM-KG-CPD.refs 直接来源于该 survey 论文的参考文献、表格归类与 related-work grounding 抽取。
+  - evidence: LLM-KG-CPD.refs
+  - evidence_link: [[LLM-KG-CPD.refs]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.refs.md
+- [[LLM-KG-CPD.analysis]] --sourced_from--> [[ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf|A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf]]
+  - source_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md
+  - target_path: ontology/entities/raw-sources/files/A survey of LLM-augmented knowledge graphs for advanced complex product design.pdf
+  - edge_semantics: LLM-KG-CPD.analysis 直接来源于该 survey 论文的统计图表、工业软件分析、角色分类、挑战与未来方向抽取。
+  - evidence: LLM-KG-CPD.analysis
+  - evidence_link: [[LLM-KG-CPD.analysis]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.analysis.md

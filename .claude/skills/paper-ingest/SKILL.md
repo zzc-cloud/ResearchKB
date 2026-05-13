@@ -139,6 +139,20 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 对象级语义要求：
 - 每个正式对象页候选必须同时产出对象级语义真源 `object_semantics`，供后续 `index-sync` 投影到对象域入口项。
 - `object_semantics` 用于表达“该对象实例是什么”，不替代 relation candidate 的 `edge_semantics`。
+- 对于 `Paper` 候选，除最小 `object_semantics` 外，还必须额外整理可投影到人类友好正文的语义载荷，至少覆盖：
+  - `core_problem_framing`
+  - `core_contribution_framing`
+  - `key_judgments`（3-5 条）
+  - `kb_relationship_framing`
+  - `extraction_boundary_notes`
+- 这些字段的目标不是复述论文全文，而是为后续 Paper 页的人类阅读入口提供高密度判断材料。
+- 对于 `Method` 候选，若当前论文已足以支撑 processed Method 级别的对象页，还必须额外整理可投影到方法解释层的语义载荷，至少覆盖：
+  - `method_identity_framing`
+  - `core_mechanism_summary`
+  - `task_scenario_positioning_notes`
+  - `neighbor_method_distinctions`
+  - `current_knowledge_state_notes`
+- 若当前仅能支撑 `status: partial` 的 Method，则继续以 semantic-stub 最小语义骨架为主，不强制生成完整方法解释层。
 - 对于当前论文已经稳定提供最小对象语义、但证据仍不足以支持完整 serving-ready 页的高价值邻接对象，必须额外产出 `semantic_stub_candidates`，供后续 `relation-reconciliation`、`page-projection-sync` 与 `index-sync` 使用。
 - 对于被 `based_on`、`references_method` 或 `proposes`（target 为 Method）稳定指向、但当前库中尚不存在的上游方法对象：
   - 若当前论文已经稳定提供其 Method 身份、正常 `object_semantics` 与至少一条正式方法关系，则必须直接产出 `status: partial` 的 Method 候选，而不是 Method placeholder。
@@ -165,6 +179,11 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - `paper-ingest` 不直接生成 relation ledger 最终 markdown。
 - `paper-ingest` 不在此阶段决定使用短 wikilink 还是带路径 wikilink。
 - 这些 relation 页表示层决策由 `relation-reconciliation` 负责。
+- 人类友好正文载荷的抽取边界：
+  - 必须显式暴露不确定性，不得把弱证据推断伪装成确定结论。
+  - 不得把 Evidence cache 大段复制为对象页 prose。
+  - 不得把这些载荷当作第二套 relation ledger；formal relation truth 仍由 relation candidates 与后续 ledger / projection 阶段承接。
+  - 当当前论文只足以支持 Paper 层解释，而不足以支持完整 Method 身份解释时，优先保证 Paper-first 输出完整，而不是勉强生成低质量 Method prose。
 
 补充约束：
 - `supported_by` 候选只允许从 `Method`、`Task`、`Scenario`、`Benchmark` 指向 `Evidence`。
@@ -193,6 +212,14 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 - 当方法间关系表达的是关键比较对象、借鉴路线或方法参照，而非严格谱系继承时，可将其输出为 `references_method` candidate。
 - 若仅存在论文级引用事实而缺少稳定方法对象语义，不得从 `cites` 升格为 `references_method`。
 - `references_method` 强于论文引用、弱于 `based_on`；它不驱动 `parent_methods` / `child_methods`。
+
+### survey coverage tiering
+对于 survey / landscape / taxonomy / framework 论文，必须主动检测 method coverage，并将候选对象分为三档：
+- Tier A（direct survey-covered method candidates）：稳定方法名 + 结构化 coverage + 可写最小 `object_semantics` + representative paper 稳定可识别；默认直接进入 formal admission 链。
+- Tier B（high-confidence survey method candidates）：方法身份较稳定，但结构化 coverage 或 representative paper 仍略弱；默认输出为高置信候选并强制交给 `relation-reconciliation` 复核，不在 ingest 阶段直接落 formal ledger。
+- Tier C（needs-human-review survey candidates）：仅有 related-work mention、对象身份不稳、或更像系统/场景/benchmark/概念；只进入 review 输出，不自动 materialize。
+
+宽松检测不等于宽松落账：survey 论文应积极发现方法候选，但只有 Tier A 默认自动落入 `surveys_method`。
 
 ## 分类与抽取规则
 ### 论文页
@@ -297,6 +324,28 @@ skill_update_signals:
   - ...
 ```
 
+对于 Tier A survey-covered methods，除 `surveys_method` / `supported_by` / `cites` relation candidates 外，还必须额外输出：
+- `representative_paper_candidates`
+- `paper_stub_candidates`
+- `survey_method_tier: TierA`
+
+对于 Tier B survey candidates，必须输出：
+- `survey_method_tier: TierB`
+- `high_confidence_survey_method_candidates`
+- 可选 `representative_paper_candidates`
+
+对于 Tier C survey candidates，必须输出：
+- `survey_method_tier: TierC`
+- `needs-human-review survey candidates`
+
+新增对象页人类友好正文载荷输出：
+- `paper_human_friendly_payloads`
+- `method_human_friendly_payloads`
+
+其中：
+- `paper_human_friendly_payloads` 至少应包含 `core_problem_framing`、`core_contribution_framing`、`key_judgments`、`kb_relationship_framing`、`extraction_boundary_notes`
+- `method_human_friendly_payloads` 至少应包含 `method_identity_framing`、`core_mechanism_summary`、`task_scenario_positioning_notes`、`neighbor_method_distinctions`、`current_knowledge_state_notes`
+
 解释：
 - `success`：基础缓存、正式页面与应有关系账本更新都已完成，且结构适配良好。
 - `partial`：完成了大部分工作，但某些页面、字段或正式关系账本仍需人工补充。
@@ -338,6 +387,11 @@ skill_update_signals:
 - 不要强行把它当普通方法论文完整落库
 - 输出 `needs-skill-update` 或 `partial`
 - 指出该类 benchmark 论文可能需要专门模板
+
+当 survey 论文已经对 Tier A 方法完成 direct admission 时，相关 Evidence 缓存不得继续保留“当前 ingest 不把高体量 survey 引文批量升格为 `surveys_method`”这类 blanket prose。必须改写为：
+- 哪些方法已被当前批次直接 materialize
+- 哪些候选仍处于 Tier B / Tier C
+- 为什么剩余候选被延后
 
 ## 使用完成后的建议
 若输出为 `partial` 或 `needs-skill-update`，应在回复中明确说明：

@@ -17,6 +17,15 @@
 - PathMind.experiments 证据入口（文档：`ontology/entities/evidence/PathMind.experiments.md`）：[[ontology/entities/evidence/PathMind.experiments.md]]
   - object_semantics: PathMind experiments 证据实例，承载 benchmark 表现、消融分析与效率结果。
   - status: serving-ready
+- LLM-KG-CPD.sections 证据入口（文档：`ontology/entities/evidence/LLM-KG-CPD.sections.md`）：[[ontology/entities/evidence/LLM-KG-CPD.sections.md]]
+  - object_semantics: LLM-KG-CPD sections 证据实例，承载 survey 论文中的总体框架、设计阶段映射与角色分工证据。
+  - status: serving-ready
+- LLM-KG-CPD.analysis 证据入口（文档：`ontology/entities/evidence/LLM-KG-CPD.analysis.md`）：[[ontology/entities/evidence/LLM-KG-CPD.analysis.md]]
+  - object_semantics: LLM-KG-CPD analysis 证据实例，承载统计分析、工业软件缺口、局限与未来方向证据。
+  - status: serving-ready
+- LLM-KG-CPD.refs 证据入口（文档：`ontology/entities/evidence/LLM-KG-CPD.refs.md`）：[[ontology/entities/evidence/LLM-KG-CPD.refs.md]]
+  - object_semantics: LLM-KG-CPD refs 证据实例，承载框架文献 grounding 与 representative coverage 证据。
+  - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 
 ## 3. 其他实例（不可导航）

@@ -12,6 +12,9 @@
 - PathMind 论文入口（文档：`ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md`）：[[ontology/entities/papers/PathMind - A Retrieve-Prioritize-Reason Framework for Knowledge Graph Reasoning with Large Language Models.md]]
   - object_semantics: PathMind 论文实例，提出以重要路径识别驱动的 Retrieve-Prioritize-Reason 知识图谱推理框架。
   - status: serving-ready
+- LLM-KG-CPD survey 论文入口（文档：`ontology/entities/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md`）：[[ontology/entities/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md]]
+  - object_semantics: survey 型 Paper，系统综述 advanced complex product design 中 LLM 与 KG 的协同研究，并提出四层 LLM-KG 协同框架。
+  - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 
 ## 3. 其他实例（不可导航）

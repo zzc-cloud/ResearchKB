@@ -13,3 +13,10 @@
   - evidence: PathMind.sections
   - evidence_link: [[PathMind.sections]]
   - evidence_path: ontology/entities/evidence/PathMind.sections.md
+- [[A survey of large language model-augmented knowledge graphs for advanced complex product design]] --proposes--> [[LLM-KG collaboration framework for advanced complex product design]]
+  - source_path: ontology/entities/papers/A survey of large language model-augmented knowledge graphs for advanced complex product design.md
+  - target_path: ontology/entities/methods/LLM-KG collaboration framework for advanced complex product design.md
+  - edge_semantics: 论文提出一个面向 advanced complex product design 的四层 LLM-KG collaboration framework，并以 CPD-LLM 与 CPD-KG 子框架细化其实现路径。
+  - evidence: LLM-KG-CPD.sections
+  - evidence_link: [[LLM-KG-CPD.sections]]
+  - evidence_path: ontology/entities/evidence/LLM-KG-CPD.sections.md

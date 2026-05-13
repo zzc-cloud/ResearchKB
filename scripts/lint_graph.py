@@ -124,11 +124,34 @@ ALLOWED_EVIDENCE_CACHE_TYPES = {'sections', 'refs', 'experiments', 'analysis'}
 
 SERVING_TYPE_RULES = {
     'paper': {
-        'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'required_headings': [
+            '## 核心问题',
+            '## 主要贡献',
+            '## 关键结论',
+            '## 与知识库其他内容的关联',
+            '## 证据来源',
+            '## Formal relations',
+            '### Outgoing',
+            '### Incoming',
+        ],
         'strong_frontmatter_fields': {},
     },
     'method_processed': {
-        'required_headings': ['## 证据来源', '## Formal relations', '### Outgoing', '### Incoming'],
+        'required_headings': [
+            '## 方法定义',
+            '## 解决的核心问题',
+            '## 技术原理',
+            '## 方法演化与参照关系',
+            '## 应用场景',
+            '## 代表论文',
+            '## 相关机制',
+            '## 证据来源',
+            '## Formal relations',
+            '### Outgoing',
+            '### Incoming',
+            '## 优势与局限',
+            '## 与其他方法的对比',
+        ],
         'strong_frontmatter_fields': {'parent_methods', 'child_methods'},
     },
     'method_partial': {
@@ -794,6 +817,12 @@ def check_method_paper_anchors(errors: list[str]) -> None:
         if target_path.startswith('ontology/entities/methods/') and source_path.startswith('ontology/entities/papers/'):
             anchor_map.setdefault(target_path, set()).add(source_path)
 
+    for record in load_relation_records('ontology/relations/surveys_method.md'):
+        target_path = record.get('target_path', '')
+        source_path = record.get('source_path', '')
+        if target_path.startswith('ontology/entities/methods/') and source_path.startswith('ontology/entities/papers/'):
+            anchor_map.setdefault(target_path, set()).add(source_path)
+
     for record in load_relation_records('ontology/relations/references_method.md'):
         for method_key, paper_key in (('source_path', 'source_paper_path'), ('target_path', 'target_paper_path')):
             method_path = record.get(method_key, '')
@@ -809,6 +838,16 @@ def check_method_paper_anchors(errors: list[str]) -> None:
             continue
         if not anchor_map.get(rel_path):
             errors.append(f'formal/partial Method must resolve to at least one paper anchor: {rel_path}')
+
+
+def check_survey_method_representative_anchors(errors: list[str]) -> None:
+    for method_path in sorted((ROOT / 'ontology/entities/methods').glob('*.md')):
+        rel_path = str(method_path.relative_to(ROOT))
+        text = method_path.read_text(encoding='utf-8', errors='ignore')
+        if '`surveys_method`' not in text:
+            continue
+        if '## 代表论文' not in text:
+            errors.append(f'survey-derived partial Method missing representative paper section: {rel_path}')
 
 
 def validate_cited_paper_targets(errors: list[str]) -> None:
@@ -953,6 +992,7 @@ validate_evaluated_on_contract(errors)
 validate_method_status_contract(errors)
 check_references_method_cites_backing(errors)
 check_method_paper_anchors(errors)
+check_survey_method_representative_anchors(errors)
 validate_ledger_projection_coverage(errors)
 
 for path in (ROOT / 'ontology').rglob('*.md'):

@@ -45,6 +45,12 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 - `targets_task` 是否被错误用于 `Paper`
 - `applied_in` 是否被错误用于 `Paper`，或是否应由 `Method -> Scenario` 承接
 - `surveys_method` 是否被正确用于综述论文对方法的系统覆盖，而不是误用 `proposes` 或退化为普通 `cites`
+- 必须区分三种合法 survey 状态：
+  1. 无结构化 method coverage，因此不要求 `surveys_method`
+  2. 存在 Tier A 结构化 coverage，因此应存在 `surveys_method`
+  3. 仅有 Tier B / Tier C 候选，因此允许停留在 reconciliation / review 路径
+- 若某 survey 已明显存在 Tier A 结构化 coverage，却没有 `surveys_method`，必须指出。
+- 若某 survey-derived partial `Method` 已 materialize，却缺少 representative paper provenance，也必须指出。
 - `Task` 与 `Scenario` 是否被混淆为同一语义层级
 - Evidence 是否通过正文或 formal relation 直接连接回 Paper
 - 对象页 / Evidence 页正文中的 wikilink 是否超出 formal relation 已投影邻接
