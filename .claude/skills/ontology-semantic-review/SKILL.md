@@ -1,6 +1,6 @@
 ---
 name: ontology-semantic-review
-description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过后，对 ResearchKB 新增或修改的知识图谱内容做本体语义审查。只要用户要求检查新摄入论文、概念、框架、任务、场景或关系放置是否合理，或给出 git diff / 改动文件希望判断实体分类、关系归属、全局本体位置是否正确，就应使用本 skill。它用于 ingest 后的知识图谱治理，不用于 PDF 提取，也不用于基础结构 lint。
+description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过后，对 ResearchKB 新增或修改的知识图谱内容做本体语义审查。Whenever 编排型 skill `process-paper` 已将当前任务推进到 ontology semantic review 阶段，或用户明确要求只做语义治理审查时，都应使用本 skill。默认由 `process-paper` 在结构 lint 通过后调用；它用于 ingest 后的知识图谱治理，不用于 PDF 提取，也不用于基础结构 lint。
 ---
 
 # 本体语义审查
@@ -11,6 +11,7 @@ description: 在 `paper-ingest` 完成且 `python3 scripts/lint_graph.py` 通过
 ## 架构定位
 本 skill 属于 ResearchKB 的**本体治理层**。
 它不负责抽取论文内容，也不负责基础结构 lint；它负责在 `paper-ingest` 与 `python3 scripts/lint_graph.py` 之后，对候选知识变更做语义审查，判断这些变更是否可以进入正式图谱。
+默认由 `process-paper` 在结构 lint 通过后调用；若用户明确要求只做语义治理审查，也可直接使用本 skill。
 
 ## 先阅读
 - `ontology/graph-standard.md`

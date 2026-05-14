@@ -129,7 +129,9 @@ owner: yyzz
 ## 核心工作流程
 
 ### 处理单篇论文
-当我说 **“处理论文：[文件路径或论文标题]”** 时，默认走完整单篇论文编译链：
+当我说 **“处理论文：[文件路径或论文标题]”** 时，默认调用 `process-paper` 编排型 skill。
+
+`process-paper` 必须完成以下完整单篇论文编译链：
 1. `paper-ingest`
 2. `relation-reconciliation`
 3. `page-projection-sync`
@@ -145,11 +147,12 @@ owner: yyzz
 - `index-sync` 负责将对象页投影同步到各对象域 index 与其他受管导航页，并区分 default serving surface 与非默认导航收录。
 - `python3 scripts/lint_graph.py`、`ontology-semantic-review` 与 `serving-governance-review` 共同构成正式入图前的治理关口；只有结构 lint、本体语义审查与 serving 治理全部通过后，才算可进入正式图谱。
 - `serving-governance-review` 应尊重 `ontology/graph-standard.md` 与 `index-sync` 已确认的 phase-1 合法中间态；若 `partial` / `placeholder` 邻接本身是规范允许、索引状态正确且 formal/evidence 遍历完整的稳态，不得自动将其视为 serving 失败。
+- 用户若明确要求只做某一局部阶段，可直接调用对应阶段 skill；但默认单篇论文处理入口仍为 `process-paper`。
 - 如与 `ontology/graph-standard.md` 冲突，一律以 `ontology/graph-standard.md` 为准。
 
 ### 批量处理论文
 当我说 **“批量处理 ontology/entities/raw-sources/files/ 目录下的所有论文”** 时：
-- 仍以单篇论文编译链为基本执行单元：`paper-ingest` → `relation-reconciliation` → `page-projection-sync` → `index-sync` → 三层治理
+- 仍以单篇论文编排型 skill 为基本执行单元：`process-paper` → 各阶段编译链 → 三层治理
 - 先列出候选论文并按主题 / 年份分组，与我确认顺序
 - 逐篇汇报进度，避免无确认的大规模落库
 - 不允许只批量跑 `paper-ingest` 而跳过后续 relation / projection / index sync / 治理阶段
@@ -190,4 +193,3 @@ owner: yyzz
 - 在证据不足时给出过强结论
 - 把 git 历史、已删除对象或旧版本页面当作当前任务的默认参考，而不是先以当前工作区与现行规范重新判断
 - 处理论文 PDF 时，默认优先使用 Claude 的原生 PDF Read 能力读取指定页；不要依赖 pypdf、pdfplumber 等外部 Python 库作为标准路径。只有在用户明确要求或仓库中存在正式脚本依赖时，才使用额外 PDF 解析工具。
-

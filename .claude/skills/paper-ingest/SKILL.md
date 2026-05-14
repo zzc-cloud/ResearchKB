@@ -1,6 +1,6 @@
 ---
 name: paper-ingest
-description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever the user says 处理论文、摄入论文、解析论文、落库论文、为某篇 paper 建缓存/摘要/方法页/关系页，或给出 PDF 路径希望完整提取并写入知识库时，都应使用此 skill，即使用户只明确提到其中一步。它会解析论文、生成全部 intermediate 缓存、按用户当前关注方向强化提取、更新 `ontology/log.md`，并产出供后续 `relation-reconciliation`、`page-projection-sync` 与 `index-sync` 消费的对象页候选与关系候选；在遇到异常结构论文时输出 `needs-skill-update` 告警。
+description: 用于单篇论文编译链中的 ingest 阶段：解析 PDF、生成 Evidence 缓存、对象页候选与 formal relation candidates。仅当编排型 skill `process-paper` 已将当前任务推进到 ingest 阶段，或用户明确要求只做 ingest / 初步落库时，才应使用本 skill；不要把它当作“处理论文”完整请求的默认入口。它负责把原始论文编译成可供后续阶段消费的正式仓库产物与结构化阶段摘要；不负责继续编排后续链路。
 ---
 
 # Paper Ingest
@@ -8,13 +8,13 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 你是 ResearchKB 的论文完整摄入器。你的任务不是只“读一篇论文”，而是把单篇论文从原始 PDF 编译成 ResearchKB 可以长期复用的知识资产。
 
 ## 何时使用
-当用户出现以下意图时，优先使用本 skill：
-- “处理论文：...”, “摄入论文：...”, “把这篇 paper 落库”
-- 给出 PDF 路径，希望完整解析并写入知识库
-- 希望为论文生成缓存、摘要页、方法页、概念页、场景页、引用关系或方法演化关系
-- 希望围绕某篇论文建立后续可复用的 intermediate 缓存
+当出现以下情形时使用本 skill：
+- 编排型 skill `process-paper` 已将当前任务推进到 ingest 阶段
+- 用户明确要求只做 ingest / 初步落库
+- 用户希望围绕某篇论文生成可复用的 Evidence 缓存、对象页候选或 formal relation candidates，但并未要求立即完成整条治理链
 
 不要把它用于：
+- 默认意义上的“处理论文：...”完整链路入口
 - 只回答一个简短问题且无需落库
 - 仅做跨论文综合分析但不处理新增论文
 - 与论文无关的普通写作或编程任务
@@ -28,14 +28,13 @@ description: 完整摄入单篇学术论文并落库到 ResearchKB。Whenever th
 3. 不生成 `full.md`；若未来需要新增 cache 类型，必须先更新本体规范与 skill 合约，而不是临时加文件
 
 ## 架构定位
-本 skill 属于 ResearchKB 的**本体实例编译入口**。
+本 skill 属于 ResearchKB 的单篇论文编译链 ingest 阶段。
 它的职责是把原始论文编译成候选知识变更，包括：
 - `ontology/entities/evidence/` 证据缓存
 - `ontology/entities/` 正式节点页候选变更
-- formal relation candidates（供后续 relation reconciliation 使用）
+- formal relation candidates（供后续 `relation-reconciliation` 使用）
 
-它不直接完成全图 formal relation 闭环，也不裁决语义合法性；生成结果后应先交给 relation reconciliation，再进入本体治理层继续审查。
-在日常处理论文流程中，本 skill 默认只负责编译入口；完成后必须显式进入 `relation-reconciliation`，而不是把 ingest 结果直接当作正式入图结果。
+它不直接完成全图 formal relation 闭环，也不裁决语义合法性；它只负责产出可供后续阶段消费的正式仓库产物与结构化阶段摘要，不负责编排或触发后续阶段。
 
 ## 输入约定
 从用户提示中提取以下信息：
@@ -399,13 +398,3 @@ skill_update_signals:
 - 哪些内容仍不稳定
 - 当前 skill 该如何升级，才能更好适配这类论文
 - 若某类关系因规范豁免未生成，应明确区分“正常豁免”与“skill 漏写”，避免把豁免项误报为待补。
-
-## Ingest 完成后的后续治理要求
-当本次摄入已经完成缓存、wiki 页面与候选关系输出后：
-1. 在日常 ingest 流程中，`paper-ingest` 结束后默认进入 `relation-reconciliation`
-2. `relation-reconciliation` 完成后，必须进入 `page-projection-sync`
-3. `page-projection-sync` 完成后，必须进入 `index-sync`
-4. `index-sync` 完成后，必须运行 `python3 scripts/lint_graph.py`
-5. lint 通过后，必须调用 `ontology-semantic-review` skill 审查语义合理性
-6. 如本次改动涉及 serving-ready 页面，还必须调用 `serving-governance-review`
-7. 只有结构、语义与 serving 都合理时，才建议接受本次变更并进入 git 提交

@@ -8,12 +8,6 @@
 
 ## 2. 导航入口
 <!-- BEGIN MANAGED BLOCK:navigation-entries -->
-- WebQSP benchmark 入口（文档：`ontology/entities/benchmarks/WebQSP.md`）：[[ontology/entities/benchmarks/WebQSP.md]]
-  - object_semantics: WebQSP benchmark 实例，用于评测知识图谱问答方法在真实问题回答上的表现。
-  - status: serving-ready
-- CWQ benchmark 入口（文档：`ontology/entities/benchmarks/CWQ.md`）：[[ontology/entities/benchmarks/CWQ.md]]
-  - object_semantics: CWQ benchmark 实例，用于评测复杂多跳知识图谱问答方法的推理能力。
-  - status: serving-ready
 <!-- END MANAGED BLOCK:navigation-entries -->
 
 ## 3. 其他实例（不可导航）

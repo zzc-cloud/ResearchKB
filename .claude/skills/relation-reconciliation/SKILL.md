@@ -1,6 +1,6 @@
 ---
 name: relation-reconciliation
-description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidence 缓存、对象页与当前 `ontology/relations/*.md` 正式账本，补齐 formal relation ledger，并输出 added/already_present/exempt/needs-human-review 结果。Whenever 单篇论文 ingest 完成后需要补齐 formal relations、比较 evidence 与 ledger 差异、检查哪些关系已存在/缺失/应豁免、或要把候选关系正确分发到各关系账本时，都应使用本 skill。
+description: 在 `paper-ingest` 产出 relation candidates、Evidence 缓存与对象页候选后，对照 `ontology/relations/*.md` 正式账本补齐 formal relation ledger，并输出 added/already_present/exempt/needs-human-review 结果。仅当编排型 skill `process-paper` 已将当前任务推进到 relation reconciliation 阶段，或用户明确要求只做 formal relation ledger 补齐 / 修复时，才应使用本 skill；不要把它当作“处理论文”完整请求的默认入口。
 ---
 
 # Relation Reconciliation
@@ -8,8 +8,8 @@ description: 在 `paper-ingest` 完成后，对照 relation_candidates、Evidenc
 你是 ResearchKB 的 formal relation reconciliation stage。你的任务不是重新解析论文，而是在 `paper-ingest` 之后，把候选关系、对象页暗示关系、Evidence 支撑关系与当前 formal ledger 对齐并补齐。
 
 ## 链路位置
-本 skill 是单篇论文日常编译链的第二阶段，默认前置为 `paper-ingest`。
-本 skill 不应独立替代 ingest，也不应跳过后续 `page-projection-sync`。
+本 skill 是单篇论文编译链中的 relation reconciliation 阶段，默认前置为 `paper-ingest`。
+默认由编排型 skill `process-paper` 在 ingest 之后调用；当用户明确要求只做 formal relation ledger 补齐 / 修复时，也可直接使用本 skill。
 
 ## 核心职责
 1. 读取 `paper-ingest` 输出中的 `relation_candidates` 与 `relation_exemptions`
@@ -145,14 +145,8 @@ relation 页固定由两部分组成：
 ```yaml
 status: success | partial | needs-human-review
 already_present: []
-added_relations:
-  - file: ontology/relations/targets_task.md
-    edge: "[[Method]] --targets_task--> [[Task]]"
-    evidence: "[[ontology/entities/evidence/foo.sections|foo.sections]] §x"
-  - file: ontology/relations/applied_in.md
-    edge: "[[Method]] --applied_in--> [[Scenario]]"
-    evidence: "[[ontology/entities/evidence/foo.experiments|foo.experiments]] §x"
-exemptions: []
+added: []
+exempt: []
 needs_human_review: []
 affected_pages: []
 affected_stub_pages: []
@@ -165,6 +159,12 @@ serving_status_recommendations:
     reason: stable Method identity and formal relation exist, but explanatory coverage remains incomplete
 ```
 
+字段约定：
+- `added`：本轮新写入 formal ledger 的正式实例边；每项至少包含 `file`、`edge`、`evidence`。
+- `exempt`：按规范豁免、不应落账的关系或对象。
+- `needs_human_review`：存在方向、粒度、身份或 ledger 路由歧义的候选。
+- 不再使用 `added_relations`、`exemptions`、`needs-human-review` 作为主交接字段名。
+
 ## 最小 rollout 建议
 - 先在标准 empirical 方法论文上试跑（如 PathMind 类论文）。
 - 再扩到 survey / framework 论文。
@@ -172,9 +172,3 @@ serving_status_recommendations:
 - `affected_pages` must include both source and target object pages for every reconciled formal relation instance whose corresponding page file exists.
 - 若某对象页已承接 formal relation 且同时出现在 `affected_stub_pages` 中，它仍必须同时出现在 `affected_pages` 中；`affected_stub_pages` 只做辅助分类，不替代对象页同步清单。
 - 对于 `cites` 指向的 placeholder paper target，创建占位页后不得停在“仅可解析”状态，必须继续进入 `page-projection-sync`。
-
-## 完成后的默认后继阶段
-当本 skill 完成 formal relation ledger 的补齐与对齐后：
-- 必须把 `affected_pages` 交给 `page-projection-sync`
-- 不应停留在“ledger 已更新但对象页尚未同步”的状态
-- 对象页同步完成后，才进入 lint 与后续治理

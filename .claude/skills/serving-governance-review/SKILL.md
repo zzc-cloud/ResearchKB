@@ -1,6 +1,6 @@
 ---
 name: serving-governance-review
-description: 在 ResearchKB 中，对已经完成结构 lint 与本体语义审查后的对象页、Evidence 页、以及 `ontology/entities/*/index.md` 等受管导航页做 serving 治理审查。Whenever 用户要求判断某批迁移页面、对象页投影、领域 index、default QA surface 或 default navigation surface 是否已经 `serving-ready`、是否只能算 `partial` / `legacy`、是否适合提升为默认 serving surface，都应使用此 skill。它只负责 serving surface 的质量门，不重复做 lint，也不重复做 ontology-semantic-review。
+description: 在 ResearchKB 中，对已经完成结构 lint 与本体语义审查后的对象页、Evidence 页、以及 `ontology/entities/*/index.md` 等受管导航页做 serving 治理审查。Whenever 编排型 skill `process-paper` 已将当前任务推进到 serving governance review 阶段，或用户明确要求只做 serving 治理审查、判断某批迁移页面 / 对象页投影 / 领域 index / default QA surface 是否已经 `serving-ready` 时，都应使用本 skill。默认由 `process-paper` 在结构 lint 与 ontology semantic review 之后调用；它只负责 serving surface 的质量门，不重复做 lint，也不重复做 ontology-semantic-review。
 ---
 
 # Serving 治理审查

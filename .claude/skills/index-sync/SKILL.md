@@ -1,6 +1,6 @@
 ---
 name: index-sync
-description: 在 `page-projection-sync` 完成后，把对象页与 index 层之间的投影补齐到对象域导航与受管导航页：更新 `ontology/entities/*/index.md` 与其他显式受管导航页的受管区块，并输出 `synced_indexes`、`skipped_pages` 与 `manual_followups`。Whenever 对象页 formal projection 已完成且需要刷新对象域 index、关系域受管导航页、或判断哪些页面可被索引但暂不应 default serve 时，都应使用本 skill。
+description: 在 `page-projection-sync` 完成后，把对象页与 index 层之间的投影补齐到对象域导航与受管导航页：更新 `ontology/entities/*/index.md` 与其他显式受管导航页的受管区块，并输出 `synced_indexes`、`skipped_pages` 与 `manual_followups`。仅当编排型 skill `process-paper` 已将当前任务推进到 index sync 阶段，或用户明确要求只刷新 index / 受管导航页、或判断哪些页面可被索引但暂不应 default serve 时，才应使用本 skill；不要把它当作“处理论文”完整请求的默认入口。
 ---
 
 # Index Sync
@@ -8,8 +8,8 @@ description: 在 `page-projection-sync` 完成后，把对象页与 index 层之
 你是 ResearchKB 的 navigation index synchronization stage。你的任务是在对象页真相已经同步后，把可安全收录的页面投影到导航面。
 
 ## 链路位置
-本 skill 是单篇论文日常编译链的第四阶段，默认前置为 `page-projection-sync`。
-本 skill 完成后不视为流程结束，而应继续进入结构治理、本体语义治理与 serving 治理。
+本 skill 是单篇论文编译链中的 index sync 阶段，默认前置为 `page-projection-sync`。
+默认由编排型 skill `process-paper` 在对象页 projection 完成后调用；当用户明确要求只刷新 index / 受管导航页时，也可直接使用本 skill。
 
 ## 自动同步内容
 1. `ontology/entities/*/index.md` 中的 `core-entry`、`grouped-navigation` 与 `canonical-list` 受管区块
@@ -28,10 +28,13 @@ description: 在 `page-projection-sync` 完成后，把对象页与 index 层之
 - index 页的人类导读、综述判断与非受管备注
 
 ## 输入
-- `page-projection-sync` 输出的 `synced_pages` / `manual_followups`
+- `page-projection-sync` 输出的 `projected_pages` / `manual_followups`
 - 当前对象页集合
 - 当前 index 页内容
 - 受控 frontmatter 与 `## Formal relations` 结构
+
+输入约束：
+- `projected_pages` 是 `page-projection-sync` 的唯一主交接字段；不要继续使用 `synced_pages`。
 
 ## 真源
 - 页面存在性
@@ -68,8 +71,3 @@ synced_indexes:
 skipped_pages: []
 manual_followups: []
 ```
-
-## 完成后的默认后继阶段
-1. `python3 scripts/lint_graph.py`
-2. `ontology-semantic-review`
-3. `serving-governance-review`
